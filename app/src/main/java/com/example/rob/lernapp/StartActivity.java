@@ -13,7 +13,7 @@ public class StartActivity extends AppCompatActivity {
 
     @Click(R.id.button)
     void clickbutton(){
-        Toast.makeText(getApplicationContext(), "AMK", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Start /GET", Toast.LENGTH_SHORT).show();
     }
     /*@Override
     protected void onCreate(Bundle savedInstanceState) {
