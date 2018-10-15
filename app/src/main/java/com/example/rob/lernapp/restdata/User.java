@@ -4,7 +4,7 @@ public class User {
 
     String _id;
     String name;
-    int phonenumber;
+    long phonenumber;
 
     public User(String _id, String name, int phonenumber) {
         this._id = _id;
@@ -28,11 +28,11 @@ public class User {
         this.name = name;
     }
 
-    public int getPhonenumber() {
+    public long getPhonenumber() {
         return phonenumber;
     }
 
-    public void setPhonenumber(int phonenumber) {
+    public void setPhonenumber(long phonenumber) {
         this.phonenumber = phonenumber;
     }
 
