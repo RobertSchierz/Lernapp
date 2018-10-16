@@ -63,7 +63,10 @@ public class StartActivity extends AppCompatActivity {
         if(Build.VERSION.SDK_INT >= 23){
             this.getContacts = GetContacts.getInstance(this);
             this.getContacts.handlePermission();
+        }else{
+            this.getContacts.readContacts();
         }
+        examineUsers();
     }
 
 
@@ -75,13 +78,11 @@ public class StartActivity extends AppCompatActivity {
         switch (requestCode){
             case GetContacts.MY_PERMISSIONS_REQUEST_READ_CONTACTS:{
                 if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    Toast.makeText(this.getApplicationContext(), "Berechtigung erlaubt", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this.getApplicationContext(), "Berechtigung erlaubt", Toast.LENGTH_SHORT).show();
                     this.getContacts.readContacts();
 
                 }else{
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    Toast.makeText(this.getApplicationContext(), "Berechtigung verweigert", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this.getApplicationContext(), "Berechtigung verweigert", Toast.LENGTH_SHORT).show();
                 }
                 return;
             }
@@ -91,6 +92,16 @@ public class StartActivity extends AppCompatActivity {
     @Click(R.id.button)
     void clickbutton() {
         getAsynchronous();
+    }
+
+    private void examineUsers(){
+        for(User iteratedUser: this.getContacts.contacts){
+            for (int i = 0; i < this.userinfos.length; i++){
+                if(iteratedUser.getPhonenumber() == this.userinfos[i].getPhonenumber()){
+                    Toast.makeText(getApplicationContext(), this.userinfos[i].getName(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
     }
 
 

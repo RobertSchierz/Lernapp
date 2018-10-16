@@ -6,7 +6,7 @@ public class User {
     String name;
     long phonenumber;
 
-    public User(String _id, String name, int phonenumber) {
+    public User(String _id, String name, long phonenumber) {
         this._id = _id;
         this.name = name;
         this.phonenumber = phonenumber;

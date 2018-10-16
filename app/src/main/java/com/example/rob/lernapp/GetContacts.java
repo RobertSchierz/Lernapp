@@ -4,18 +4,16 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Build;
 import android.provider.ContactsContract;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.support.v4.app.ActivityCompat.OnRequestPermissionsResultCallback;
 import android.widget.Toast;
 
-import static android.support.v4.content.ContextCompat.*;
+import com.example.rob.lernapp.restdata.User;
+
+import java.util.ArrayList;
 
 public class GetContacts {
 
@@ -23,6 +21,8 @@ public class GetContacts {
     final Activity originActivity;
     private static GetContacts instance = null;
     public boolean hasPermission;
+
+    public ArrayList<User> contacts = new ArrayList();
 
 
     private GetContacts(Activity originActivity) {
@@ -98,7 +98,33 @@ public class GetContacts {
 
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
-                Log.i("test", cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
+
+                String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+
+
+                if (Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0){
+                    Cursor pCur = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?",
+                            new String[]{id}, null);
+                    while (pCur.moveToNext()) {
+                        String phone = pCur.getString(
+                                pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+                        // extract the digits
+                        phone = phone.replaceAll("\\D+","");
+
+                        User tempUser = new User(null, name, Long.parseLong(phone));
+                        if(!this.contacts.contains(tempUser)){
+                            this.contacts.add(tempUser);
+                        }
+
+
+
+                    }
+                    pCur.close();
+
+                }
             }
         }
     }

@@ -29,12 +29,14 @@ public class ContactPermissionDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         GetContacts.getInstance(getActivity()).handleDialog(true);
+
                     }
                 })
                 .setNegativeButton(R.string.permission_dialog_negativ, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         GetContacts.getInstance(getActivity()).handleDialog(false);
+
                     }
                 });
 
@@ -44,5 +46,7 @@ public class ContactPermissionDialog extends DialogFragment {
     void showdialog(Activity activity){
         this.activity = activity;
         instance.onCreateDialog(new Bundle()).show();
+
+
     }
 }
