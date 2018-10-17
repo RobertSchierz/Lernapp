@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">Lernapp</string>
+
+    <!-- Berechtigungsdialog -->
     <string name="permission_dialog">Berechtigung der Kontakte</string>
     <string name="permission_dialog_positiv">Zugriff erlauben</string>
     <string name="permission_dialog_negativ">Zugriff verweigern</string>
+
+    <!-- Creategroupdialog -->
+    <string name="confirm_group_dialog_text">Neue Gruppe erstellen</string>
+    <string name="confirm_group_dialog_hint">Gruppenname</string>
+    <string name="confirm_group_dialog_positiv">Erstellen</string>
+    <string name="confirm_group_dialog_negativ">Zurück</string>
+
 </resources>
