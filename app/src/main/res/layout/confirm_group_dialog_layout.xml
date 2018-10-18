@@ -1,19 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
+
+    <TextView
+        android:id="@+id/confirm_group_dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/confirm_group_dialog_margin_leftright"
+        android:layout_marginTop="@dimen/confirm_group_dialog_margin_topbottom"
+        android:layout_marginRight="@dimen/confirm_group_dialog_margin_leftright"
+        android:layout_marginBottom="@dimen/confirm_group_dialog_margin_title_bottom"
+        android:gravity="center_vertical|center_horizontal|center"
+        android:text="@string/confirm_group_dialog_text"
+        android:textSize="@dimen/confirm_group_dialog_margin_title_fontsize" />
 
     <EditText
         android:id="@+id/confirm_group_dialog_input"
-        android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="@dimen/confirm_group_dialog_margin_leftright"
+        android:layout_marginTop="@dimen/confirm_group_dialog_margin_topbottom"
+        android:layout_marginRight="@dimen/confirm_group_dialog_margin_leftright"
+        android:layout_marginBottom="@dimen/confirm_group_dialog_margin_topbottom"
         android:fontFamily="sans-serif"
-        android:hint="@string/confirm_group_dialog_hint"/>
+        android:hint="@string/confirm_group_dialog_hint"
+        android:inputType="text" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/confirm_group_dialog_buttondivider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/confirm_group_dialog_margin_topbottom"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/confirm_group_dialog_negativebutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/confirm_group_dialog_margin_leftright"
+            android:layout_marginRight="@dimen/confirm_group_dialog_margin_leftright"
+            android:background="@android:color/transparent"
+            android:backgroundTint="@android:color/transparent"
+            android:gravity="center_vertical|center"
+            android:text="@string/confirm_group_dialog_negativ" />
+
+
+        <View
+            android:layout_width="30dp"
+            android:layout_height="1dp" />
+
+
+        <Button
+            android:id="@+id/confirm_group_dialog_positivebutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/confirm_group_dialog_margin_leftright"
+            android:layout_marginRight="@dimen/confirm_group_dialog_margin_leftright"
+            android:background="@android:color/transparent"
+            android:backgroundTint="@android:color/transparent"
+            android:gravity="center"
+            android:text="@string/confirm_group_dialog_positiv" />
+
+
+    </LinearLayout>
 </LinearLayout>

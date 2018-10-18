@@ -13,7 +13,7 @@ import org.androidannotations.annotations.EActivity;
 public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog.ConfirmGroupDialogListener {
 
 
-    public static ConfirmGroupDialog confirmGroupDialog;
+    public static ConfirmGroupDialog_ confirmGroupDialog;
 
     @AfterViews
     void onCreate(){
@@ -22,18 +22,18 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
 
     @Click(R.id.learngroup_actionbutton)
     void actionbutton_clicked(){
-        this.confirmGroupDialog  = new ConfirmGroupDialog();
+        this.confirmGroupDialog  = new ConfirmGroupDialog_();
         this.confirmGroupDialog.setActivity(this);
         this.confirmGroupDialog.show(getSupportFragmentManager(), "groupDialog");
     }
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
-        Toast.makeText(getApplicationContext(), "1", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
-        Toast.makeText(getApplicationContext(), "2", Toast.LENGTH_SHORT).show();
+        this.confirmGroupDialog.dismiss();
     }
 }

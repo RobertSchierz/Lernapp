@@ -8,7 +8,18 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
+
+@EFragment(R.layout.confirm_group_dialog_layout)
 public class ConfirmGroupDialog extends DialogFragment {
 
 
@@ -33,29 +44,28 @@ public class ConfirmGroupDialog extends DialogFragment {
     }
 
 
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstancesState){
+    @ViewById(R.id.confirm_group_dialog_input)
+    EditText groupnameInput;
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this.activity);
-        LayoutInflater inflater = this.activity.getLayoutInflater();
-        builder.setMessage(R.string.permission_dialog)
-                .setView(inflater.inflate(R.layout.confirm_group_dialog_layout, null))
-                .setPositiveButton(R.string.confirm_group_dialog_positiv, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        cgdListener.onDialogPositiveClick(ConfirmGroupDialog.this);
-                    }
-                })
-                .setNegativeButton(R.string.confirm_group_dialog_negativ, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        cgdListener.onDialogNegativeClick(ConfirmGroupDialog.this);
 
-                    }
-                });
+    @Click(R.id.confirm_group_dialog_positivebutton)
+    void positivButtonClicked(){
 
-        return builder.create();
+        if(groupnameInput.getText().toString() != null && !(groupnameInput.getText().toString().isEmpty())){
+            cgdListener.onDialogPositiveClick(ConfirmGroupDialog.this);
+        }else{
+            Toast.makeText(this.activity, "Gruppennamen ist leer", Toast.LENGTH_SHORT).show();
+        }
+
     }
+
+    @Click(R.id.confirm_group_dialog_negativebutton)
+    void negativButtonClicked(){
+        cgdListener.onDialogNegativeClick(ConfirmGroupDialog.this);
+    }
+
+
+
 
     void setActivity(Activity activity){
         this.activity = activity;

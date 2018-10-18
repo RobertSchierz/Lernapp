@@ -4,4 +4,5 @@
     <dimen name="confirm_group_dialog_margin_leftright">20dp</dimen>
     <dimen name="confirm_group_dialog_margin_topbottom">40dp</dimen>
     <dimen name="confirm_group_dialog_margin_title_bottom">0dp</dimen>
+    <dimen name="confirm_group_dialog_margin_title_fontsize">20sp</dimen>
 </resources>
