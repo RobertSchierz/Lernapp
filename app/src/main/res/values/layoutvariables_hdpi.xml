@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="confirm_group_dialog_margin_leftright">20dp</dimen>
+    <dimen name="confirm_group_dialog_margin_topbottom">40dp</dimen>
+    <dimen name="confirm_group_dialog_margin_title_bottom">0dp</dimen>
+</resources>
