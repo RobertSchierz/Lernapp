@@ -1,5 +1,6 @@
 package com.example.rob.lernapp;
 
+import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
@@ -12,6 +13,7 @@ import org.androidannotations.annotations.EActivity;
 public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog.ConfirmGroupDialogListener {
 
 
+    public static ConfirmGroupDialog confirmGroupDialog;
 
     @AfterViews
     void onCreate(){
@@ -20,8 +22,9 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
 
     @Click(R.id.learngroup_actionbutton)
     void actionbutton_clicked(){
-        ConfirmGroupDialog confirmGroupDialog = new ConfirmGroupDialog();
-        confirmGroupDialog.showdialog(this);
+        this.confirmGroupDialog  = new ConfirmGroupDialog();
+        this.confirmGroupDialog.setActivity(this);
+        this.confirmGroupDialog.show(getSupportFragmentManager(), "groupDialog");
     }
 
     @Override
