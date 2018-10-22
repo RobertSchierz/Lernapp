@@ -1,16 +1,12 @@
 package com.example.rob.lernapp;
 
-import android.annotation.TargetApi;
-import android.content.ContentResolver;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.os.Build;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.rob.lernapp.restdata.Dataset;
+import com.example.rob.lernapp.restdata.DatasetUser;
 import com.example.rob.lernapp.restdata.User;
 
 import org.androidannotations.annotations.Background;
@@ -36,10 +32,10 @@ public class StartActivity extends AppCompatActivity {
     void getAsynchronous() {
         try {
 
-            ResponseEntity<Dataset> responseEntity = restClient.getUsers();
+            ResponseEntity<DatasetUser> responseEntity = restClient.getUsers();
 
 
-            Dataset dataSet = responseEntity.getBody();
+            DatasetUser dataSet = responseEntity.getBody();
             this.userinfos = dataSet.gettingUsers();
             //showRequest();
             getContactExec();

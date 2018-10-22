@@ -25,7 +25,7 @@ public class ConfirmGroupDialog extends DialogFragment {
 
 
     public interface ConfirmGroupDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog);
+        public void onDialogPositiveClick(DialogFragment dialog, EditText groupname);
         public void onDialogNegativeClick(DialogFragment dialog);
     }
     private Activity activity;
@@ -52,7 +52,7 @@ public class ConfirmGroupDialog extends DialogFragment {
     void positivButtonClicked(){
 
         if(groupnameInput.getText().toString() != null && !(groupnameInput.getText().toString().isEmpty())){
-            cgdListener.onDialogPositiveClick(ConfirmGroupDialog.this);
+            cgdListener.onDialogPositiveClick(ConfirmGroupDialog.this, groupnameInput);
         }else{
             Toast.makeText(this.activity, "Gruppennamen ist leer", Toast.LENGTH_SHORT).show();
         }
