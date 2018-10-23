@@ -5,11 +5,21 @@ public class User {
     String _id;
     String name;
     long phonenumber;
+    String uniqueclientid;
 
-    public User(String _id, String name, long phonenumber) {
+    public String getUniqueclientid() {
+        return uniqueclientid;
+    }
+
+    public void setUniqueclientid(String uniqueclientid) {
+        this.uniqueclientid = uniqueclientid;
+    }
+
+    public User(String _id, String name, long phonenumber, String uniqueclientid ) {
         this._id = _id;
         this.name = name;
         this.phonenumber = phonenumber;
+        this.uniqueclientid = uniqueclientid;
     }
 
     public String get_id() {
@@ -42,6 +52,7 @@ public class User {
                 "_id='" + _id + '\'' +
                 ", name='" + name + '\'' +
                 ", phonenumber=" + phonenumber +
+                ", uniqueclientid='" + uniqueclientid + '\'' +
                 '}';
     }
 }

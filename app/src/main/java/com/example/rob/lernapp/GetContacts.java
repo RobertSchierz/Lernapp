@@ -114,7 +114,7 @@ public class GetContacts {
                         // extract the digits
                         phone = phone.replaceAll("\\D+","");
 
-                        User tempUser = new User(null, name, Long.parseLong(phone));
+                        User tempUser = new User(null, name, Long.parseLong(phone), null);
                         if(!this.contacts.contains(tempUser)){
                             this.contacts.add(tempUser);
                         }

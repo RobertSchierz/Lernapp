@@ -20,8 +20,11 @@ public interface RestClient {
     @Get("/users/{_id}")
     Object getUser(@Path String _id);
 
-    //@Get("/groups/{_id}")
-    //ResponseEntity<DatasetGroup> getGroups();
+    @Get("/groups")
+    ResponseEntity<DatasetGroup> getGroups();
+
+    @Get("/groups/usergroups/{_id}")
+    ResponseEntity<DatasetGroup> getUserCreatorGroups(@Path String _id);
 
 
 

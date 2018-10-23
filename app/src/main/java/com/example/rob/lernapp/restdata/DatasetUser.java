@@ -1,8 +1,8 @@
 package com.example.rob.lernapp.restdata;
 
-public class Dataset {
+public class DatasetUser {
 
-    public Dataset(int count, User[] rows) {
+    public DatasetUser(int count, User[] rows) {
         this.count = count;
         this.users = rows;
     }
@@ -14,6 +14,7 @@ public class Dataset {
     public int getCount() {
         return count;
     }
+
 
     public void setCount(int count) {
         this.count = count;
