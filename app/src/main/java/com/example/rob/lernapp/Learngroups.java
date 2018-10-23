@@ -4,6 +4,7 @@ import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.EditText;
@@ -37,7 +38,7 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
     public static ConfirmGroupDialog_ confirmGroupDialog;
 
     @ViewById(R.id.groupllist_recyclerview)
-    RecyclerView grouplist_recyclerview;
+    RecyclerView grouplistRecyclerview;
 
 
     @NonConfigurationInstance
@@ -55,6 +56,18 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
         }
         idTask.getDatabaseId();
 
+        initializeRecyclerview();
+
+
+
+    }
+
+    private void initializeRecyclerview(){
+
+
+        grouplistRecyclerview.setHasFixedSize(true);
+        LinearLayoutManager grouplist_layoutmanager = new LinearLayoutManager(getApplicationContext());
+        grouplistRecyclerview.setLayoutManager(grouplist_layoutmanager);
 
     }
 
