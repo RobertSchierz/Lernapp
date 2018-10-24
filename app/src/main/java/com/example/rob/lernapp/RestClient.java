@@ -26,6 +26,9 @@ public interface RestClient {
     @Get("/groups/usergroups/{_id}")
     ResponseEntity<DatasetGroup> getUserCreatorGroups(@Path String _id);
 
+    @Get("/groups/usergroupsall/{_id}")
+    ResponseEntity<DatasetGroup> getUserGroupsAll(@Path String _id);
+
 
 
     /*@Post("/signup")

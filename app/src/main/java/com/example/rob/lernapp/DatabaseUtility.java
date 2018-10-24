@@ -27,6 +27,7 @@ public class DatabaseUtility {
 
     private User[] userinfos;
     private Learngroup[] creatorLearngroups;
+    private Learngroup[] allLearngroups;
 
     @AfterInject
     void afterInject() {
@@ -38,7 +39,21 @@ public class DatabaseUtility {
         ResponseEntity<DatasetGroup> responseEntityGroup = restClient.getUserCreatorGroups(activity.getUniqueDatabaseId());
         DatasetGroup datasetGroup = responseEntityGroup.getBody();
         this.creatorLearngroups = datasetGroup.gettingGroups();
-        sendGroupsToActivity(this.creatorLearngroups);
+        sendCreatorGroupsToActivity(this.creatorLearngroups);
+    }
+
+    @Background
+    public void getGroupsOfCreatorAll(boolean init){
+        ResponseEntity<DatasetGroup> responseEntityGroup = restClient.getUserGroupsAll(activity.getUniqueDatabaseId());
+        DatasetGroup datasetGroup = responseEntityGroup.getBody();
+        this.allLearngroups = datasetGroup.gettingGroups();
+        sendAllGroupsToActivity(this.allLearngroups, init);
+
+    }
+
+    public void initialzeGroups(){
+        getGroupsOfCreator();
+        getGroupsOfCreatorAll(true);
     }
 
 
@@ -61,15 +76,23 @@ public class DatabaseUtility {
 
     }
 
+
+
+
+
     @UiThread
     void sendIdToActivity(String id) {
         activity.setUniqueId(id);
     }
 
     @UiThread
-    void sendGroupsToActivity(Learngroup[] creatorLearngroups) {
-        activity.setGroups(creatorLearngroups);
+    void sendAllGroupsToActivity(Learngroup[] learngroups, boolean init) {
+        activity.setAllGroups(learngroups, init);
     }
 
+    @UiThread
+    void sendCreatorGroupsToActivity(Learngroup[] learngroups) {
+        activity.setCreatorGroups(learngroups);
+    }
 
 }

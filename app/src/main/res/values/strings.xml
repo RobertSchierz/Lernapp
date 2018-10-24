@@ -12,4 +12,7 @@
     <string name="confirm_group_dialog_positiv">Erstellen</string>
     <string name="confirm_group_dialog_negativ">Zurück</string>
 
+    <!-- Gruppen -->
+    <string name="group_list_switchtext">Eigene Gruppen</string>
+
 </resources>

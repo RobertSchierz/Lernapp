@@ -1,13 +1,13 @@
 package com.example.rob.lernapp.restdata;
 
-public class Group {
+public class Learngroup {
 
     String _id;
     User creator;
     String name;
     Member[] members;
 
-    public Group(String _id, User creator, String name, Member[] members) {
+    public Learngroup(String _id, User creator, String name, Member[] members) {
         this._id = _id;
         this.creator = creator;
         this.name = name;
