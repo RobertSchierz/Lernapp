@@ -2,14 +2,14 @@ package com.example.rob.lernapp.restdata;
 
 public class DatasetGroup {
 
-    public DatasetGroup(int count, Group[] rows) {
+    public DatasetGroup(int count, Learngroup[] rows) {
         this.count = count;
         this.groups = rows;
     }
 
     private int count;
 
-    private Group[] groups;
+    private Learngroup[] groups;
 
     public int getCount() {
         return count;
@@ -19,11 +19,11 @@ public class DatasetGroup {
         this.count = count;
     }
 
-    public Group[] gettingGroups() {
+    public Learngroup[] gettingGroups() {
         return groups;
     }
 
-    public void setGroups(Group[] users) {
+    public void setLearngroups(Learngroup[] users) {
         this.groups = users;
     }
 }

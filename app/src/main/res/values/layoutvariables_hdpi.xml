@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Groupconfirmdialog-->
     <dimen name="confirm_group_dialog_margin_leftright">20dp</dimen>
     <dimen name="confirm_group_dialog_margin_topbottom">40dp</dimen>
     <dimen name="confirm_group_dialog_margin_title_bottom">0dp</dimen>
     <dimen name="confirm_group_dialog_margin_title_fontsize">20sp</dimen>
+
+    <!-- Grouplayout-->
+
+    <dimen name="group_card_groupname">20sp</dimen>
+    <dimen name="group_card_creator">13sp</dimen>
+
+    <!-- Grouplayout_memberlist -->
+
+    <dimen name="group_memberlist_member">20sp</dimen>
+    <dimen name="group_memberlist_role">13sp</dimen>
+
 </resources>

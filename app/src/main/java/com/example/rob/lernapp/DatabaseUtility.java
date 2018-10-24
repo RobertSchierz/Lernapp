@@ -5,7 +5,7 @@ import android.util.Log;
 import com.example.rob.lernapp.restdata.DatasetGroup;
 import com.example.rob.lernapp.restdata.DatasetUser;
 import com.example.rob.lernapp.restdata.User;
-import com.example.rob.lernapp.restdata.Group;
+import com.example.rob.lernapp.restdata.Learngroup;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Background;
@@ -26,7 +26,7 @@ public class DatabaseUtility {
     RestClient restClient;
 
     private User[] userinfos;
-    private Group[] groupinfos;
+    private Learngroup[] creatorLearngroups;
 
     @AfterInject
     void afterInject() {
@@ -37,7 +37,8 @@ public class DatabaseUtility {
     public void getGroupsOfCreator(){
         ResponseEntity<DatasetGroup> responseEntityGroup = restClient.getUserCreatorGroups(activity.getUniqueDatabaseId());
         DatasetGroup datasetGroup = responseEntityGroup.getBody();
-        this.groupinfos = datasetGroup.gettingGroups();
+        this.creatorLearngroups = datasetGroup.gettingGroups();
+        sendGroupsToActivity(this.creatorLearngroups);
     }
 
 
@@ -63,6 +64,11 @@ public class DatabaseUtility {
     @UiThread
     void sendIdToActivity(String id) {
         activity.setUniqueId(id);
+    }
+
+    @UiThread
+    void sendGroupsToActivity(Learngroup[] creatorLearngroups) {
+        activity.setGroups(creatorLearngroups);
     }
 
 

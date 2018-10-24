@@ -1,7 +1,5 @@
 package com.example.rob.lernapp.restdata;
 
-import org.json.JSONArray;
-
 public class Group {
 
     String _id;
@@ -16,15 +14,6 @@ public class Group {
         this.members = members;
     }
 
-    @Override
-    public String toString() {
-        return "Group{" +
-                "_id='" + _id + '\'' +
-                ", creator='" + creator + '\'' +
-                ", name='" + name + '\'' +
-                ", members=" + members +
-                '}';
-    }
 
     public String get_id() {
         return _id;

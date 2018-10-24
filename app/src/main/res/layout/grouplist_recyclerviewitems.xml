@@ -1,45 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:padding="10dp">
 
 
-    <android.support.v7.widget.CardView
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/groupllist_cardview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        card_view:cardCornerRadius="5dp"
+        card_view:cardElevation="5dp"
+        card_view:cardPreventCornerOverlap="false">
 
-        <RelativeLayout
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:orientation="horizontal">
 
 
-            <TextView
-                android:id="@+id/groupname"
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="120dp"
-                android:layout_marginBottom="0dp"
-                android:text="TextView" />
-
-            <TextView
-                android:id="@+id/creator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="120dp"
-                android:layout_marginBottom="0dp"
-                android:text="TextView" />
+                android:layout_gravity="start"
+                android:layout_weight="0.5"
+                android:gravity="start"
+                android:orientation="vertical"
+                android:padding="16dp">
 
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/groupname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gruppenname"
+                    android:textSize="@dimen/group_card_groupname"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp" />
+
+                <TextView
+                    android:id="@+id/creator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Creator"
+                    android:textSize="@dimen/group_card_creator" />
+
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="5dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="0.1"
+                android:foregroundGravity="center" >
+
+            </View>
+
+            <LinearLayout
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:layout_weight="3"
+                android:gravity="end"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+
+                <ImageView
+                    android:id="@+id/show_member"
+                    android:layout_width="65dp"
+                    android:layout_height="55dp"
+                    android:layout_gravity="center|start"
+                    card_view:srcCompat="@drawable/show_member" />
+
+                <View
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:foregroundGravity="center" />
+
+                <ImageView
+                    android:id="@+id/delete_group"
+                    android:layout_width="65dp"
+                    android:layout_height="55dp"
+                    android:layout_gravity="center|end"
+                    card_view:srcCompat="@drawable/delete_group" />
+            </LinearLayout>
+
+        </LinearLayout>
 
     </android.support.v7.widget.CardView>
 
 
-</LinearLayout>
+    </LinearLayout>
