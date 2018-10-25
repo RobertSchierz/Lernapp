@@ -6,7 +6,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.rob.lernapp.R;
-import com.example.rob.lernapp.restdata.Member;
+import com.example.rob.lernapp.restdataGet.Member;
 
 import java.util.ArrayList;
 

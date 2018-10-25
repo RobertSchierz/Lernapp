@@ -7,6 +7,12 @@
     <dimen name="confirm_group_dialog_margin_title_bottom">0dp</dimen>
     <dimen name="confirm_group_dialog_margin_title_fontsize">20sp</dimen>
 
+    <!-- Groupdeletedialog-->
+
+    <dimen name="delete_group_dialog_margin_groupname">10sp</dimen>
+    <dimen name="delete_group_dialog_margin_title_fontsize">20sp</dimen>
+
+
     <!-- Grouplayout-->
 
     <dimen name="group_card_groupname">20sp</dimen>

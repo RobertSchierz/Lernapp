@@ -6,8 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.rob.lernapp.restdata.DatasetUser;
-import com.example.rob.lernapp.restdata.User;
+import com.example.rob.lernapp.restdataGet.DatasetUser;
+import com.example.rob.lernapp.restdataGet.User;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;

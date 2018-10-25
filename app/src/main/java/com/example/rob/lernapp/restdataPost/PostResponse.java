@@ -1,6 +1,6 @@
 package com.example.rob.lernapp.restdataPost;
 
-import com.example.rob.lernapp.restdata.Learngroup;
+import com.example.rob.lernapp.restdataGet.Learngroup;
 
 public class PostResponse {
 

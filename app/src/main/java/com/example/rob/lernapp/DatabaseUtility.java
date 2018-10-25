@@ -2,10 +2,11 @@ package com.example.rob.lernapp;
 
 import android.util.Log;
 
-import com.example.rob.lernapp.restdata.DatasetGroup;
-import com.example.rob.lernapp.restdata.DatasetUser;
-import com.example.rob.lernapp.restdata.Learngroup;
-import com.example.rob.lernapp.restdata.User;
+import com.example.rob.lernapp.restdataDelete.DeleteResponse;
+import com.example.rob.lernapp.restdataGet.DatasetGroup;
+import com.example.rob.lernapp.restdataGet.DatasetUser;
+import com.example.rob.lernapp.restdataGet.Learngroup;
+import com.example.rob.lernapp.restdataGet.User;
 import com.example.rob.lernapp.restdataPost.LearngroupPost;
 import com.example.rob.lernapp.restdataPost.PostResponse;
 import com.google.gson.Gson;
@@ -64,6 +65,15 @@ public class DatabaseUtility {
         sendcreateResponseToActivity(postResponse);
     }
 
+    @Background
+    public void deleteGroup(Learngroup deletedGroup){
+        ResponseEntity<JsonObject> responseEntityGroupdelete = restClient.deleteGroup(deletedGroup.get_id());
+        Gson gson = new Gson();
+        DeleteResponse deleteResponse = gson.fromJson(responseEntityGroupdelete.getBody(), DeleteResponse.class);
+        senddeleteResponseToActivity(deleteResponse, deletedGroup);
+
+    }
+
 
 
     public void initialzeGroups(){
@@ -113,6 +123,11 @@ public class DatabaseUtility {
     @UiThread
     void sendcreateResponseToActivity(PostResponse postResponse) {
         activity.handleCreateResponse(postResponse);
+    }
+
+    @UiThread
+    void senddeleteResponseToActivity(DeleteResponse deleteResponse, Learngroup deletedGroup) {
+        activity.handleDeleteResponse(deleteResponse, deletedGroup);
     }
 
 }

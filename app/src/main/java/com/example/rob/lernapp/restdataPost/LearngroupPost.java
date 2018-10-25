@@ -1,7 +1,7 @@
 package com.example.rob.lernapp.restdataPost;
 
-import com.example.rob.lernapp.restdata.Member;
-import com.example.rob.lernapp.restdata.User;
+import com.example.rob.lernapp.restdataGet.Member;
+import com.example.rob.lernapp.restdataGet.User;
 
 public class LearngroupPost {
 

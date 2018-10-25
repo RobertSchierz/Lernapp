@@ -8,10 +8,9 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Build;
 import android.provider.ContactsContract;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.example.rob.lernapp.restdata.User;
+import com.example.rob.lernapp.restdataGet.User;
 
 import java.util.ArrayList;
 

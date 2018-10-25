@@ -31,7 +31,8 @@
             android:id="@+id/groupllist_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="left|start" />
+            android:layout_gravity="left|start"
+            />
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton

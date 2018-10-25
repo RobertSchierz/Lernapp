@@ -1,4 +1,4 @@
-package com.example.rob.lernapp.restdata;
+package com.example.rob.lernapp.restdataGet;
 
 public class Learngroup {
 

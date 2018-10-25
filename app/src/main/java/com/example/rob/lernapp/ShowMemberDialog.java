@@ -10,8 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.rob.lernapp.restdata.Learngroup;
-import com.example.rob.lernapp.restdata.Member;
+import com.example.rob.lernapp.restdataGet.Learngroup;
+import com.example.rob.lernapp.restdataGet.Member;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -32,24 +32,28 @@ public class ShowMemberDialog extends DialogFragment {
 
 
     @AfterViews
-    void afterViews(){
+    void afterViews() {
 
-                final ArrayList<Member> memberlist = new ArrayList<Member>();
-                for(int i = 0; i < this.groups.get(position).getMembers().length; i++){
-                    memberlist.add(this.groups.get(position).getMembers()[i]);
-                }
+        final ArrayList<Member> memberlist = new ArrayList<Member>();
 
-                final MemberArrayAdapter stableArrayAdapter = new MemberArrayAdapter(this.learngroupactivity.getApplicationContext(), memberlist);
-                groupmemberlistview.setAdapter(stableArrayAdapter);
+        for (int i = 0; i < this.groups.get(position).getMembers().length; i++) {
+            memberlist.add(this.groups.get(position).getMembers()[i]);
+        }
+
+
+        final MemberArrayAdapter stableArrayAdapter = new MemberArrayAdapter(this.learngroupactivity.getApplicationContext(), memberlist);
+        groupmemberlistview.setAdapter(stableArrayAdapter);
+
+
     }
 
 
-    public void setActivity(Activity activity){
+    public void setActivity(Activity activity) {
         this.learngroupactivity = activity;
 
     }
 
-    public void setGroups(ArrayList<Learngroup> lerngroups, int position){
+    public void setGroups(ArrayList<Learngroup> lerngroups, int position) {
         this.groups = lerngroups;
         this.position = position;
 
