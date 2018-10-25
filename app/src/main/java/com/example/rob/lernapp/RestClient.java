@@ -3,9 +3,13 @@ package com.example.rob.lernapp;
 
 import com.example.rob.lernapp.restdata.DatasetGroup;
 import com.example.rob.lernapp.restdata.DatasetUser;
+import com.example.rob.lernapp.restdataPost.LearngroupPost;
+import com.google.gson.JsonObject;
 
+import org.androidannotations.rest.spring.annotations.Body;
 import org.androidannotations.rest.spring.annotations.Get;
 import org.androidannotations.rest.spring.annotations.Path;
+import org.androidannotations.rest.spring.annotations.Post;
 import org.androidannotations.rest.spring.annotations.Rest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.FormHttpMessageConverter;
@@ -28,6 +32,9 @@ public interface RestClient {
 
     @Get("/groups/usergroupsall/{_id}")
     ResponseEntity<DatasetGroup> getUserGroupsAll(@Path String _id);
+
+    @Post("/groups/")
+    ResponseEntity<JsonObject> postGroup(@Body LearngroupPost body);
 
 
 

@@ -1,14 +1,18 @@
-package com.example.rob.lernapp.restdata;
+package com.example.rob.lernapp.restdataPost;
 
-public class Learngroup {
+import com.example.rob.lernapp.restdata.Member;
+import com.example.rob.lernapp.restdata.User;
+
+public class LearngroupPost {
+
 
     String _id;
-    User creator;
+    String creator;
     String name;
     Member[] members;
 
 
-    public Learngroup(String _id, User creator, String name, Member[] members) {
+    public LearngroupPost(String _id, String creator, String name, Member[] members) {
         this._id = _id;
         this.creator = creator;
         this.name = name;
@@ -16,8 +20,7 @@ public class Learngroup {
     }
 
 
-
-    public void setCreator(User creator) {
+    public void setCreator(String creator) {
         this.creator = creator;
     }
 
@@ -29,7 +32,7 @@ public class Learngroup {
         this._id = _id;
     }
 
-    public User getCreator() {
+    public String getCreator() {
         return creator;
     }
 
@@ -52,7 +55,6 @@ public class Learngroup {
     public void setMembers(Member[] members) {
         this.members = members;
     }
-
 
 
 }

@@ -4,8 +4,12 @@ import android.util.Log;
 
 import com.example.rob.lernapp.restdata.DatasetGroup;
 import com.example.rob.lernapp.restdata.DatasetUser;
-import com.example.rob.lernapp.restdata.User;
 import com.example.rob.lernapp.restdata.Learngroup;
+import com.example.rob.lernapp.restdata.User;
+import com.example.rob.lernapp.restdataPost.LearngroupPost;
+import com.example.rob.lernapp.restdataPost.PostResponse;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Background;
@@ -48,8 +52,19 @@ public class DatabaseUtility {
         DatasetGroup datasetGroup = responseEntityGroup.getBody();
         this.allLearngroups = datasetGroup.gettingGroups();
         sendAllGroupsToActivity(this.allLearngroups, init);
-
     }
+
+    @Background
+    public void postGroup(String groupname){
+
+        LearngroupPost newgroup = new LearngroupPost(null, this.activity.getUniqueDatabaseId(),groupname, null);
+        ResponseEntity<JsonObject> responseEntityGroupcreate = restClient.postGroup(newgroup);
+        Gson gson = new Gson();
+        PostResponse postResponse = gson.fromJson(responseEntityGroupcreate.getBody(), PostResponse.class);
+        sendcreateResponseToActivity(postResponse);
+    }
+
+
 
     public void initialzeGroups(){
         getGroupsOfCreator();
@@ -93,6 +108,11 @@ public class DatabaseUtility {
     @UiThread
     void sendCreatorGroupsToActivity(Learngroup[] learngroups) {
         activity.setCreatorGroups(learngroups);
+    }
+
+    @UiThread
+    void sendcreateResponseToActivity(PostResponse postResponse) {
+        activity.handleCreateResponse(postResponse);
     }
 
 }

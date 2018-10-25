@@ -15,23 +15,27 @@ import com.example.rob.lernapp.R;
 import com.example.rob.lernapp.ShowMemberDialog_;
 import com.example.rob.lernapp.restdata.Learngroup;
 
+import java.util.ArrayList;
+
 
 public class GrouplistRecyclerviewAdapter extends RecyclerView.Adapter<GrouplistRecyclerviewAdapter.GroupViewHolder> {
 
-    Learngroup[] groups;
+    public ArrayList<Learngroup> groups;
 
     public static ShowMemberDialog_ showMemberDialog;
     public static Activity originactivity;
     public static FragmentManager originfragmentmanager;
 
 
+    public void setGroupsNew(ArrayList<Learngroup> newGroup) {
+        this.groups = newGroup;
+    }
 
 
-    public GrouplistRecyclerviewAdapter(Learngroup[] learngroups, Activity activity, FragmentManager fragmentManager) {
+    public GrouplistRecyclerviewAdapter(ArrayList<Learngroup> learngroups, Activity activity, FragmentManager fragmentManager) {
         this.groups = learngroups;
         originactivity = activity;
         originfragmentmanager = fragmentManager;
-
 
 
     }
@@ -46,8 +50,8 @@ public class GrouplistRecyclerviewAdapter extends RecyclerView.Adapter<Grouplist
 
     @Override
     public void onBindViewHolder(@NonNull GroupViewHolder groupViewHolder, int i) {
-        groupViewHolder.groupname.setText(groups[i].getName());
-        groupViewHolder.creator.setText(groups[i].getCreator().getName());
+        groupViewHolder.groupname.setText(groups.get(i).getName());
+        groupViewHolder.creator.setText(groups.get(i).getCreator().getName());
 
         groupViewHolder.showmembers.setTag(i);
 
@@ -65,7 +69,6 @@ public class GrouplistRecyclerviewAdapter extends RecyclerView.Adapter<Grouplist
     }
 
 
-
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
@@ -73,10 +76,10 @@ public class GrouplistRecyclerviewAdapter extends RecyclerView.Adapter<Grouplist
 
     @Override
     public int getItemCount() {
-        return this.groups.length;
+        return this.groups.size();
     }
 
-    public static class GroupViewHolder extends RecyclerView.ViewHolder{
+    public static class GroupViewHolder extends RecyclerView.ViewHolder {
 
         CardView grouplistcardview;
         TextView groupname;
@@ -86,11 +89,11 @@ public class GrouplistRecyclerviewAdapter extends RecyclerView.Adapter<Grouplist
 
         public GroupViewHolder(@NonNull View itemView) {
             super(itemView);
-            grouplistcardview = (CardView)itemView.findViewById(R.id.groupllist_cardview);
-            groupname = (TextView)itemView.findViewById(R.id.groupname);
-            creator = (TextView)itemView.findViewById(R.id.creator);
-            showmembers = (ImageView)itemView.findViewById(R.id.show_member);
-            deleteGroup = (ImageView)itemView.findViewById(R.id.delete_group);
+            grouplistcardview = (CardView) itemView.findViewById(R.id.groupllist_cardview);
+            groupname = (TextView) itemView.findViewById(R.id.groupname);
+            creator = (TextView) itemView.findViewById(R.id.creator);
+            showmembers = (ImageView) itemView.findViewById(R.id.show_member);
+            deleteGroup = (ImageView) itemView.findViewById(R.id.delete_group);
         }
     }
 

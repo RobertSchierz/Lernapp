@@ -24,7 +24,7 @@ public class ShowMemberDialog extends DialogFragment {
 
 
     public Activity learngroupactivity;
-    Learngroup[] groups;
+    ArrayList<Learngroup> groups;
     int position;
 
     @ViewById(R.id.group_memberlistview)
@@ -35,8 +35,8 @@ public class ShowMemberDialog extends DialogFragment {
     void afterViews(){
 
                 final ArrayList<Member> memberlist = new ArrayList<Member>();
-                for(int i = 0; i < this.groups[position].getMembers().length; i++){
-                    memberlist.add(this.groups[position].getMembers()[i]);
+                for(int i = 0; i < this.groups.get(position).getMembers().length; i++){
+                    memberlist.add(this.groups.get(position).getMembers()[i]);
                 }
 
                 final MemberArrayAdapter stableArrayAdapter = new MemberArrayAdapter(this.learngroupactivity.getApplicationContext(), memberlist);
@@ -49,7 +49,7 @@ public class ShowMemberDialog extends DialogFragment {
 
     }
 
-    public void setGroups(Learngroup[] lerngroups, int position){
+    public void setGroups(ArrayList<Learngroup> lerngroups, int position){
         this.groups = lerngroups;
         this.position = position;
 
