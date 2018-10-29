@@ -67,11 +67,10 @@ public class GrouplistRecyclerviewAdapter extends RecyclerView.Adapter<Grouplist
             @Override
             public void onClick(View view) {
                 Learngroup group = (Learngroup) view.getTag();
-                Toast.makeText(originactivity, group.getName(), Toast.LENGTH_SHORT).show();
                 Intent selectedGroup = new Intent(originactivity, LearngroupViewActivity_.class);
                 selectedGroup.putExtra("group", group);
                 originactivity.startActivity(selectedGroup);
-                originactivity.finish();
+                //originactivity.finish();
             }
         });
 

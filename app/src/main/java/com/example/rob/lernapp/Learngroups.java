@@ -1,10 +1,12 @@
 package com.example.rob.lernapp;
 
 import android.graphics.Color;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.CompoundButton;
@@ -51,6 +53,9 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
     @ViewById(R.id.grouplist_creator_member_switch)
     Switch groupfilter;
 
+    @ViewById(R.id.learngroup_actionbutton)
+    FloatingActionButton floatingActionButton;
+
     @NonConfigurationInstance
     @Bean
     DatabaseUtility dataBaseUtilTask;
@@ -61,10 +66,14 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
         UniqueIDHandler uniqueIDHandler = UniqueIDHandler.getInstance(this);
         try {
             this.uniqueClientId = uniqueIDHandler.handleUniqueID();
+            PersistanceDataHolder.setUniqueClientId(this.uniqueClientId);
         } catch (IOException e) {
             e.printStackTrace();
         }
         dataBaseUtilTask.getDatabaseId();
+        Animation floatingactionanimation = AnimationUtils.loadAnimation(this, R.anim.floatingaction_onviewanim);
+        floatingActionButton.setAnimation(floatingactionanimation);
+
 
     }
 
@@ -113,6 +122,7 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
 
     void setUniqueId(String id) {
         this.uniqueDatabaseId = id;
+        PersistanceDataHolder.setUniqueDatabaseId(id);
         dataBaseUtilTask.initialzeGroups();
     }
 
