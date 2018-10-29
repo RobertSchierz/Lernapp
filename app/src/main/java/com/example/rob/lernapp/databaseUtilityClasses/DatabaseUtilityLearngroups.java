@@ -1,7 +1,10 @@
-package com.example.rob.lernapp;
+package com.example.rob.lernapp.databaseUtilityClasses;
 
 import android.util.Log;
 
+import com.example.rob.lernapp.Learngroups;
+import com.example.rob.lernapp.RestClient;
+import com.example.rob.lernapp.RestClient_;
 import com.example.rob.lernapp.restdataDelete.DeleteResponse;
 import com.example.rob.lernapp.restdataGet.DatasetGroup;
 import com.example.rob.lernapp.restdataGet.DatasetUser;
@@ -22,7 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 
 @EBean
-public class DatabaseUtility {
+public class DatabaseUtilityLearngroups {
 
     @RootContext
     Learngroups activity;
@@ -34,13 +37,14 @@ public class DatabaseUtility {
     private Learngroup[] creatorLearngroups;
     private Learngroup[] allLearngroups;
 
+
     @AfterInject
     void afterInject() {
         restClient = new RestClient_(activity);
     }
 
     @Background
-    public void getGroupsOfCreator(){
+    public void getGroupsOfCreator() {
         ResponseEntity<DatasetGroup> responseEntityGroup = restClient.getUserCreatorGroups(activity.getUniqueDatabaseId());
         DatasetGroup datasetGroup = responseEntityGroup.getBody();
         this.creatorLearngroups = datasetGroup.gettingGroups();
@@ -48,7 +52,7 @@ public class DatabaseUtility {
     }
 
     @Background
-    public void getGroupsOfCreatorAll(boolean init){
+    public void getGroupsOfCreatorAll(boolean init) {
         ResponseEntity<DatasetGroup> responseEntityGroup = restClient.getUserGroupsAll(activity.getUniqueDatabaseId());
         DatasetGroup datasetGroup = responseEntityGroup.getBody();
         this.allLearngroups = datasetGroup.gettingGroups();
@@ -56,9 +60,9 @@ public class DatabaseUtility {
     }
 
     @Background
-    public void postGroup(String groupname){
+    public void postGroup(String groupname) {
 
-        LearngroupPost newgroup = new LearngroupPost(null, this.activity.getUniqueDatabaseId(),groupname, null);
+        LearngroupPost newgroup = new LearngroupPost(null, this.activity.getUniqueDatabaseId(), groupname, null);
         ResponseEntity<JsonObject> responseEntityGroupcreate = restClient.postGroup(newgroup);
         Gson gson = new Gson();
         PostResponse postResponse = gson.fromJson(responseEntityGroupcreate.getBody(), PostResponse.class);
@@ -66,7 +70,7 @@ public class DatabaseUtility {
     }
 
     @Background
-    public void deleteGroup(Learngroup deletedGroup){
+    public void deleteGroup(Learngroup deletedGroup) {
         ResponseEntity<JsonObject> responseEntityGroupdelete = restClient.deleteGroup(deletedGroup.get_id());
         Gson gson = new Gson();
         DeleteResponse deleteResponse = gson.fromJson(responseEntityGroupdelete.getBody(), DeleteResponse.class);
@@ -75,8 +79,7 @@ public class DatabaseUtility {
     }
 
 
-
-    public void initialzeGroups(){
+    public void initialzeGroups() {
         getGroupsOfCreator();
         getGroupsOfCreatorAll(true);
     }
@@ -100,9 +103,6 @@ public class DatabaseUtility {
         }
 
     }
-
-
-
 
 
     @UiThread

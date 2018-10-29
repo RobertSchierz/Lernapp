@@ -39,8 +39,8 @@ public class GetContacts {
     }
 
     @TargetApi(Build.VERSION_CODES.M)
-    public void handleDialog(boolean response){
-        if(response){
+    public void handleDialog(boolean response) {
+        if (response) {
             this.originActivity.requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, this.MY_PERMISSIONS_REQUEST_READ_CONTACTS);
         }
     }
@@ -102,22 +102,30 @@ public class GetContacts {
                 String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
 
 
-                if (Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0){
-                    Cursor pCur = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,
-                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?",
+                if (Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
+                    Cursor pCur = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
                             new String[]{id}, null);
                     while (pCur.moveToNext()) {
                         String phone = pCur.getString(
                                 pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
                         // extract the digits
-                        phone = phone.replaceAll("\\D+","");
+                        phone = phone.replaceAll("\\D+", "");
 
                         User tempUser = new User(null, name, Long.parseLong(phone), null);
-                        if(!this.contacts.contains(tempUser)){
-                            this.contacts.add(tempUser);
+
+                        boolean isIn = false;
+
+                        for (int i = 0; i < this.contacts.size(); i++) {
+                            if (this.contacts.get(i).getPhonenumber() == tempUser.getPhonenumber()) {
+                                isIn = true;
+                            }
                         }
 
+                        if (!isIn) {
+                            this.contacts.add(tempUser);
+                        }
 
 
                     }

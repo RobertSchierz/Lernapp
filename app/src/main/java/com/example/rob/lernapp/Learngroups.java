@@ -15,6 +15,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.rob.lernapp.adapter.GrouplistRecyclerviewAdapter;
+import com.example.rob.lernapp.databaseUtilityClasses.DatabaseUtilityLearngroups;
 import com.example.rob.lernapp.restdataDelete.DeleteResponse;
 import com.example.rob.lernapp.restdataGet.Learngroup;
 import com.example.rob.lernapp.restdataPost.PostResponse;
@@ -58,7 +59,7 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
 
     @NonConfigurationInstance
     @Bean
-    DatabaseUtility dataBaseUtilTask;
+    DatabaseUtilityLearngroups dataBaseUtilTask;
 
 
     @AfterViews
@@ -120,24 +121,24 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
     }
 
 
-    void setUniqueId(String id) {
+    public void setUniqueId(String id) {
         this.uniqueDatabaseId = id;
         PersistanceDataHolder.setUniqueDatabaseId(id);
         dataBaseUtilTask.initialzeGroups();
     }
 
-    void setAllGroups(Learngroup[] learngroupsAll, boolean init) {
+    public void setAllGroups(Learngroup[] learngroupsAll, boolean init) {
         this.learngroupsAll = new ArrayList<Learngroup>(Arrays.asList(learngroupsAll));
         if (init) {
             initializeRecyclerview();
         }
     }
 
-    void setCreatorGroups(Learngroup[] learngroupsCreator) {
+    public void setCreatorGroups(Learngroup[] learngroupsCreator) {
         this.creatorLearngroups = new ArrayList<Learngroup>(Arrays.asList(learngroupsCreator));
     }
 
-    void handleCreateResponse(PostResponse postResponse) {
+    public void handleCreateResponse(PostResponse postResponse) {
 
         switch (postResponse.getMessage()) {
             case "Group created":
@@ -165,7 +166,7 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
 
     }
 
-    void handleDeleteResponse(DeleteResponse postResponse, Learngroup deletedGroup) {
+    public void handleDeleteResponse(DeleteResponse postResponse, Learngroup deletedGroup) {
         switch (postResponse.getMessage()) {
             case "Group deleted":
                 if(this.creatorLearngroups.contains(deletedGroup)){
