@@ -1,6 +1,9 @@
 package com.example.rob.lernapp.restdataGet;
 
-public class Learngroup {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Learngroup implements Parcelable {
 
     String _id;
     User creator;
@@ -54,5 +57,35 @@ public class Learngroup {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this._id);
+        dest.writeParcelable(this.creator, flags);
+        dest.writeString(this.name);
+        dest.writeTypedArray(this.members, flags);
+    }
+
+    protected Learngroup(Parcel in) {
+        this._id = in.readString();
+        this.creator = in.readParcelable(User.class.getClassLoader());
+        this.name = in.readString();
+        this.members = in.createTypedArray(Member.CREATOR);
+    }
+
+    public static final Parcelable.Creator<Learngroup> CREATOR = new Parcelable.Creator<Learngroup>() {
+        @Override
+        public Learngroup createFromParcel(Parcel source) {
+            return new Learngroup(source);
+        }
+
+        @Override
+        public Learngroup[] newArray(int size) {
+            return new Learngroup[size];
+        }
+    };
 }

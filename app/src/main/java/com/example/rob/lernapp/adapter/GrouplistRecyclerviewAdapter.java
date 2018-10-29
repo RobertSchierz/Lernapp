@@ -1,6 +1,7 @@
 package com.example.rob.lernapp.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rob.lernapp.DeleteGroupDialog_;
+import com.example.rob.lernapp.LearngroupViewActivity_;
 import com.example.rob.lernapp.R;
 import com.example.rob.lernapp.ShowMemberDialog_;
 import com.example.rob.lernapp.restdataGet.Learngroup;
@@ -28,6 +30,8 @@ public class GrouplistRecyclerviewAdapter extends RecyclerView.Adapter<Grouplist
     public static DeleteGroupDialog_ deleteGroupDialog;
     public static Activity originactivity;
     public static FragmentManager originfragmentmanager;
+
+
 
 
     public void setGroupsNew(ArrayList<Learngroup> newGroup) {
@@ -57,6 +61,19 @@ public class GrouplistRecyclerviewAdapter extends RecyclerView.Adapter<Grouplist
 
         groupViewHolder.showmembers.setTag(i);
         groupViewHolder.deleteGroup.setTag(i);
+        groupViewHolder.grouplistcardview.setTag(groups.get(i));
+
+        groupViewHolder.grouplistcardview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Learngroup group = (Learngroup) view.getTag();
+                Toast.makeText(originactivity, group.getName(), Toast.LENGTH_SHORT).show();
+                Intent selectedGroup = new Intent(originactivity, LearngroupViewActivity_.class);
+                selectedGroup.putExtra("group", group);
+                originactivity.startActivity(selectedGroup);
+                originactivity.finish();
+            }
+        });
 
 
         groupViewHolder.deleteGroup.setOnClickListener( new View.OnClickListener() {
@@ -118,6 +135,7 @@ public class GrouplistRecyclerviewAdapter extends RecyclerView.Adapter<Grouplist
             deleteGroup = (ImageView) itemView.findViewById(R.id.delete_group);
         }
     }
+
 
 
 }

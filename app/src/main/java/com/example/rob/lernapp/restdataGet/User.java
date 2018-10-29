@@ -1,6 +1,9 @@
 package com.example.rob.lernapp.restdataGet;
 
-public class User {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class User implements Parcelable {
 
     String _id;
     String name;
@@ -55,4 +58,36 @@ public class User {
                 ", uniqueclientid='" + uniqueclientid + '\'' +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this._id);
+        dest.writeString(this.name);
+        dest.writeLong(this.phonenumber);
+        dest.writeString(this.uniqueclientid);
+    }
+
+    protected User(Parcel in) {
+        this._id = in.readString();
+        this.name = in.readString();
+        this.phonenumber = in.readLong();
+        this.uniqueclientid = in.readString();
+    }
+
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }
