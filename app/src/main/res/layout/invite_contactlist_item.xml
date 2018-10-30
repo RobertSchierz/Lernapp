@@ -11,28 +11,29 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/groupmember_name"
+            android:id="@+id/invitecontact_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Member"
+            android:text="Kontakt"
             android:textAlignment="center"
-            android:textSize="@dimen/group_memberlist_member"
+            android:textSize="@dimen/contactinvite_name"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/groupmember_role"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/contact_invite_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Role"
-            android:textAlignment="center"
-            android:textSize="@dimen/group_memberlist_role" />
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Hinzufügen" />
+
 
     </LinearLayout>
 
     <View
-        android:id="@+id/divider"
+        android:id="@+id/divider_conatctlistitem"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider"

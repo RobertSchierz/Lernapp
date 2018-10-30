@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Build;
 import android.provider.ContactsContract;
-import android.widget.Toast;
 
 import com.example.rob.lernapp.restdataGet.User;
 
@@ -64,7 +63,7 @@ public class GetContacts {
             }
         } else {
 
-            Toast.makeText(this.originActivity.getApplicationContext(), "Berechtigung bereits erlaubt", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this.originActivity.getApplicationContext(), "Berechtigung bereits erlaubt", Toast.LENGTH_SHORT).show();
             readContacts();
         }
 

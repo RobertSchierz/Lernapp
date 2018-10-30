@@ -33,6 +33,7 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
     private GetContacts getContacts;
     private User[] databaseUsers;
     private ArrayList<User> contactUsersinDatabase = new ArrayList<User>();
+    private ShowInviteContactsDialog showInviteContactsDialog;
 
     @NonConfigurationInstance
     @Bean
@@ -116,21 +117,44 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
 
 
     private void examineUsers() {
+
+        boolean isAllreadyInGroup = false;
         this.contactUsersinDatabase = new ArrayList<User>();
         for (User iteratedUser : this.getContacts.contacts) {
             for (int i = 0; i < this.databaseUsers.length; i++) {
                 if (iteratedUser.getPhonenumber() == this.databaseUsers[i].getPhonenumber()) {
-                   this.contactUsersinDatabase.add(this.databaseUsers[i]);
+
+                    boolean isInMember = false;
+                    for (int j = 0; j < this.group.getMembers().length; j++) {
+                        if(this.group.getMembers()[j].getMember().getPhonenumber() == iteratedUser.getPhonenumber()){
+                            isInMember = true;
+                        }
+                    }
+                    if(!isInMember){
+                        this.contactUsersinDatabase.add(this.databaseUsers[i]);
+                    }else{
+                        isAllreadyInGroup = true;
+                    }
+
+
                 }
             }
         }
 
         if(this.contactUsersinDatabase.size() == 0){
-            Toast.makeText(this, "Keine deiner Kontakte benutzt diese App", Toast.LENGTH_SHORT).show();
+
+            if(isAllreadyInGroup){
+                Toast.makeText(this, "Anwender aus deinen Kontakten sind bereits in der Gruppe", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "Keine deiner Kontakte benutzt diese App", Toast.LENGTH_SHORT).show();
+            }
+
         }else{
             this.addMemberDialog.dismiss();
-            
-        }
+            showInviteContactsDialog = new ShowInviteContactsDialog_();
+            showInviteContactsDialog.setActivity(this);
+            showInviteContactsDialog.setContactUsers(this.contactUsersinDatabase);
+            showInviteContactsDialog.show(getSupportFragmentManager(), "inviteUser");}
     }
 
 

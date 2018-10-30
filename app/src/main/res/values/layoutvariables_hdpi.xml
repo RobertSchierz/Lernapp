@@ -23,4 +23,9 @@
     <dimen name="group_memberlist_member">20sp</dimen>
     <dimen name="group_memberlist_role">13sp</dimen>
 
+    <!-- Contactinvite memberlist -->
+
+    <dimen name="contactinvite_name">20sp</dimen>
+
+
 </resources>
