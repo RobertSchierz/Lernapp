@@ -28,12 +28,12 @@ import java.util.ArrayList;
 @EActivity(R.layout.activity_learngroupview)
 public class LearngroupViewActivity extends AppCompatActivity implements AddMemberDialog.AddMemberDialogListener {
 
-    private Learngroup group;
+    public Learngroup group;
     private AddMemberDialog addMemberDialog;
     private GetContacts getContacts;
     private User[] databaseUsers;
     private ArrayList<User> contactUsersinDatabase = new ArrayList<User>();
-    private ShowInviteContactsDialog showInviteContactsDialog;
+    public ShowInviteContactsDialog showInviteContactsDialog;
 
     @NonConfigurationInstance
     @Bean
@@ -152,8 +152,7 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
         }else{
             this.addMemberDialog.dismiss();
             showInviteContactsDialog = new ShowInviteContactsDialog_();
-            showInviteContactsDialog.setActivity(this);
-            showInviteContactsDialog.setContactUsers(this.contactUsersinDatabase);
+            showInviteContactsDialog.setVars(this,this.contactUsersinDatabase, this.group, this.dataBaseUtilTask);
             showInviteContactsDialog.show(getSupportFragmentManager(), "inviteUser");}
     }
 

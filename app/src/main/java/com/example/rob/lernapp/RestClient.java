@@ -1,6 +1,7 @@
 package com.example.rob.lernapp;
 
 
+import com.example.rob.lernapp.restDataPatch.NewMemberToGroupPatch;
 import com.example.rob.lernapp.restdataGet.DatasetGroup;
 import com.example.rob.lernapp.restdataGet.DatasetUser;
 import com.example.rob.lernapp.restdataPost.LearngroupPost;
@@ -9,6 +10,7 @@ import com.google.gson.JsonObject;
 import org.androidannotations.rest.spring.annotations.Body;
 import org.androidannotations.rest.spring.annotations.Delete;
 import org.androidannotations.rest.spring.annotations.Get;
+import org.androidannotations.rest.spring.annotations.Patch;
 import org.androidannotations.rest.spring.annotations.Path;
 import org.androidannotations.rest.spring.annotations.Post;
 import org.androidannotations.rest.spring.annotations.Rest;
@@ -39,6 +41,9 @@ public interface RestClient {
 
     @Delete("/groups/{_id}")
     ResponseEntity<JsonObject> deleteGroup(@Path String _id);
+
+    @Patch("/groups/{_id}")
+    ResponseEntity<JsonObject> postNewMemberToGroup(@Path String _id, @Body NewMemberToGroupPatch body);
 
 
 

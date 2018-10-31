@@ -6,8 +6,12 @@ import android.util.Log;
 import com.example.rob.lernapp.LearngroupViewActivity;
 import com.example.rob.lernapp.RestClient;
 import com.example.rob.lernapp.RestClient_;
+import com.example.rob.lernapp.restDataPatch.NewMemberToGroupPatch;
+import com.example.rob.lernapp.restDataPatch.PatchResponse;
 import com.example.rob.lernapp.restdataGet.DatasetUser;
 import com.example.rob.lernapp.restdataGet.User;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Background;
@@ -24,11 +28,14 @@ public class DatabaseUtilityLearngroupView {
     @RootContext
     LearngroupViewActivity activity;
 
+
+
+
+
     @RestService
     RestClient restClient;
 
     private User[] databaseusers;
-
 
 
     @AfterInject
@@ -49,10 +56,25 @@ public class DatabaseUtilityLearngroupView {
         }
     }
 
+    @Background
+    public void postNewMemberToGroup(String _id, String groupID) {
+
+        NewMemberToGroupPatch newMember = new NewMemberToGroupPatch(_id,  "postMember");
+        ResponseEntity<JsonObject> responseEntityNewUserGroup = restClient.postNewMemberToGroup(groupID, newMember);
+        Gson gson = new Gson();
+        PatchResponse patchResponse = gson.fromJson(responseEntityNewUserGroup.getBody(), PatchResponse.class);
+        sendNewMemberGroupResponse(patchResponse);
+    }
+
 
     @UiThread
     void sendUsersBackToActivity(User[] users){
         activity.getUsersBack(users);
+    }
+
+    @UiThread
+    void sendNewMemberGroupResponse(PatchResponse patchResponse){
+        this.activity.showInviteContactsDialog.getNewMemberGroupResponse(patchResponse);
     }
 
 }
