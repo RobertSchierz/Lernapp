@@ -47,6 +47,7 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
 
     private GrouplistRecyclerviewAdapter grouplistRecyclerviewAdapter;
 
+    private boolean firstStart = true;
 
     @ViewById(R.id.groupllist_recyclerview)
     RecyclerView grouplistRecyclerview;
@@ -82,8 +83,14 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
     @Override
     public void onStart() {
         super.onStart();
-
+        if (this.firstStart) {
+            this.firstStart = false;
+        } else {
+            this.dataBaseUtilTask.getGroupsOfCreator();
+            this.dataBaseUtilTask.getGroupsOfCreatorAll(false);
+        }
     }
+
 
     public void initializeRecyclerview() {
 
@@ -138,10 +145,16 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
         if (init) {
             initializeRecyclerview();
         }
+        if (!this.firstStart) {
+            updateRecyclerview(groupfilter.isChecked());
+        }
     }
 
     public void setCreatorGroups(Learngroup[] learngroupsCreator) {
         this.creatorLearngroups = new ArrayList<Learngroup>(Arrays.asList(learngroupsCreator));
+        if (!this.firstStart) {
+            updateRecyclerview(groupfilter.isChecked());
+        }
     }
 
     public void handleCreateResponse(PostResponse postResponse) {
@@ -175,14 +188,21 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
     public void handleDeleteResponse(DeleteResponse postResponse, Learngroup deletedGroup) {
         switch (postResponse.getMessage()) {
             case "Group deleted":
-                if(this.creatorLearngroups.contains(deletedGroup)){
-                    this.creatorLearngroups.remove(deletedGroup);
-                }
-                if(this.learngroupsAll.contains(deletedGroup)){
-                    this.learngroupsAll.remove(deletedGroup);
+
+                for (Learngroup learngroup: this.creatorLearngroups) {
+                    if(learngroup.get_id().equals(deletedGroup.get_id())){
+                        this.creatorLearngroups.remove(learngroup);
+                        break;
+                    }
                 }
 
-                //initializeRecyclerview();
+                for (Learngroup learngroup: this.learngroupsAll) {
+                    if(learngroup.get_id().equals( deletedGroup.get_id())){
+                        this.learngroupsAll.remove(learngroup);
+                        break;
+                    }
+                }
+                
                 updateRecyclerview(groupfilter.isChecked());
 
                 break;
