@@ -28,6 +28,10 @@ import java.util.ArrayList;
 @EActivity(R.layout.activity_learngroupview)
 public class LearngroupViewActivity extends AppCompatActivity implements AddMemberDialog.AddMemberDialogListener {
 
+    public void setGroup(Learngroup group) {
+        this.group = group;
+    }
+
     public Learngroup group;
     private AddMemberDialog addMemberDialog;
     private GetContacts getContacts;
@@ -52,7 +56,7 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
         Animation floatingactionanimation = AnimationUtils.loadAnimation(this, R.anim.floatingaction_onviewanim);
 
 
-        if(PersistanceDataHolder.getUniqueDatabaseId().equals(this.group.getCreator().get_id())){
+        if(PersistanceDataHandler.getUniqueDatabaseId().equals(this.group.getCreator().get_id())){
             learngroupview_actionbutton.setVisibility(View.VISIBLE);
             learngroupview_actionbutton.startAnimation(floatingactionanimation);
         }

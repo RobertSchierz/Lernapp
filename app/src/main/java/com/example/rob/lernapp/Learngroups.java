@@ -64,10 +64,11 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
 
     @AfterViews
     void onCreate() {
+
         UniqueIDHandler uniqueIDHandler = UniqueIDHandler.getInstance(this);
         try {
             this.uniqueClientId = uniqueIDHandler.handleUniqueID();
-            PersistanceDataHolder.setUniqueClientId(this.uniqueClientId);
+            PersistanceDataHandler.setUniqueClientId(this.uniqueClientId);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -75,6 +76,12 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
         Animation floatingactionanimation = AnimationUtils.loadAnimation(this, R.anim.floatingaction_onviewanim);
         floatingActionButton.setAnimation(floatingactionanimation);
 
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
 
     }
 
@@ -87,8 +94,7 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
         grouplistRecyclerview.setHasFixedSize(true);
         LinearLayoutManager grouplist_layoutmanager = new LinearLayoutManager(getApplicationContext());
         grouplistRecyclerview.setLayoutManager(grouplist_layoutmanager);
-        ArrayList<Learngroup> finalrecyclerviewList = this.learngroupsAll;
-        this.grouplistRecyclerviewAdapter = new GrouplistRecyclerviewAdapter(finalrecyclerviewList, this, getSupportFragmentManager());
+        this.grouplistRecyclerviewAdapter = new GrouplistRecyclerviewAdapter(this.learngroupsAll, this, getSupportFragmentManager());
         grouplistRecyclerview.setAdapter(grouplistRecyclerviewAdapter);
         grouplistRecyclerview.setLayoutAnimation(animation);
     }
@@ -123,7 +129,7 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
 
     public void setUniqueId(String id) {
         this.uniqueDatabaseId = id;
-        PersistanceDataHolder.setUniqueDatabaseId(id);
+        PersistanceDataHandler.setUniqueDatabaseId(id);
         dataBaseUtilTask.initialzeGroups();
     }
 

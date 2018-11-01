@@ -2,6 +2,8 @@ package com.example.rob.lernapp.databaseUtilityClasses;
 
 
 import android.util.Log;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.rob.lernapp.LearngroupViewActivity;
 import com.example.rob.lernapp.RestClient;
@@ -29,9 +31,6 @@ public class DatabaseUtilityLearngroupView {
     LearngroupViewActivity activity;
 
 
-
-
-
     @RestService
     RestClient restClient;
 
@@ -57,24 +56,34 @@ public class DatabaseUtilityLearngroupView {
     }
 
     @Background
-    public void postNewMemberToGroup(String _id, String groupID) {
+    public void postNewMemberToGroup(String _id, String groupID, Button addMemberButton) {
 
-        NewMemberToGroupPatch newMember = new NewMemberToGroupPatch(_id,  "postMember");
+        NewMemberToGroupPatch newMember = new NewMemberToGroupPatch(_id, "postMember");
         ResponseEntity<JsonObject> responseEntityNewUserGroup = restClient.postNewMemberToGroup(groupID, newMember);
-        Gson gson = new Gson();
-        PatchResponse patchResponse = gson.fromJson(responseEntityNewUserGroup.getBody(), PatchResponse.class);
-        sendNewMemberGroupResponse(patchResponse);
+        sendNewMemberGroupResponse(responseEntityNewUserGroup, addMemberButton);
+
+
     }
 
 
     @UiThread
-    void sendUsersBackToActivity(User[] users){
+    void sendUsersBackToActivity(User[] users) {
         activity.getUsersBack(users);
     }
 
     @UiThread
-    void sendNewMemberGroupResponse(PatchResponse patchResponse){
-        this.activity.showInviteContactsDialog.getNewMemberGroupResponse(patchResponse);
+    void sendNewMemberGroupResponse(ResponseEntity<JsonObject> patchResponse, Button addMemberButton) {
+
+        if (patchResponse.getStatusCode().value() == 200) {
+            Gson gson = new Gson();
+            PatchResponse patchResponseGSON = gson.fromJson(patchResponse.getBody(), PatchResponse.class);
+            this.activity.showInviteContactsDialog.getNewMemberGroupResponse(patchResponseGSON, addMemberButton);
+        } else {
+            Toast.makeText(this.activity, "Fehler beim Hinzufügen: " + patchResponse.getStatusCode().toString(), Toast.LENGTH_SHORT).show();
+        }
+
+
     }
+
 
 }

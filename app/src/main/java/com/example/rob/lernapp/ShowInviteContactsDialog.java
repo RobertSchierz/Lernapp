@@ -44,7 +44,7 @@ public class ShowInviteContactsDialog extends DialogFragment {
 
     }
 
-    public void setVars(Activity activity, ArrayList<User> users, Learngroup group, DatabaseUtilityLearngroupView databaseUtilityLearngroupView){
+    public void setVars(Activity activity, ArrayList<User> users, Learngroup group, DatabaseUtilityLearngroupView databaseUtilityLearngroupView) {
         learngroupviewactivity = activity;
         this.users = users;
         this.group = group;
@@ -52,13 +52,13 @@ public class ShowInviteContactsDialog extends DialogFragment {
     }
 
 
-
-    public void getNewMemberGroupResponse(PatchResponse patchResponse) {
+    public void getNewMemberGroupResponse(PatchResponse patchResponse, Button addMemberButton) {
         String patchResponseMessage = patchResponse.getMessage();
+        addMemberButton.setEnabled(false);
+        addMemberButton.setText("Hinzugefügt");
 
-        /*if(patchResponseMessage.equals("")){
 
-        }*/
+
     }
 }
 
@@ -68,7 +68,6 @@ class ContactInviteDialogAdapter extends ArrayAdapter<User> {
     private final ArrayList<User> values;
     private Learngroup group;
     private DatabaseUtilityLearngroupView databaseUtilityLearngroupView;
-
 
 
     public ContactInviteDialogAdapter(Learngroup group, Context context, ArrayList<User> values, DatabaseUtilityLearngroupView databaseUtilityLearngroupView) {
@@ -85,7 +84,9 @@ class ContactInviteDialogAdapter extends ArrayAdapter<User> {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.invite_contactlist_item, parent, false);
         TextView textView_name = (TextView) rowView.findViewById(R.id.invitecontact_name);
-        Button button_add = (Button) rowView.findViewById(R.id.contact_invite_button);
+        Button button_add = rowView.findViewById(R.id.contact_invite_button);
+
+
         button_add.setTag(values.get(position));
 
 
@@ -100,7 +101,8 @@ class ContactInviteDialogAdapter extends ArrayAdapter<User> {
         @Override
         public void onClick(View view) {
             User user = (User) view.getTag();
-            databaseUtilityLearngroupView.postNewMemberToGroup(user.get_id(), group.get_id());
+            Button addButton = (Button) view;
+            databaseUtilityLearngroupView.postNewMemberToGroup(user.get_id(), group.get_id(), addButton);
         }
     };
 
