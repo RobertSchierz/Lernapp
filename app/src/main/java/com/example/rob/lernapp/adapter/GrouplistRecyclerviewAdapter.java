@@ -70,6 +70,7 @@ public class GrouplistRecyclerviewAdapter extends RecyclerView.Adapter<Grouplist
                 Intent selectedGroup = new Intent(originactivity, LearngroupViewActivity_.class);
                 selectedGroup.putExtra("group", group);
                 originactivity.startActivity(selectedGroup);
+                originactivity.findViewById(R.id.groupllist_recyclerview).setVisibility(View.INVISIBLE);
                 //originactivity.finish();
             }
         });

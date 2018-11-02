@@ -6,6 +6,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
@@ -47,7 +48,8 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
 
     private GrouplistRecyclerviewAdapter grouplistRecyclerviewAdapter;
 
-    private boolean firstStart = true;
+    private boolean creatorGroupsSyncFinnish = false;
+    private boolean allGroupsSyncFinnish = false;
 
     @ViewById(R.id.groupllist_recyclerview)
     RecyclerView grouplistRecyclerview;
@@ -64,8 +66,7 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
 
 
     @AfterViews
-    void onCreate() {
-
+    void onCreate(){
         UniqueIDHandler uniqueIDHandler = UniqueIDHandler.getInstance(this);
         try {
             this.uniqueClientId = uniqueIDHandler.handleUniqueID();
@@ -73,24 +74,16 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         dataBaseUtilTask.getDatabaseId();
         Animation floatingactionanimation = AnimationUtils.loadAnimation(this, R.anim.floatingaction_onviewanim);
         floatingActionButton.setAnimation(floatingactionanimation);
-
-
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (this.firstStart) {
-            this.firstStart = false;
-        } else {
-            this.dataBaseUtilTask.getGroupsOfCreator();
-            this.dataBaseUtilTask.getGroupsOfCreatorAll(false);
-        }
-    }
-
 
     public void initializeRecyclerview() {
 
@@ -101,8 +94,16 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
         grouplistRecyclerview.setHasFixedSize(true);
         LinearLayoutManager grouplist_layoutmanager = new LinearLayoutManager(getApplicationContext());
         grouplistRecyclerview.setLayoutManager(grouplist_layoutmanager);
-        this.grouplistRecyclerviewAdapter = new GrouplistRecyclerviewAdapter(this.learngroupsAll, this, getSupportFragmentManager());
+
+        if(groupfilter.isChecked()){
+            this.grouplistRecyclerviewAdapter = new GrouplistRecyclerviewAdapter(this.creatorLearngroups, this, getSupportFragmentManager());
+        }else if (!groupfilter.isChecked()){
+            this.grouplistRecyclerviewAdapter = new GrouplistRecyclerviewAdapter(this.learngroupsAll, this, getSupportFragmentManager());
+        }
+
+
         grouplistRecyclerview.setAdapter(grouplistRecyclerviewAdapter);
+        grouplistRecyclerview.setVisibility(View.VISIBLE);
         grouplistRecyclerview.setLayoutAnimation(animation);
     }
 
@@ -140,20 +141,26 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
         dataBaseUtilTask.initialzeGroups();
     }
 
-    public void setAllGroups(Learngroup[] learngroupsAll, boolean init) {
+    public void setAllGroups(Learngroup[] learngroupsAll) {
         this.learngroupsAll = new ArrayList<Learngroup>(Arrays.asList(learngroupsAll));
-        if (init) {
+        this.allGroupsSyncFinnish = true;
+        if(this.allGroupsSyncFinnish && this.creatorGroupsSyncFinnish){
             initializeRecyclerview();
+            this.allGroupsSyncFinnish = false;
+            this.creatorGroupsSyncFinnish = false;
         }
-        if (!this.firstStart) {
-            updateRecyclerview(groupfilter.isChecked());
-        }
+
+
+
     }
 
     public void setCreatorGroups(Learngroup[] learngroupsCreator) {
         this.creatorLearngroups = new ArrayList<Learngroup>(Arrays.asList(learngroupsCreator));
-        if (!this.firstStart) {
-            updateRecyclerview(groupfilter.isChecked());
+        this.creatorGroupsSyncFinnish = true;
+        if(this.allGroupsSyncFinnish && this.creatorGroupsSyncFinnish){
+            initializeRecyclerview();
+            this.allGroupsSyncFinnish = false;
+            this.creatorGroupsSyncFinnish = false;
         }
     }
 
@@ -202,7 +209,7 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
                         break;
                     }
                 }
-                
+
                 updateRecyclerview(groupfilter.isChecked());
 
                 break;

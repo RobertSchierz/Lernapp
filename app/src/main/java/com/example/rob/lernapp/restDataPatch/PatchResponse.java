@@ -1,6 +1,12 @@
 package com.example.rob.lernapp.restDataPatch;
 
+import com.example.rob.lernapp.restdataGet.Member;
+
 public class PatchResponse {
+
+    String message;
+    Member member;
+
 
     public String getMessage() {
         return message;
@@ -15,5 +21,12 @@ public class PatchResponse {
         this.message = message;
     }
 
-    String message;
+
+    public Member getMember() {
+        return member;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
 }

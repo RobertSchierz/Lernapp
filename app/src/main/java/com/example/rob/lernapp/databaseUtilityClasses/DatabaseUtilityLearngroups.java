@@ -52,11 +52,11 @@ public class DatabaseUtilityLearngroups {
     }
 
     @Background
-    public void getGroupsOfCreatorAll(boolean init) {
+    public void getGroupsOfCreatorAll() {
         ResponseEntity<DatasetGroup> responseEntityGroup = restClient.getUserGroupsAll(activity.getUniqueDatabaseId());
         DatasetGroup datasetGroup = responseEntityGroup.getBody();
         this.allLearngroups = datasetGroup.gettingGroups();
-        sendAllGroupsToActivity(this.allLearngroups, init);
+        sendAllGroupsToActivity(this.allLearngroups);
     }
 
     @Background
@@ -81,7 +81,7 @@ public class DatabaseUtilityLearngroups {
 
     public void initialzeGroups() {
         getGroupsOfCreator();
-        getGroupsOfCreatorAll(true);
+        getGroupsOfCreatorAll();
     }
 
 
@@ -111,8 +111,8 @@ public class DatabaseUtilityLearngroups {
     }
 
     @UiThread
-    void sendAllGroupsToActivity(Learngroup[] learngroups, boolean init) {
-        activity.setAllGroups(learngroups, init);
+    void sendAllGroupsToActivity(Learngroup[] learngroups) {
+        activity.setAllGroups(learngroups);
     }
 
     @UiThread
