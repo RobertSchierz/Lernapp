@@ -54,12 +54,10 @@ public class ShowInviteContactsDialog extends DialogFragment {
 
     public void getNewMemberGroupResponse(PatchResponse patchResponse, Button addMemberButton) {
         String patchResponseMessage = patchResponse.getMessage();
-
+        this.group.setNewMember(patchResponse.getMember());
         addMemberButton.setEnabled(false);
         addMemberButton.setText("Hinzugefügt");
-
-
-
+        
     }
 }
 

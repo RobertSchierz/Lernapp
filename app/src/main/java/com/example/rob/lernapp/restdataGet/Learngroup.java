@@ -3,6 +3,9 @@ package com.example.rob.lernapp.restdataGet;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Learngroup implements Parcelable {
 
     String _id;
@@ -19,6 +22,15 @@ public class Learngroup implements Parcelable {
     }
 
 
+    public void setNewMember(Member member){
+        ArrayList<Member> tempArraylistMember = new ArrayList<Member>(Arrays.asList(this.members));
+        tempArraylistMember.add(member);
+
+        Member[] tempmeberarray = new Member[tempArraylistMember.size()];
+        tempmeberarray = tempArraylistMember.toArray(tempmeberarray);
+
+        this.members = tempmeberarray;
+    }
 
     public void setCreator(User creator) {
         this.creator = creator;
