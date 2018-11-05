@@ -1,10 +1,12 @@
-package com.example.rob.lernapp;
+package com.example.rob.lernapp.dialoge;
 
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.DialogFragment;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.rob.lernapp.R;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
@@ -58,7 +60,7 @@ public class ConfirmGroupDialog extends DialogFragment {
 
 
 
-    void setActivity(Activity activity){
+    public void setActivity(Activity activity){
         this.activity = activity;
 
     }

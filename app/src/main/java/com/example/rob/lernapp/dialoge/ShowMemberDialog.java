@@ -1,5 +1,5 @@
 
-package com.example.rob.lernapp;
+package com.example.rob.lernapp.dialoge;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.rob.lernapp.R;
 import com.example.rob.lernapp.restdataGet.Learngroup;
 import com.example.rob.lernapp.restdataGet.Member;
 

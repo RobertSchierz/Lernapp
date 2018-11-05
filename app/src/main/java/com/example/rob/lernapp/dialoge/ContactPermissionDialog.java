@@ -1,4 +1,4 @@
-package com.example.rob.lernapp;
+package com.example.rob.lernapp.dialoge;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -6,6 +6,9 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+
+import com.example.rob.lernapp.GetContacts;
+import com.example.rob.lernapp.R;
 
 public class ContactPermissionDialog extends DialogFragment {
 
@@ -43,7 +46,7 @@ public class ContactPermissionDialog extends DialogFragment {
         return builder.create();
     }
 
-    void showdialog(Activity activity){
+    public void showdialog(Activity activity){
         this.activity = activity;
         instance.onCreateDialog(new Bundle()).show();
 
