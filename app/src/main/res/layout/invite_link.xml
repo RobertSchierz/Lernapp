@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/invitemember_link_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/confirm_group_dialog_margin_leftright"
+        android:layout_marginTop="@dimen/confirm_group_dialog_margin_topbottom"
+        android:layout_marginRight="@dimen/confirm_group_dialog_margin_leftright"
+        android:layout_marginBottom="@dimen/confirm_group_dialog_margin_title_bottom"
+        android:gravity="center_vertical|center_horizontal|center"
+        android:text="@string/invite_link_title"
+        android:textSize="@dimen/invite_member_title"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/invitemember_link_linkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:text="Link"
+            android:textSize="@dimen/invite_member_link"
+            android:textStyle="italic" />
+
+        <Button
+            android:id="@+id/invitemember_link_copybutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/colorPrimary"
+            android:clickable="true"
+            android:text="@string/invite_link_copybutton" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -17,6 +17,10 @@ import android.widget.Toast;
 
 import com.example.rob.lernapp.adapter.GrouplistRecyclerviewAdapter;
 import com.example.rob.lernapp.databaseUtilityClasses.DatabaseUtilityLearngroups;
+import com.example.rob.lernapp.dialoge.ConfirmGroupDialog;
+import com.example.rob.lernapp.dialoge.ConfirmGroupDialog_;
+import com.example.rob.lernapp.dialoge.DeleteGroupDialog;
+import com.example.rob.lernapp.dialoge.DeleteGroupDialog_;
 import com.example.rob.lernapp.restdataDelete.DeleteResponse;
 import com.example.rob.lernapp.restdataGet.Learngroup;
 import com.example.rob.lernapp.restdataPost.PostResponse;

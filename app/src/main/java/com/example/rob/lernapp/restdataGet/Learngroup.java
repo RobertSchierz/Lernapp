@@ -12,13 +12,15 @@ public class Learngroup implements Parcelable {
     User creator;
     String name;
     Member[] members;
+    String grouplink;
 
 
-    public Learngroup(String _id, User creator, String name, Member[] members) {
+    public Learngroup(String _id, User creator, String name, Member[] members, String grouplink) {
         this._id = _id;
         this.creator = creator;
         this.name = name;
         this.members = members;
+        this.grouplink = grouplink;
     }
 
 
@@ -68,6 +70,14 @@ public class Learngroup implements Parcelable {
         this.members = members;
     }
 
+    public String getGrouplink() {
+        return grouplink;
+    }
+
+    public void setGrouplink(String grouplink) {
+        this.grouplink = grouplink;
+    }
+
 
     @Override
     public int describeContents() {
@@ -80,6 +90,7 @@ public class Learngroup implements Parcelable {
         dest.writeParcelable(this.creator, flags);
         dest.writeString(this.name);
         dest.writeTypedArray(this.members, flags);
+        dest.writeString(this.grouplink);
     }
 
     protected Learngroup(Parcel in) {
@@ -87,9 +98,10 @@ public class Learngroup implements Parcelable {
         this.creator = in.readParcelable(User.class.getClassLoader());
         this.name = in.readString();
         this.members = in.createTypedArray(Member.CREATOR);
+        this.grouplink = in.readString();
     }
 
-    public static final Parcelable.Creator<Learngroup> CREATOR = new Parcelable.Creator<Learngroup>() {
+    public static final Creator<Learngroup> CREATOR = new Creator<Learngroup>() {
         @Override
         public Learngroup createFromParcel(Parcel source) {
             return new Learngroup(source);

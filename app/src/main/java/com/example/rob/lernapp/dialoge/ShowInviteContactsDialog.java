@@ -57,7 +57,7 @@ public class ShowInviteContactsDialog extends DialogFragment {
         this.group.setNewMember(patchResponse.getMember());
         addMemberButton.setEnabled(false);
         addMemberButton.setText("Hinzugefügt");
-        
+
     }
 }
 

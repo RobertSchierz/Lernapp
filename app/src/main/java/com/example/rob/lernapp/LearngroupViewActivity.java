@@ -1,17 +1,28 @@
 package com.example.rob.lernapp;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rob.lernapp.databaseUtilityClasses.DatabaseUtilityLearngroupView;
+import com.example.rob.lernapp.dialoge.AddMemberDialog;
+import com.example.rob.lernapp.dialoge.AddMemberDialog_;
+import com.example.rob.lernapp.dialoge.InviteLinkDialog;
+import com.example.rob.lernapp.dialoge.InviteLinkDialog_;
+import com.example.rob.lernapp.dialoge.ShowInviteContactsDialog;
+import com.example.rob.lernapp.dialoge.ShowInviteContactsDialog_;
 import com.example.rob.lernapp.restdataGet.Learngroup;
 import com.example.rob.lernapp.restdataGet.User;
 
@@ -26,7 +37,7 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 
 @EActivity(R.layout.activity_learngroupview)
-public class LearngroupViewActivity extends AppCompatActivity implements AddMemberDialog.AddMemberDialogListener {
+public class LearngroupViewActivity extends AppCompatActivity implements AddMemberDialog.AddMemberDialogListener, InviteLinkDialog.InviteLinkDialogListener {
 
     public void setGroup(Learngroup group) {
         this.group = group;
@@ -38,6 +49,7 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
     private User[] databaseUsers;
     private ArrayList<User> contactUsersinDatabase = new ArrayList<User>();
     public ShowInviteContactsDialog showInviteContactsDialog;
+    public InviteLinkDialog inviteLinkDialog;
 
     @NonConfigurationInstance
     @Bean
@@ -71,6 +83,7 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
         this.addMemberDialog.setActivity(this);
         this.addMemberDialog.show(getSupportFragmentManager(), "addGroupMember");
 
+
     }
 
     @Override
@@ -80,7 +93,26 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
 
     @Override
     public void onCreateAddMemberDialogLinkClick(DialogFragment dialog) {
+        this.addMemberDialog.dismiss();
+        inviteLinkDialog = new InviteLinkDialog_();
+        inviteLinkDialog.setVars(this, this.group.getGrouplink());
+        inviteLinkDialog.show(getSupportFragmentManager(), "inviteUserLink");
+    }
 
+    @Override
+    public void onInviteLinkDialogCopyButton(final DialogFragment dialog, TextView grouplink, Button copybutton) {
+        String grouplinktext = this.group.getGrouplink();
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(this.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("Grouplink", grouplinktext);
+        clipboard.setPrimaryClip(clip);
+        copybutton.setEnabled(false);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                dialog.dismiss();
+                Toast.makeText(LearngroupViewActivity.this, "Link kopiert", Toast.LENGTH_SHORT).show();
+            }
+        }, 800);
     }
 
     public void getUsersBack(User[] users){
@@ -157,8 +189,9 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
             this.addMemberDialog.dismiss();
             showInviteContactsDialog = new ShowInviteContactsDialog_();
             showInviteContactsDialog.setVars(this,this.contactUsersinDatabase, this.group, this.dataBaseUtilTask);
-            showInviteContactsDialog.show(getSupportFragmentManager(), "inviteUser");}
+            showInviteContactsDialog.show(getSupportFragmentManager(), "inviteUserContacts");}
     }
+
 
 
 }

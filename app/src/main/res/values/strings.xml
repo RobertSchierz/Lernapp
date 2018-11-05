@@ -22,4 +22,9 @@
     <!-- Gruppen -->
     <string name="group_list_switchtext">Eigene Gruppen</string>
 
+    <!-- Memberadddialog Link -->
+    <string name="invite_link_title">Gruppenlink:</string>
+    <string name="invite_link_linkbox">Link</string>
+    <string name="invite_link_copybutton">Kopieren</string>
+
 </resources>

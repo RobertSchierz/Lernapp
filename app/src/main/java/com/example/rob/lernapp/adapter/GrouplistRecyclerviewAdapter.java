@@ -13,10 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.rob.lernapp.DeleteGroupDialog_;
 import com.example.rob.lernapp.LearngroupViewActivity_;
 import com.example.rob.lernapp.R;
-import com.example.rob.lernapp.ShowMemberDialog_;
+import com.example.rob.lernapp.dialoge.DeleteGroupDialog_;
+import com.example.rob.lernapp.dialoge.ShowMemberDialog_;
 import com.example.rob.lernapp.restdataGet.Learngroup;
 
 import java.util.ArrayList;
