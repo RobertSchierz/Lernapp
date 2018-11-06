@@ -14,6 +14,7 @@
 
     <!-- Deletegroupdialog -->
     <string name="delete_group_dialog_text">Soll die Gruppe gelöscht werden ?</string>
+    <string name="exit_group_dialog_text">Möchtest du die Gruppe verlassen ?</string>
     <string name="delete_group_dialog_groupname">Gruppenname</string>
     <string name="delete_group_dialog_positiv">Bestätigen</string>
     <string name="delete_group_dialog_negativ">Zurück</string>

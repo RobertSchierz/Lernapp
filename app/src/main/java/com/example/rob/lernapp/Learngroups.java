@@ -20,7 +20,6 @@ import com.example.rob.lernapp.databaseUtilityClasses.DatabaseUtilityLearngroups
 import com.example.rob.lernapp.dialoge.ConfirmGroupDialog;
 import com.example.rob.lernapp.dialoge.ConfirmGroupDialog_;
 import com.example.rob.lernapp.dialoge.DeleteGroupDialog;
-import com.example.rob.lernapp.dialoge.DeleteGroupDialog_;
 import com.example.rob.lernapp.dialoge.JointhroughlinkDialog;
 import com.example.rob.lernapp.dialoge.JointhroughlinkDialog_;
 import com.example.rob.lernapp.restDataPatch.PatchResponse;
@@ -47,8 +46,8 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
 
     private String uniqueDatabaseId;
 
-    public static ConfirmGroupDialog_ confirmGroupDialog;
-    public static DeleteGroupDialog_ deleteGroupDialog;
+    public ConfirmGroupDialog confirmGroupDialog;
+    public DeleteGroupDialog deleteGroupDialog;
 
     private ArrayList<Learngroup> creatorLearngroups;
     private ArrayList<Learngroup> learngroupsAll;
@@ -218,7 +217,7 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
                         break;
                     }
                 }
-
+                this.deleteGroupDialog.dismiss();
                 updateRecyclerview(groupfilter.isChecked());
 
                 break;
@@ -251,10 +250,14 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
 
     }
 
-    public void getResponseAddMemberLink(PatchResponse patchResponseGSON){
+    public void getResponseDeleteMember(PatchResponse patchResponseGSON){
+        dataBaseUtilTask.getDatabaseId();
+        this.deleteGroupDialog.dismiss();
+    }
+
+    public void getResponseJoinThroughLink(PatchResponse patchResponseGSON){
         dataBaseUtilTask.getDatabaseId();
         this.jointhroughlinkDialog.dismiss();
-        Toast.makeText(this, "Member hinzugefügt!", Toast.LENGTH_SHORT).show();
     }
 
     @Click(R.id.learngroup_actionbutton)
@@ -277,14 +280,20 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
 
 
     @Override
-    public void onDeleteGroupDialogPositiveClick(DialogFragment dialog, DeleteGroupDialog deleteGroupDialog, Learngroup deletedGroup) {
-        dataBaseUtilTask.deleteGroup(deletedGroup);
-        deleteGroupDialog.dismiss();
+    public void onDeleteGroupDialogPositiveClick(DialogFragment dialog, DeleteGroupDialog originDeleteGroupDialog, Learngroup deletedGroup) {
+        this.deleteGroupDialog = originDeleteGroupDialog;
+        if(PersistanceDataHandler.getUniqueDatabaseId().equals(deletedGroup.getCreator().get_id())){
+            dataBaseUtilTask.deleteGroup(deletedGroup);
+        }else{
+            dataBaseUtilTask.deleteMemberOfGroup(deletedGroup.get_id());
+        }
+
     }
 
     @Override
     public void onDeleteGroupDialogNegativeClick(DialogFragment dialog, DeleteGroupDialog deleteGroupDialog) {
-        deleteGroupDialog.dismiss();
+        this.deleteGroupDialog = deleteGroupDialog;
+        this.deleteGroupDialog.dismiss();
     }
 
     @Override

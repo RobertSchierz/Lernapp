@@ -4,8 +4,10 @@ package com.example.rob.lernapp.dialoge;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.DialogFragment;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.rob.lernapp.PersistanceDataHandler;
 import com.example.rob.lernapp.R;
 import com.example.rob.lernapp.restdataGet.Learngroup;
 
@@ -33,12 +35,23 @@ public class DeleteGroupDialog extends DialogFragment {
     @AfterViews
     void onCreate(){
         deleteGroupname.setText(this.groupname);
+
+        if(!(PersistanceDataHandler.getUniqueDatabaseId().equals(this.deletedGroup.getCreator().get_id()))){
+            deleteGroupTitle.setText(R.string.exit_group_dialog_text);
+            deleteGroupImage.setImageResource(R.drawable.remove_group);
+        }
     }
 
     private String groupname;
 
     @ViewById(R.id.delete_group_dialog_groupname)
     TextView deleteGroupname;
+
+    @ViewById(R.id.delete_group_dialog_title)
+    TextView deleteGroupTitle;
+
+    @ViewById(R.id.delete_group_image)
+    ImageView deleteGroupImage;
 
 
     @Override

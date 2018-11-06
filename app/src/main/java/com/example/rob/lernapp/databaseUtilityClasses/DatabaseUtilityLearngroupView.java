@@ -1,12 +1,12 @@
 package com.example.rob.lernapp.databaseUtilityClasses;
 
 
-import android.util.Log;
 import android.widget.Button;
 
 import com.example.rob.lernapp.LearngroupViewActivity;
 import com.example.rob.lernapp.RestClient;
 import com.example.rob.lernapp.RestClient_;
+import com.example.rob.lernapp.RestExceptionAndErrorHandler;
 import com.example.rob.lernapp.restDataPatch.NewMemberToGroupPatch;
 import com.example.rob.lernapp.restDataPatch.PatchResponse;
 import com.example.rob.lernapp.restdataGet.DatasetUser;
@@ -16,12 +16,12 @@ import com.google.gson.JsonObject;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestClientException;
 
 @EBean
 public class DatabaseUtilityLearngroupView {
@@ -33,6 +33,9 @@ public class DatabaseUtilityLearngroupView {
     @RestService
     RestClient restClient;
 
+    @Bean
+    RestExceptionAndErrorHandler restExceptionAndErrorHandler;
+
 
     private User[] databaseusers;
 
@@ -40,19 +43,18 @@ public class DatabaseUtilityLearngroupView {
     @AfterInject
     void afterInject() {
         restClient = new RestClient_(activity);
+        restClient.setRestErrorHandler(restExceptionAndErrorHandler);
     }
 
 
     @Background
     public void getUsers() {
-        try {
+
             ResponseEntity<DatasetUser> responseEntity = restClient.getUsers();
             DatasetUser dataSet = responseEntity.getBody();
             this.databaseusers = dataSet.gettingUsers();
             sendUsersBackToActivity(this.databaseusers);
-        } catch (RestClientException e) {
-            Log.e("Rest error", e.toString());
-        }
+
     }
 
     @Background
@@ -74,12 +76,11 @@ public class DatabaseUtilityLearngroupView {
     @UiThread
     void sendNewMemberGroupResponse(ResponseEntity<JsonObject> patchResponse, Button addMemberButton) {
 
+        if(patchResponse != null){
             Gson gson = new Gson();
             PatchResponse patchResponseGSON = gson.fromJson(patchResponse.getBody(), PatchResponse.class);
             this.activity.showInviteContactsDialog.getNewMemberGroupResponse(patchResponseGSON, addMemberButton);
-
-
-
+        }
     }
 
 

@@ -49,6 +49,9 @@ public interface RestClient extends RestClientErrorHandling {
     @Patch("/groups/grouplink/{grouplink}")
     ResponseEntity<JsonObject> postNewMemberToGroupLink(@Path String grouplink, @Body NewMemberToGroupPatch body);
 
+    @Patch("/groups/{_id}")
+    ResponseEntity<JsonObject> deleteMemberOfGroup(@Path String _id, @Body NewMemberToGroupPatch body);
+
 
 
 

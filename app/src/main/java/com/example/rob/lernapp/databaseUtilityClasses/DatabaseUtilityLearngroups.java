@@ -1,11 +1,10 @@
 package com.example.rob.lernapp.databaseUtilityClasses;
 
-import android.util.Log;
-import android.widget.Toast;
-
 import com.example.rob.lernapp.Learngroups;
+import com.example.rob.lernapp.PersistanceDataHandler;
 import com.example.rob.lernapp.RestClient;
 import com.example.rob.lernapp.RestClient_;
+import com.example.rob.lernapp.RestExceptionAndErrorHandler;
 import com.example.rob.lernapp.restDataPatch.NewMemberToGroupPatch;
 import com.example.rob.lernapp.restDataPatch.PatchResponse;
 import com.example.rob.lernapp.restdataDelete.DeleteResponse;
@@ -20,13 +19,12 @@ import com.google.gson.JsonObject;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestClientException;
 
 @EBean
 public class DatabaseUtilityLearngroups {
@@ -37,6 +35,9 @@ public class DatabaseUtilityLearngroups {
     @RestService
     RestClient restClient;
 
+    @Bean
+    RestExceptionAndErrorHandler restExceptionAndErrorHandler;
+
 
     private User[] userinfos;
     private Learngroup[] creatorLearngroups;
@@ -46,6 +47,7 @@ public class DatabaseUtilityLearngroups {
     @AfterInject
     void afterInject() {
         restClient = new RestClient_(activity);
+        restClient.setRestErrorHandler(restExceptionAndErrorHandler);
     }
 
     @Background
@@ -92,7 +94,7 @@ public class DatabaseUtilityLearngroups {
 
     @Background
     public void getDatabaseId() {
-        try {
+
 
             ResponseEntity<DatasetUser> responseEntity = restClient.getUsers();
             DatasetUser dataSet = responseEntity.getBody();
@@ -103,41 +105,42 @@ public class DatabaseUtilityLearngroups {
                 }
             }
 
-        } catch (RestClientException e) {
-            Log.e("Rest error", e.toString());
-        }
 
     }
 
     @Background
     public void postNewMemberToGroupLink(String _id, String groupLink) {
+        NewMemberToGroupPatch newMember = new NewMemberToGroupPatch(_id, null);
+        ResponseEntity<JsonObject> responseEntityNewUserGroup = restClient.postNewMemberToGroupLink(groupLink, newMember);
+        sendNewMemberGroupLinkResponse(responseEntityNewUserGroup);
 
-        try {
-            NewMemberToGroupPatch newMember = new NewMemberToGroupPatch(_id, null);
-            ResponseEntity<JsonObject> responseEntityNewUserGroup = restClient.postNewMemberToGroupLink(groupLink, newMember);
-            sendNewMemberGroupLinkResponse(responseEntityNewUserGroup);
-        } catch (HttpClientErrorException e) {
-            if (e.getStatusText().equals("allreadyIn")) {
-               setErrorMessageToUser();
-            }
-        }
+    }
 
+    @Background
+    public void deleteMemberOfGroup(String _id) {
+        NewMemberToGroupPatch newMember = new NewMemberToGroupPatch(PersistanceDataHandler.getUniqueDatabaseId(), "deleteMember");
+        ResponseEntity<JsonObject> responseEntityDeleteUserGroup = restClient.deleteMemberOfGroup(_id, newMember);
+        sendDeleteMemberGroupResponse(responseEntityDeleteUserGroup);
 
     }
 
     @UiThread
-    void setErrorMessageToUser(){
-        Toast.makeText(activity, "Du bist bereits in der Gruppe", Toast.LENGTH_SHORT).show();
+    void sendDeleteMemberGroupResponse(ResponseEntity<JsonObject> patchResponse){
+        if(patchResponse != null){
+            Gson gson = new Gson();
+            PatchResponse patchResponseGSON = gson.fromJson(patchResponse.getBody(), PatchResponse.class);
+            this.activity.getResponseDeleteMember(patchResponseGSON);
+        }
     }
+
 
     @UiThread
     void sendNewMemberGroupLinkResponse(ResponseEntity<JsonObject> patchResponse) {
-
-        Gson gson = new Gson();
-        PatchResponse patchResponseGSON = gson.fromJson(patchResponse.getBody(), PatchResponse.class);
-        this.activity.getResponseAddMemberLink(patchResponseGSON);
-
-
+            if(patchResponse != null){
+                Gson gson = new Gson();
+                PatchResponse patchResponseGSON = gson.fromJson(patchResponse.getBody(), PatchResponse.class);
+                this.activity.getResponseJoinThroughLink(patchResponseGSON);
+            }
     }
 
 
