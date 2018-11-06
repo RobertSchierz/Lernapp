@@ -3,7 +3,6 @@ package com.example.rob.lernapp.databaseUtilityClasses;
 
 import android.util.Log;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.rob.lernapp.LearngroupViewActivity;
 import com.example.rob.lernapp.RestClient;
@@ -34,6 +33,7 @@ public class DatabaseUtilityLearngroupView {
     @RestService
     RestClient restClient;
 
+
     private User[] databaseusers;
 
 
@@ -62,8 +62,8 @@ public class DatabaseUtilityLearngroupView {
         ResponseEntity<JsonObject> responseEntityNewUserGroup = restClient.postNewMemberToGroup(groupID, newMember);
         sendNewMemberGroupResponse(responseEntityNewUserGroup, addMemberButton);
 
-
     }
+
 
 
     @UiThread
@@ -74,13 +74,10 @@ public class DatabaseUtilityLearngroupView {
     @UiThread
     void sendNewMemberGroupResponse(ResponseEntity<JsonObject> patchResponse, Button addMemberButton) {
 
-        if (patchResponse.getStatusCode().value() == 200) {
             Gson gson = new Gson();
             PatchResponse patchResponseGSON = gson.fromJson(patchResponse.getBody(), PatchResponse.class);
             this.activity.showInviteContactsDialog.getNewMemberGroupResponse(patchResponseGSON, addMemberButton);
-        } else {
-            Toast.makeText(this.activity, "Fehler beim Hinzufügen: " + patchResponse.getStatusCode().toString(), Toast.LENGTH_SHORT).show();
-        }
+
 
 
     }

@@ -14,12 +14,13 @@ import org.androidannotations.rest.spring.annotations.Patch;
 import org.androidannotations.rest.spring.annotations.Path;
 import org.androidannotations.rest.spring.annotations.Post;
 import org.androidannotations.rest.spring.annotations.Rest;
+import org.androidannotations.rest.spring.api.RestClientErrorHandling;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 
 @Rest(rootUrl = "http://learnapp.enif.uberspace.de/restapi/", converters = { FormHttpMessageConverter.class, GsonHttpMessageConverter.class })
-public interface RestClient {
+public interface RestClient extends RestClientErrorHandling {
 
     @Get("/users")
     ResponseEntity<DatasetUser> getUsers();
@@ -45,8 +46,14 @@ public interface RestClient {
     @Patch("/groups/{_id}")
     ResponseEntity<JsonObject> postNewMemberToGroup(@Path String _id, @Body NewMemberToGroupPatch body);
 
+    @Patch("/groups/grouplink/{grouplink}")
+    ResponseEntity<JsonObject> postNewMemberToGroupLink(@Path String grouplink, @Body NewMemberToGroupPatch body);
 
 
-    //void setRestTemplate(RestTemplate restTemplate);
+
+
+
+
+
 
 }

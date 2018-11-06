@@ -21,6 +21,9 @@ import com.example.rob.lernapp.dialoge.ConfirmGroupDialog;
 import com.example.rob.lernapp.dialoge.ConfirmGroupDialog_;
 import com.example.rob.lernapp.dialoge.DeleteGroupDialog;
 import com.example.rob.lernapp.dialoge.DeleteGroupDialog_;
+import com.example.rob.lernapp.dialoge.JointhroughlinkDialog;
+import com.example.rob.lernapp.dialoge.JointhroughlinkDialog_;
+import com.example.rob.lernapp.restDataPatch.PatchResponse;
 import com.example.rob.lernapp.restdataDelete.DeleteResponse;
 import com.example.rob.lernapp.restdataGet.Learngroup;
 import com.example.rob.lernapp.restdataPost.PostResponse;
@@ -38,7 +41,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 @EActivity(R.layout.activity_learngroups)
-public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog.ConfirmGroupDialogListener, DeleteGroupDialog.DeleteGroupDialogListener {
+public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog.ConfirmGroupDialogListener, DeleteGroupDialog.DeleteGroupDialogListener, JointhroughlinkDialog.JointhroughlinkDialogListener {
 
     private String uniqueClientId;
 
@@ -54,6 +57,8 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
 
     private boolean creatorGroupsSyncFinnish = false;
     private boolean allGroupsSyncFinnish = false;
+
+    private JointhroughlinkDialog jointhroughlinkDialog;
 
     @ViewById(R.id.groupllist_recyclerview)
     RecyclerView grouplistRecyclerview;
@@ -228,6 +233,13 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
 
     }
 
+    @Click(R.id.join_throughlink)
+    void joinThroughLinkClicked(){
+        jointhroughlinkDialog = new JointhroughlinkDialog_();
+        jointhroughlinkDialog.setVars(this);
+        jointhroughlinkDialog.show(getSupportFragmentManager(), "joingroup");
+    }
+
     @CheckedChange(R.id.grouplist_creator_member_switch)
     void switch_clicked(CompoundButton groupfilter, boolean isChecked) {
 
@@ -237,6 +249,12 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
             updateRecyclerview(false);
         }
 
+    }
+
+    public void getResponseAddMemberLink(PatchResponse patchResponseGSON){
+        dataBaseUtilTask.getDatabaseId();
+        this.jointhroughlinkDialog.dismiss();
+        Toast.makeText(this, "Member hinzugefügt!", Toast.LENGTH_SHORT).show();
     }
 
     @Click(R.id.learngroup_actionbutton)
@@ -267,5 +285,18 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
     @Override
     public void onDeleteGroupDialogNegativeClick(DialogFragment dialog, DeleteGroupDialog deleteGroupDialog) {
         deleteGroupDialog.dismiss();
+    }
+
+    @Override
+    public void onJoinLinkDialogPositiveClick(DialogFragment dialog, String memberid, String link) {
+        this.dataBaseUtilTask.postNewMemberToGroupLink(memberid, link);
+        this.jointhroughlinkDialog = (JointhroughlinkDialog) dialog;
+    }
+
+
+
+    @Override
+    public void onJoinLInkDialogNegativeClick(DialogFragment dialog) {
+        dialog.dismiss();
     }
 }

@@ -33,4 +33,9 @@
     <dimen name="invite_member_link">15sp</dimen>
 
 
+    <!-- join through Link dialog -->
+    <dimen name="join_throughlink_title">20sp</dimen>
+
+
+
 </resources>

@@ -27,4 +27,11 @@
     <string name="invite_link_linkbox">Link</string>
     <string name="invite_link_copybutton">Kopieren</string>
 
+    <!-- Joingroup Link -->
+    <string name="join_link_title">Gruppenlink eingeben:</string>
+    <string name="join_link_hint">Gruppenlink</string>
+    <string name="join_link_positivebutton">Beitreten</string>
+    <string name="join_link_negativbutton">Zurück</string>
+
+
 </resources>

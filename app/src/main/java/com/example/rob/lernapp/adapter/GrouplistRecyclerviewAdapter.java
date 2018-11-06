@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.rob.lernapp.LearngroupViewActivity_;
 import com.example.rob.lernapp.R;
 import com.example.rob.lernapp.dialoge.DeleteGroupDialog_;
+import com.example.rob.lernapp.dialoge.JointhroughlinkDialog;
 import com.example.rob.lernapp.dialoge.ShowMemberDialog_;
 import com.example.rob.lernapp.restdataGet.Learngroup;
 
@@ -28,6 +29,7 @@ public class GrouplistRecyclerviewAdapter extends RecyclerView.Adapter<Grouplist
 
     public static ShowMemberDialog_ showMemberDialog;
     public static DeleteGroupDialog_ deleteGroupDialog;
+    public static JointhroughlinkDialog jointhroughlinkDialog;
     public static Activity originactivity;
     public static FragmentManager originfragmentmanager;
 
@@ -62,6 +64,7 @@ public class GrouplistRecyclerviewAdapter extends RecyclerView.Adapter<Grouplist
         groupViewHolder.showmembers.setTag(i);
         groupViewHolder.deleteGroup.setTag(i);
         groupViewHolder.grouplistcardview.setTag(groups.get(i));
+
 
         groupViewHolder.grouplistcardview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +129,7 @@ public class GrouplistRecyclerviewAdapter extends RecyclerView.Adapter<Grouplist
         ImageView showmembers;
         ImageView deleteGroup;
 
+
         public GroupViewHolder(@NonNull View itemView) {
             super(itemView);
             grouplistcardview = (CardView) itemView.findViewById(R.id.groupllist_cardview);
@@ -133,6 +137,7 @@ public class GrouplistRecyclerviewAdapter extends RecyclerView.Adapter<Grouplist
             creator = (TextView) itemView.findViewById(R.id.creator);
             showmembers = (ImageView) itemView.findViewById(R.id.show_member);
             deleteGroup = (ImageView) itemView.findViewById(R.id.delete_group);
+
         }
     }
 

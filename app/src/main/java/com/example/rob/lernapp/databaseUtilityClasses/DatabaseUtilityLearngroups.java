@@ -1,10 +1,13 @@
 package com.example.rob.lernapp.databaseUtilityClasses;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.rob.lernapp.Learngroups;
 import com.example.rob.lernapp.RestClient;
 import com.example.rob.lernapp.RestClient_;
+import com.example.rob.lernapp.restDataPatch.NewMemberToGroupPatch;
+import com.example.rob.lernapp.restDataPatch.PatchResponse;
 import com.example.rob.lernapp.restdataDelete.DeleteResponse;
 import com.example.rob.lernapp.restdataGet.DatasetGroup;
 import com.example.rob.lernapp.restdataGet.DatasetUser;
@@ -22,6 +25,7 @@ import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 
 @EBean
@@ -32,6 +36,7 @@ public class DatabaseUtilityLearngroups {
 
     @RestService
     RestClient restClient;
+
 
     private User[] userinfos;
     private Learngroup[] creatorLearngroups;
@@ -101,6 +106,37 @@ public class DatabaseUtilityLearngroups {
         } catch (RestClientException e) {
             Log.e("Rest error", e.toString());
         }
+
+    }
+
+    @Background
+    public void postNewMemberToGroupLink(String _id, String groupLink) {
+
+        try {
+            NewMemberToGroupPatch newMember = new NewMemberToGroupPatch(_id, null);
+            ResponseEntity<JsonObject> responseEntityNewUserGroup = restClient.postNewMemberToGroupLink(groupLink, newMember);
+            sendNewMemberGroupLinkResponse(responseEntityNewUserGroup);
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusText().equals("allreadyIn")) {
+               setErrorMessageToUser();
+            }
+        }
+
+
+    }
+
+    @UiThread
+    void setErrorMessageToUser(){
+        Toast.makeText(activity, "Du bist bereits in der Gruppe", Toast.LENGTH_SHORT).show();
+    }
+
+    @UiThread
+    void sendNewMemberGroupLinkResponse(ResponseEntity<JsonObject> patchResponse) {
+
+        Gson gson = new Gson();
+        PatchResponse patchResponseGSON = gson.fromJson(patchResponse.getBody(), PatchResponse.class);
+        this.activity.getResponseAddMemberLink(patchResponseGSON);
+
 
     }
 
