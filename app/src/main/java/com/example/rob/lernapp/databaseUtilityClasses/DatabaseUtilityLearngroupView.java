@@ -51,9 +51,14 @@ public class DatabaseUtilityLearngroupView {
     public void getUsers() {
 
             ResponseEntity<DatasetUser> responseEntity = restClient.getUsers();
-            DatasetUser dataSet = responseEntity.getBody();
-            this.databaseusers = dataSet.gettingUsers();
-            sendUsersBackToActivity(this.databaseusers);
+            if(responseEntity != null){
+                DatasetUser dataSet = responseEntity.getBody();
+                this.databaseusers = dataSet.gettingUsers();
+                sendUsersBackToActivity(this.databaseusers);
+            }else{
+                this.databaseusers = new User[0];
+            }
+
 
     }
 

@@ -25,11 +25,11 @@ public interface RestClient extends RestClientErrorHandling {
     @Get("/users")
     ResponseEntity<DatasetUser> getUsers();
 
-    @Get("/users/{_id}")
-    Object getUser(@Path String _id);
+    /*@Get("/users/{_id}")
+    Object getUser(@Path String _id);*/
 
-    @Get("/groups")
-    ResponseEntity<DatasetGroup> getGroups();
+    /*@Get("/groups")
+    ResponseEntity<DatasetGroup> getGroups();*/
 
     @Get("/groups/usergroups/{_id}")
     ResponseEntity<DatasetGroup> getUserCreatorGroups(@Path String _id);

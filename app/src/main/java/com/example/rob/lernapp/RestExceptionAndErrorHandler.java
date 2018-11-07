@@ -23,9 +23,12 @@ public class RestExceptionAndErrorHandler implements RestErrorHandler {
 
         if (e instanceof HttpClientErrorException) {
             HttpClientErrorException exception = (HttpClientErrorException) e;
-
-
             switch (exception.getStatusText()) {
+
+                case "servererror":
+                    setMessageToUser("Serverfehler", true);
+                    break;
+
                 case "linkinvite_allreadyIn":
                     setMessageToUser("Du bist bereits in der Gruppe", true);
                     break;
@@ -47,6 +50,33 @@ public class RestExceptionAndErrorHandler implements RestErrorHandler {
 
                 case "postuser_posterror":
                     setMessageToUser("Fehler beim Hinzufügen des Members", false);
+                    break;
+
+                case "deletegroup_groupnotfound":
+                    setMessageToUser("Zu löschende Gruppe nicht gefunden", true);
+                    break;
+
+                case "deletemember_membernotingroup":
+                    setMessageToUser("Verlassen der Gruppe nicht funktioniert", true);
+                    break;
+
+                case "creategroup_creatornotfound":
+                    setMessageToUser("Ersteller der Gruppe nicht in der Datenbank", true);
+                    break;
+
+                case "getcreatorgroups_nogroupsfound":
+                   // setMessageToUser("Keine Gruppen als Creator vorhanden", true);
+                    break;
+
+                case "getgroups_nogroupsfound":
+                   // setMessageToUser("Keine Gruppen vorhanden", true);
+                    break;
+
+                case "getusers_nouserfound":
+                    break;
+
+                case "linkinvite_iscreator":
+                    setMessageToUser("Du bist bereits in der Gruppe als Creator", true);
                     break;
 
                 default:

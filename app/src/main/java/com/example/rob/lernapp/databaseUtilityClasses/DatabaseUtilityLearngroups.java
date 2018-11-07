@@ -53,17 +53,29 @@ public class DatabaseUtilityLearngroups {
     @Background
     public void getGroupsOfCreator() {
         ResponseEntity<DatasetGroup> responseEntityGroup = restClient.getUserCreatorGroups(activity.getUniqueDatabaseId());
-        DatasetGroup datasetGroup = responseEntityGroup.getBody();
-        this.creatorLearngroups = datasetGroup.gettingGroups();
-        sendCreatorGroupsToActivity(this.creatorLearngroups);
+        if(responseEntityGroup != null){
+            DatasetGroup datasetGroup = responseEntityGroup.getBody();
+            this.creatorLearngroups = datasetGroup.gettingGroups();
+            sendCreatorGroupsToActivity(this.creatorLearngroups);
+        }else{
+            this.creatorLearngroups = new Learngroup[0];
+            sendCreatorGroupsToActivity(this.creatorLearngroups);
+        }
+
     }
 
     @Background
     public void getGroupsOfCreatorAll() {
         ResponseEntity<DatasetGroup> responseEntityGroup = restClient.getUserGroupsAll(activity.getUniqueDatabaseId());
-        DatasetGroup datasetGroup = responseEntityGroup.getBody();
-        this.allLearngroups = datasetGroup.gettingGroups();
-        sendAllGroupsToActivity(this.allLearngroups);
+        if(responseEntityGroup != null){
+            DatasetGroup datasetGroup = responseEntityGroup.getBody();
+            this.allLearngroups = datasetGroup.gettingGroups();
+            sendAllGroupsToActivity(this.allLearngroups);
+        }else{
+            this.allLearngroups = new Learngroup[0];
+            sendAllGroupsToActivity(this.allLearngroups);
+        }
+
     }
 
     @Background
@@ -71,18 +83,21 @@ public class DatabaseUtilityLearngroups {
 
         LearngroupPost newgroup = new LearngroupPost(null, this.activity.getUniqueDatabaseId(), groupname, null);
         ResponseEntity<JsonObject> responseEntityGroupcreate = restClient.postGroup(newgroup);
-        Gson gson = new Gson();
-        PostResponse postResponse = gson.fromJson(responseEntityGroupcreate.getBody(), PostResponse.class);
-        sendcreateResponseToActivity(postResponse);
+        if(responseEntityGroupcreate != null){
+            Gson gson = new Gson();
+            PostResponse postResponse = gson.fromJson(responseEntityGroupcreate.getBody(), PostResponse.class);
+            sendcreateResponseToActivity(postResponse);
+        }
     }
 
     @Background
     public void deleteGroup(Learngroup deletedGroup) {
         ResponseEntity<JsonObject> responseEntityGroupdelete = restClient.deleteGroup(deletedGroup.get_id());
-        Gson gson = new Gson();
-        DeleteResponse deleteResponse = gson.fromJson(responseEntityGroupdelete.getBody(), DeleteResponse.class);
-        senddeleteResponseToActivity(deleteResponse, deletedGroup);
-
+        if (responseEntityGroupdelete != null) {
+            Gson gson = new Gson();
+            DeleteResponse deleteResponse = gson.fromJson(responseEntityGroupdelete.getBody(), DeleteResponse.class);
+            senddeleteResponseToActivity(deleteResponse, deletedGroup);
+        }
     }
 
 
@@ -95,8 +110,8 @@ public class DatabaseUtilityLearngroups {
     @Background
     public void getDatabaseId() {
 
-
-            ResponseEntity<DatasetUser> responseEntity = restClient.getUsers();
+        ResponseEntity<DatasetUser> responseEntity = restClient.getUsers();
+        if(responseEntity != null){
             DatasetUser dataSet = responseEntity.getBody();
             this.userinfos = dataSet.gettingUsers();
             for (int i = 0; i < this.userinfos.length; i++) {
@@ -104,7 +119,9 @@ public class DatabaseUtilityLearngroups {
                     sendIdToActivity(this.userinfos[i].get_id());
                 }
             }
-
+        }else{
+            this.userinfos = new User[0];
+        }
 
     }
 
@@ -125,8 +142,8 @@ public class DatabaseUtilityLearngroups {
     }
 
     @UiThread
-    void sendDeleteMemberGroupResponse(ResponseEntity<JsonObject> patchResponse){
-        if(patchResponse != null){
+    void sendDeleteMemberGroupResponse(ResponseEntity<JsonObject> patchResponse) {
+        if (patchResponse != null) {
             Gson gson = new Gson();
             PatchResponse patchResponseGSON = gson.fromJson(patchResponse.getBody(), PatchResponse.class);
             this.activity.getResponseDeleteMember(patchResponseGSON);
@@ -136,11 +153,11 @@ public class DatabaseUtilityLearngroups {
 
     @UiThread
     void sendNewMemberGroupLinkResponse(ResponseEntity<JsonObject> patchResponse) {
-            if(patchResponse != null){
-                Gson gson = new Gson();
-                PatchResponse patchResponseGSON = gson.fromJson(patchResponse.getBody(), PatchResponse.class);
-                this.activity.getResponseJoinThroughLink(patchResponseGSON);
-            }
+        if (patchResponse != null) {
+            Gson gson = new Gson();
+            PatchResponse patchResponseGSON = gson.fromJson(patchResponse.getBody(), PatchResponse.class);
+            this.activity.getResponseJoinThroughLink(patchResponseGSON);
+        }
     }
 
 

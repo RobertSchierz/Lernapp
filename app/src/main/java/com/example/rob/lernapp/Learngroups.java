@@ -13,7 +13,6 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.example.rob.lernapp.adapter.GrouplistRecyclerviewAdapter;
 import com.example.rob.lernapp.databaseUtilityClasses.DatabaseUtilityLearngroups;
@@ -74,7 +73,7 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
 
 
     @AfterViews
-    void onCreate(){
+    void onCreate() {
         UniqueIDHandler uniqueIDHandler = UniqueIDHandler.getInstance(this);
         try {
             this.uniqueClientId = uniqueIDHandler.handleUniqueID();
@@ -103,9 +102,9 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
         LinearLayoutManager grouplist_layoutmanager = new LinearLayoutManager(getApplicationContext());
         grouplistRecyclerview.setLayoutManager(grouplist_layoutmanager);
 
-        if(groupfilter.isChecked()){
+        if (groupfilter.isChecked()) {
             this.grouplistRecyclerviewAdapter = new GrouplistRecyclerviewAdapter(this.creatorLearngroups, this, getSupportFragmentManager());
-        }else if (!groupfilter.isChecked()){
+        } else if (!groupfilter.isChecked()) {
             this.grouplistRecyclerviewAdapter = new GrouplistRecyclerviewAdapter(this.learngroupsAll, this, getSupportFragmentManager());
         }
 
@@ -152,12 +151,11 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
     public void setAllGroups(Learngroup[] learngroupsAll) {
         this.learngroupsAll = new ArrayList<Learngroup>(Arrays.asList(learngroupsAll));
         this.allGroupsSyncFinnish = true;
-        if(this.allGroupsSyncFinnish && this.creatorGroupsSyncFinnish){
+        if (this.allGroupsSyncFinnish && this.creatorGroupsSyncFinnish) {
             initializeRecyclerview();
             this.allGroupsSyncFinnish = false;
             this.creatorGroupsSyncFinnish = false;
         }
-
 
 
     }
@@ -165,7 +163,7 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
     public void setCreatorGroups(Learngroup[] learngroupsCreator) {
         this.creatorLearngroups = new ArrayList<Learngroup>(Arrays.asList(learngroupsCreator));
         this.creatorGroupsSyncFinnish = true;
-        if(this.allGroupsSyncFinnish && this.creatorGroupsSyncFinnish){
+        if (this.allGroupsSyncFinnish && this.creatorGroupsSyncFinnish) {
             initializeRecyclerview();
             this.allGroupsSyncFinnish = false;
             this.creatorGroupsSyncFinnish = false;
@@ -174,66 +172,38 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
 
     public void handleCreateResponse(PostResponse postResponse) {
 
-        switch (postResponse.getMessage()) {
-            case "Group created":
-
-                this.creatorLearngroups.add(postResponse.getCreatedGroups());
-
-                this.learngroupsAll.add(postResponse.getCreatedGroups());
-
-                //initializeRecyclerview();
-                updateRecyclerview(groupfilter.isChecked());
-
-                break;
-
-            case "Createerror":
-                Toast.makeText(getApplicationContext(), "Gruppe konnte nicht erstellt werden", Toast.LENGTH_SHORT).show();
-
-                break;
-
-            default:
-                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
-                break;
+        if(postResponse != null){
+            this.creatorLearngroups.add(postResponse.getCreatedGroups());
+            this.learngroupsAll.add(postResponse.getCreatedGroups());
+            updateRecyclerview(groupfilter.isChecked());
+            this.confirmGroupDialog.dismiss();
         }
-
-        this.confirmGroupDialog.dismiss();
-
     }
 
     public void handleDeleteResponse(DeleteResponse postResponse, Learngroup deletedGroup) {
-        switch (postResponse.getMessage()) {
-            case "Group deleted":
 
-                for (Learngroup learngroup: this.creatorLearngroups) {
-                    if(learngroup.get_id().equals(deletedGroup.get_id())){
-                        this.creatorLearngroups.remove(learngroup);
-                        break;
-                    }
+
+        if (postResponse != null) {
+            for (Learngroup learngroup : this.creatorLearngroups) {
+                if (learngroup.get_id().equals(deletedGroup.get_id())) {
+                    this.creatorLearngroups.remove(learngroup);
+                    break;
                 }
+            }
 
-                for (Learngroup learngroup: this.learngroupsAll) {
-                    if(learngroup.get_id().equals( deletedGroup.get_id())){
-                        this.learngroupsAll.remove(learngroup);
-                        break;
-                    }
+            for (Learngroup learngroup : this.learngroupsAll) {
+                if (learngroup.get_id().equals(deletedGroup.get_id())) {
+                    this.learngroupsAll.remove(learngroup);
+                    break;
                 }
-                this.deleteGroupDialog.dismiss();
-                updateRecyclerview(groupfilter.isChecked());
-
-                break;
-            case "deleteerror":
-                Toast.makeText(getApplicationContext(), "Gruppe konnte nicht gelöscht werden", Toast.LENGTH_SHORT).show();
-                break;
-
-            default:
-                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
-                break;
+            }
+            this.deleteGroupDialog.dismiss();
+            updateRecyclerview(groupfilter.isChecked());
         }
-
     }
 
     @Click(R.id.join_throughlink)
-    void joinThroughLinkClicked(){
+    void joinThroughLinkClicked() {
         jointhroughlinkDialog = new JointhroughlinkDialog_();
         jointhroughlinkDialog.setVars(this);
         jointhroughlinkDialog.show(getSupportFragmentManager(), "joingroup");
@@ -250,12 +220,12 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
 
     }
 
-    public void getResponseDeleteMember(PatchResponse patchResponseGSON){
+    public void getResponseDeleteMember(PatchResponse patchResponseGSON) {
         dataBaseUtilTask.getDatabaseId();
         this.deleteGroupDialog.dismiss();
     }
 
-    public void getResponseJoinThroughLink(PatchResponse patchResponseGSON){
+    public void getResponseJoinThroughLink(PatchResponse patchResponseGSON) {
         dataBaseUtilTask.getDatabaseId();
         this.jointhroughlinkDialog.dismiss();
     }
@@ -282,9 +252,9 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
     @Override
     public void onDeleteGroupDialogPositiveClick(DialogFragment dialog, DeleteGroupDialog originDeleteGroupDialog, Learngroup deletedGroup) {
         this.deleteGroupDialog = originDeleteGroupDialog;
-        if(PersistanceDataHandler.getUniqueDatabaseId().equals(deletedGroup.getCreator().get_id())){
+        if (PersistanceDataHandler.getUniqueDatabaseId().equals(deletedGroup.getCreator().get_id())) {
             dataBaseUtilTask.deleteGroup(deletedGroup);
-        }else{
+        } else {
             dataBaseUtilTask.deleteMemberOfGroup(deletedGroup.get_id());
         }
 
@@ -301,7 +271,6 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
         this.dataBaseUtilTask.postNewMemberToGroupLink(memberid, link);
         this.jointhroughlinkDialog = (JointhroughlinkDialog) dialog;
     }
-
 
 
     @Override
