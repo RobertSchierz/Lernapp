@@ -266,19 +266,17 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
     }
 
     private void showFabMenu(){
-        fab_addgroup.animate().translationY(-getResources().getDimension(R.dimen.fabmargin_1));
-        fab_addgrouplink.animate().translationY(-getResources().getDimension(R.dimen.fabmargin_2));
-        fab_addgroup.animate().alpha(1);
-        fab_addgrouplink.animate().alpha(1);
-
+        this.fab_addgroup.animate().translationY(-getResources().getDimension(R.dimen.fabmargin_1));
+        this.fab_addgrouplink.animate().translationY(-getResources().getDimension(R.dimen.fabmargin_2));
+        this.fab_addgroup.animate().alpha(1);
+        this.fab_addgrouplink.animate().alpha(1);
     }
 
     private void closeFabMenu(){
-        fab_addgroup.animate().translationY(0);
-        fab_addgrouplink.animate().translationY(0);
-        fab_addgroup.animate().alpha(0);
-        fab_addgrouplink.animate().alpha(0);
-
+        this.fab_addgroup.animate().translationY(0);
+        this.fab_addgrouplink.animate().translationY(0);
+        this.fab_addgroup.animate().alpha(0);
+        this.fab_addgrouplink.animate().alpha(0);
     }
 
     @Override

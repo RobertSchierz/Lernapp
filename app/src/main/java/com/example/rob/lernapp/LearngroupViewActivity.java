@@ -51,12 +51,21 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
     public ShowInviteContactsDialog showInviteContactsDialog;
     public InviteLinkDialog inviteLinkDialog;
 
+    private boolean isFabOpen = false;
+    private boolean iamCreator = false;
+
     @NonConfigurationInstance
     @Bean
     DatabaseUtilityLearngroupView dataBaseUtilTask;
 
     @ViewById(R.id.learngroupview_actionbutton)
     FloatingActionButton learngroupview_actionbutton;
+
+    @ViewById(R.id.learngroupview_actionbutton_addmember)
+    FloatingActionButton fab_addmember;
+
+    @ViewById(R.id.learngroupview_actionbutton_addcategorie)
+    FloatingActionButton fab_addcategory;
 
     @SuppressLint("RestrictedApi")
     @AfterViews
@@ -69,22 +78,59 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
 
 
         if(PersistanceDataHandler.getUniqueDatabaseId().equals(this.group.getCreator().get_id())){
-            learngroupview_actionbutton.setVisibility(View.VISIBLE);
-            learngroupview_actionbutton.startAnimation(floatingactionanimation);
+            this.iamCreator = true;
+            fab_addmember.setVisibility(View.VISIBLE);
         }
+        learngroupview_actionbutton.startAnimation(floatingactionanimation);
 
     }
 
 
     @Click(R.id.learngroupview_actionbutton)
-    void addMember(){
+    void addGroupview(){
 
+        if(!this.isFabOpen){
+            this.isFabOpen = true;
+            showFabMenu();
+        }else{
+            this.isFabOpen = false;
+            closeFabMenu();
+        }
+    }
+
+    private void showFabMenu(){
+        if(this.iamCreator){
+            this.fab_addmember.animate().translationY(-getResources().getDimension(R.dimen.fabmargin_1));
+            this.fab_addcategory.animate().translationY(-getResources().getDimension(R.dimen.fabmargin_2));
+            this.fab_addmember.animate().alpha(1);
+            this.fab_addcategory.animate().alpha(1);
+        }else{
+            this.fab_addcategory.animate().translationY(-getResources().getDimension(R.dimen.fabmargin_1));
+            this.fab_addcategory.animate().alpha(1);
+        }
+
+    }
+
+    private void closeFabMenu(){
+            this.fab_addmember.animate().translationY(0);
+            this.fab_addcategory.animate().translationY(0);
+            this.fab_addmember.animate().alpha(0);
+            this.fab_addcategory.animate().alpha(0);
+    }
+
+    @Click(R.id.learngroupview_actionbutton_addmember)
+    void addmember(){
         this.addMemberDialog = new AddMemberDialog_();
         this.addMemberDialog.setActivity(this);
         this.addMemberDialog.show(getSupportFragmentManager(), "addGroupMember");
+    }
 
+    @Click(R.id.learngroupview_actionbutton_addcategorie)
+    void addcategory(){
 
     }
+
+
 
     @Override
     public void onCreateAddMemberDialogContactClick(DialogFragment dialog) {
