@@ -36,6 +36,9 @@
     <!-- join through Link dialog -->
     <dimen name="join_throughlink_title">20sp</dimen>
 
+    <!-- Floating Actionbutton -->
+    <dimen name="fabmargin_1">60dp</dimen>
+    <dimen name="fabmargin_2">115dp</dimen>
 
 
 </resources>

@@ -44,6 +44,7 @@
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
+            android:tint="@color/colorPrimary"
             app:srcCompat="@drawable/addmemberdialog_link" />
 
     </LinearLayout>

@@ -55,6 +55,7 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
 
     private boolean creatorGroupsSyncFinnish = false;
     private boolean allGroupsSyncFinnish = false;
+    private boolean isFabOpen = false;
 
     private JointhroughlinkDialog jointhroughlinkDialog;
 
@@ -65,7 +66,13 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
     Switch groupfilter;
 
     @ViewById(R.id.learngroup_actionbutton)
-    FloatingActionButton floatingActionButton;
+    FloatingActionButton fab_learngroupmain;
+
+    @ViewById(R.id.learngroup_actionbutton_addgroup)
+    FloatingActionButton fab_addgroup;
+
+    @ViewById(R.id.learngroup_actionbutton_addgrouplink)
+    FloatingActionButton fab_addgrouplink;
 
     @NonConfigurationInstance
     @Bean
@@ -89,7 +96,14 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
         super.onResume();
         dataBaseUtilTask.getDatabaseId();
         Animation floatingactionanimation = AnimationUtils.loadAnimation(this, R.anim.floatingaction_onviewanim);
-        floatingActionButton.setAnimation(floatingactionanimation);
+        fab_learngroupmain.setAnimation(floatingactionanimation);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        this.isFabOpen = false;
+        this.closeFabMenu();
     }
 
     public void initializeRecyclerview() {
@@ -202,11 +216,18 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
         }
     }
 
-    @Click(R.id.join_throughlink)
+    @Click(R.id.learngroup_actionbutton_addgrouplink)
     void joinThroughLinkClicked() {
         jointhroughlinkDialog = new JointhroughlinkDialog_();
         jointhroughlinkDialog.setVars(this);
         jointhroughlinkDialog.show(getSupportFragmentManager(), "joingroup");
+    }
+
+    @Click(R.id.learngroup_actionbutton_addgroup)
+    void addgroupClicked(){
+        this.confirmGroupDialog = new ConfirmGroupDialog_();
+        this.confirmGroupDialog.setActivity(this);
+        this.confirmGroupDialog.show(getSupportFragmentManager(), "groupDialog");
     }
 
     @CheckedChange(R.id.grouplist_creator_member_switch)
@@ -231,16 +252,41 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
     }
 
     @Click(R.id.learngroup_actionbutton)
-    void actionbutton_clicked() {
-        this.confirmGroupDialog = new ConfirmGroupDialog_();
-        this.confirmGroupDialog.setActivity(this);
-        this.confirmGroupDialog.show(getSupportFragmentManager(), "groupDialog");
+    void actionbuttonClicked() {
+
+        if(!this.isFabOpen){
+            this.isFabOpen = true;
+            showFabMenu();
+        }else{
+            this.isFabOpen = false;
+            closeFabMenu();
+        }
+
+
+    }
+
+    private void showFabMenu(){
+        fab_addgroup.animate().translationY(-getResources().getDimension(R.dimen.fabmargin_1));
+        fab_addgrouplink.animate().translationY(-getResources().getDimension(R.dimen.fabmargin_2));
+        fab_addgroup.animate().alpha(1);
+        fab_addgrouplink.animate().alpha(1);
+
+    }
+
+    private void closeFabMenu(){
+        fab_addgroup.animate().translationY(0);
+        fab_addgrouplink.animate().translationY(0);
+        fab_addgroup.animate().alpha(0);
+        fab_addgrouplink.animate().alpha(0);
+
     }
 
     @Override
     public void onCreateGroupDialogPositiveClick(DialogFragment dialog, EditText groupname) {
         String groupnametext = String.valueOf(groupname.getText());
         dataBaseUtilTask.postGroup(groupnametext);
+        this.isFabOpen = false;
+        this.closeFabMenu();
     }
 
     @Override
@@ -270,6 +316,8 @@ public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog
     public void onJoinLinkDialogPositiveClick(DialogFragment dialog, String memberid, String link) {
         this.dataBaseUtilTask.postNewMemberToGroupLink(memberid, link);
         this.jointhroughlinkDialog = (JointhroughlinkDialog) dialog;
+        this.isFabOpen = false;
+        this.closeFabMenu();
     }
 
 

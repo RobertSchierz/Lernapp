@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Lernapp</string>
+    <string name="learngroupactivitylabel">Lerngruppen</string>
+
+
 
     <!-- Berechtigungsdialog -->
     <string name="permission_dialog">Berechtigung der Kontakte</string>
