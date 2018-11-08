@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -16,6 +17,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.rob.lernapp.adapter.CategoryRecyclerlistLayoutManager;
+import com.example.rob.lernapp.adapter.CategorylistRecyclerviewAdapter;
 import com.example.rob.lernapp.databaseUtilityClasses.DatabaseUtilityLearngroupView;
 import com.example.rob.lernapp.dialoge.AddMemberDialog;
 import com.example.rob.lernapp.dialoge.AddMemberDialog_;
@@ -23,6 +26,7 @@ import com.example.rob.lernapp.dialoge.InviteLinkDialog;
 import com.example.rob.lernapp.dialoge.InviteLinkDialog_;
 import com.example.rob.lernapp.dialoge.ShowInviteContactsDialog;
 import com.example.rob.lernapp.dialoge.ShowInviteContactsDialog_;
+import com.example.rob.lernapp.restdataGet.Category;
 import com.example.rob.lernapp.restdataGet.Learngroup;
 import com.example.rob.lernapp.restdataGet.User;
 
@@ -35,13 +39,11 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 @EActivity(R.layout.activity_learngroupview)
 public class LearngroupViewActivity extends AppCompatActivity implements AddMemberDialog.AddMemberDialogListener, InviteLinkDialog.InviteLinkDialogListener {
 
-    public void setGroup(Learngroup group) {
-        this.group = group;
-    }
 
     public Learngroup group;
     private AddMemberDialog addMemberDialog;
@@ -53,6 +55,10 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
 
     private boolean isFabOpen = false;
     private boolean iamCreator = false;
+
+    public ArrayList<Category> allCategories;
+
+    private CategorylistRecyclerviewAdapter categorylistRecyclerviewAdapter;
 
     @NonConfigurationInstance
     @Bean
@@ -66,6 +72,9 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
 
     @ViewById(R.id.learngroupview_actionbutton_addcategorie)
     FloatingActionButton fab_addcategory;
+
+    @ViewById(R.id.categoryrecyclerview)
+    RecyclerView categoryrecyclerview;
 
     @SuppressLint("RestrictedApi")
     @AfterViews
@@ -85,6 +94,30 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        dataBaseUtilTask.getCategories(this.group.get_id());
+
+    }
+
+    void initilizeRecyclerview(){
+       // int animationID = R.anim.layout_animation_fall_down;
+       // LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getApplicationContext(), animationID);
+
+
+        categoryrecyclerview.setHasFixedSize(true);
+        CategoryRecyclerlistLayoutManager gridlayoutmanager = new CategoryRecyclerlistLayoutManager(this, 500);
+        categoryrecyclerview.setLayoutManager(gridlayoutmanager);
+
+
+        this.categorylistRecyclerviewAdapter = new CategorylistRecyclerviewAdapter(this.allCategories);
+
+
+        categoryrecyclerview.setAdapter(this.categorylistRecyclerviewAdapter);
+        categoryrecyclerview.setVisibility(View.VISIBLE);
+      //  categoryrecyclerview.setLayoutAnimation(animation);
+    }
 
     @Click(R.id.learngroupview_actionbutton)
     void addGroupview(){
@@ -164,6 +197,11 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
     public void getUsersBack(User[] users){
         this.databaseUsers = users;
         getContactExec();
+    }
+
+    public void getCategoriesBack(Category[] categories){
+        this.allCategories = new ArrayList<Category>(Arrays.asList(categories));
+        initilizeRecyclerview();
     }
 
 

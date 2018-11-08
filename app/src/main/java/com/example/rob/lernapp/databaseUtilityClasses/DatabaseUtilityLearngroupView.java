@@ -9,6 +9,8 @@ import com.example.rob.lernapp.RestClient_;
 import com.example.rob.lernapp.RestExceptionAndErrorHandler;
 import com.example.rob.lernapp.restDataPatch.NewMemberToGroupPatch;
 import com.example.rob.lernapp.restDataPatch.PatchResponse;
+import com.example.rob.lernapp.restdataGet.Category;
+import com.example.rob.lernapp.restdataGet.DatasetCategories;
 import com.example.rob.lernapp.restdataGet.DatasetUser;
 import com.example.rob.lernapp.restdataGet.User;
 import com.google.gson.Gson;
@@ -38,6 +40,7 @@ public class DatabaseUtilityLearngroupView {
 
 
     private User[] databaseusers;
+    private Category[] categories;
 
 
     @AfterInject
@@ -50,14 +53,14 @@ public class DatabaseUtilityLearngroupView {
     @Background
     public void getUsers() {
 
-            ResponseEntity<DatasetUser> responseEntity = restClient.getUsers();
-            if(responseEntity != null){
-                DatasetUser dataSet = responseEntity.getBody();
-                this.databaseusers = dataSet.gettingUsers();
-                sendUsersBackToActivity(this.databaseusers);
-            }else{
-                this.databaseusers = new User[0];
-            }
+        ResponseEntity<DatasetUser> responseEntity = restClient.getUsers();
+        if (responseEntity != null) {
+            DatasetUser dataSet = responseEntity.getBody();
+            this.databaseusers = dataSet.gettingUsers();
+            sendUsersBackToActivity(this.databaseusers);
+        } else {
+            this.databaseusers = new User[0];
+        }
 
 
     }
@@ -71,6 +74,24 @@ public class DatabaseUtilityLearngroupView {
 
     }
 
+    @Background
+    public void getCategories(String _id) {
+        ResponseEntity<DatasetCategories> responseEntityCategories = restClient.getCategories(_id);
+        if(responseEntityCategories != null){
+            DatasetCategories datasetCategories = responseEntityCategories.getBody();
+            this.categories = datasetCategories.getCategories();
+            sendCategoriesBackToActivity(this.categories);
+        }else{
+            this.categories = new Category[0];
+            sendCategoriesBackToActivity(this.categories);
+        }
+
+    }
+
+    @UiThread
+    void sendCategoriesBackToActivity(Category[] categories){
+        activity.getCategoriesBack(categories);
+    }
 
 
     @UiThread
@@ -81,7 +102,7 @@ public class DatabaseUtilityLearngroupView {
     @UiThread
     void sendNewMemberGroupResponse(ResponseEntity<JsonObject> patchResponse, Button addMemberButton) {
 
-        if(patchResponse != null){
+        if (patchResponse != null) {
             Gson gson = new Gson();
             PatchResponse patchResponseGSON = gson.fromJson(patchResponse.getBody(), PatchResponse.class);
             this.activity.showInviteContactsDialog.getNewMemberGroupResponse(patchResponseGSON, addMemberButton);

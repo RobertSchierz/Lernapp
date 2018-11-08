@@ -2,6 +2,7 @@ package com.example.rob.lernapp;
 
 
 import com.example.rob.lernapp.restDataPatch.NewMemberToGroupPatch;
+import com.example.rob.lernapp.restdataGet.DatasetCategories;
 import com.example.rob.lernapp.restdataGet.DatasetGroup;
 import com.example.rob.lernapp.restdataGet.DatasetUser;
 import com.example.rob.lernapp.restdataPost.LearngroupPost;
@@ -51,6 +52,9 @@ public interface RestClient extends RestClientErrorHandling {
 
     @Patch("/groups/{_id}")
     ResponseEntity<JsonObject> deleteMemberOfGroup(@Path String _id, @Body NewMemberToGroupPatch body);
+
+    @Get("/categories/{_id}")
+    ResponseEntity<DatasetCategories> getCategories(@Path String _id);
 
 
 
