@@ -79,6 +79,17 @@ public class RestExceptionAndErrorHandler implements RestErrorHandler {
                     setMessageToUser("Du bist bereits in der Gruppe als Creator", true);
                     break;
 
+                case "createcategory_creatornotfound":
+                    setMessageToUser("Falsche Creatorid übermittelt", false);
+                    break;
+
+                case "createcategory_groupnotfound":
+                    setMessageToUser("Falsche Gruppenid übermittelt", false);
+                    break;
+
+
+
+
                 default:
                     break;
             }

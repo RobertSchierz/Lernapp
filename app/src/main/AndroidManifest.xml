@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LearngroupViewActivity_"></activity>
+        <activity android:name=".LearngroupViewActivity_" android:label="@string/categoryactivitylabel"></activity>
     </application>
 
 </manifest>

@@ -9,9 +9,13 @@
         android:id="@+id/categorylist_cardView"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginRight="7dp"
+        android:layout_marginBottom="7dp"
         card_view:cardCornerRadius="0dp"
-        card_view:cardElevation="10dp"
-        card_view:cardMaxElevation="10dp"
+        card_view:cardElevation="5dp"
+        card_view:cardMaxElevation="5dp"
         card_view:contentPadding="10dp">
 
 

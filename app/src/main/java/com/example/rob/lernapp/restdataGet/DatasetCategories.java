@@ -2,8 +2,8 @@ package com.example.rob.lernapp.restdataGet;
 
 public class DatasetCategories {
 
-    private int count;
-    private Category[] categories;
+    int count;
+    Category[] categories;
 
     public DatasetCategories(int count, Category[] categories) {
         this.count = count;

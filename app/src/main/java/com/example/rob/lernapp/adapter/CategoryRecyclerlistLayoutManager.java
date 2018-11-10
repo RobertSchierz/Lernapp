@@ -10,6 +10,7 @@ public class CategoryRecyclerlistLayoutManager extends GridLayoutManager {
     private boolean columnWidthChanged = true;
 
 
+
     public CategoryRecyclerlistLayoutManager(Context context, int columnWidth) {
         super(context, 1);
 

@@ -13,6 +13,8 @@ import com.example.rob.lernapp.restdataGet.Category;
 import com.example.rob.lernapp.restdataGet.DatasetCategories;
 import com.example.rob.lernapp.restdataGet.DatasetUser;
 import com.example.rob.lernapp.restdataGet.User;
+import com.example.rob.lernapp.restdataPost.NewCategoryToGroupPost;
+import com.example.rob.lernapp.restdataPost.PostResponseCategories;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -88,6 +90,14 @@ public class DatabaseUtilityLearngroupView {
 
     }
 
+    @Background
+    public void addNewCategory(String groupId, String name, String creatorId){
+        NewCategoryToGroupPost newCategory = new NewCategoryToGroupPost(groupId, name, creatorId);
+        ResponseEntity<JsonObject> responseEntityNewCategoryToGroup = restClient.postCategoryToGroup(newCategory);
+        sendNewCategoryResponse(responseEntityNewCategoryToGroup);
+
+    }
+
     @UiThread
     void sendCategoriesBackToActivity(Category[] categories){
         activity.getCategoriesBack(categories);
@@ -106,6 +116,16 @@ public class DatabaseUtilityLearngroupView {
             Gson gson = new Gson();
             PatchResponse patchResponseGSON = gson.fromJson(patchResponse.getBody(), PatchResponse.class);
             this.activity.showInviteContactsDialog.getNewMemberGroupResponse(patchResponseGSON, addMemberButton);
+        }
+    }
+
+    @UiThread
+    void sendNewCategoryResponse(ResponseEntity<JsonObject> postResponse) {
+
+        if (postResponse != null) {
+            Gson gson = new Gson();
+            PostResponseCategories postResponseGSON = gson.fromJson(postResponse.getBody(), PostResponseCategories.class);
+            activity.getNewCategoryBack(postResponseGSON);
         }
     }
 

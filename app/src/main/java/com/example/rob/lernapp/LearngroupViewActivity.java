@@ -13,13 +13,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rob.lernapp.adapter.CategoryRecyclerlistLayoutManager;
 import com.example.rob.lernapp.adapter.CategorylistRecyclerviewAdapter;
 import com.example.rob.lernapp.databaseUtilityClasses.DatabaseUtilityLearngroupView;
+import com.example.rob.lernapp.dialoge.AddCategoryDialog;
+import com.example.rob.lernapp.dialoge.AddCategoryDialog_;
 import com.example.rob.lernapp.dialoge.AddMemberDialog;
 import com.example.rob.lernapp.dialoge.AddMemberDialog_;
 import com.example.rob.lernapp.dialoge.InviteLinkDialog;
@@ -29,6 +33,7 @@ import com.example.rob.lernapp.dialoge.ShowInviteContactsDialog_;
 import com.example.rob.lernapp.restdataGet.Category;
 import com.example.rob.lernapp.restdataGet.Learngroup;
 import com.example.rob.lernapp.restdataGet.User;
+import com.example.rob.lernapp.restdataPost.PostResponseCategories;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -42,7 +47,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 @EActivity(R.layout.activity_learngroupview)
-public class LearngroupViewActivity extends AppCompatActivity implements AddMemberDialog.AddMemberDialogListener, InviteLinkDialog.InviteLinkDialogListener {
+public class LearngroupViewActivity extends AppCompatActivity implements AddMemberDialog.AddMemberDialogListener, InviteLinkDialog.InviteLinkDialogListener, AddCategoryDialog.AddCategoryDialogListener {
 
 
     public Learngroup group;
@@ -52,6 +57,7 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
     private ArrayList<User> contactUsersinDatabase = new ArrayList<User>();
     public ShowInviteContactsDialog showInviteContactsDialog;
     public InviteLinkDialog inviteLinkDialog;
+    public AddCategoryDialog addCategoryDialog;
 
     private boolean isFabOpen = false;
     private boolean iamCreator = false;
@@ -83,6 +89,8 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
             this.group = getIntent().getExtras().getParcelable("group");
         }
 
+        setTitle(getResources().getText(R.string.categoryactivitylabel) + " - " + this.group.getName());
+
         Animation floatingactionanimation = AnimationUtils.loadAnimation(this, R.anim.floatingaction_onviewanim);
 
 
@@ -102,21 +110,20 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
     }
 
     void initilizeRecyclerview(){
-       // int animationID = R.anim.layout_animation_fall_down;
-       // LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getApplicationContext(), animationID);
+        int animationID = R.anim.layout_animation_fall_down;
+        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getApplicationContext(), animationID);
 
 
         categoryrecyclerview.setHasFixedSize(true);
-        CategoryRecyclerlistLayoutManager gridlayoutmanager = new CategoryRecyclerlistLayoutManager(this, 500);
+        CategoryRecyclerlistLayoutManager gridlayoutmanager = new CategoryRecyclerlistLayoutManager(this, 400);
         categoryrecyclerview.setLayoutManager(gridlayoutmanager);
 
 
         this.categorylistRecyclerviewAdapter = new CategorylistRecyclerviewAdapter(this.allCategories);
 
-
         categoryrecyclerview.setAdapter(this.categorylistRecyclerviewAdapter);
         categoryrecyclerview.setVisibility(View.VISIBLE);
-      //  categoryrecyclerview.setLayoutAnimation(animation);
+        categoryrecyclerview.setLayoutAnimation(animation);
     }
 
     @Click(R.id.learngroupview_actionbutton)
@@ -160,7 +167,9 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
 
     @Click(R.id.learngroupview_actionbutton_addcategorie)
     void addcategory(){
-
+        addCategoryDialog = new AddCategoryDialog_();
+        addCategoryDialog.setActivity(this);
+        addCategoryDialog.show(getSupportFragmentManager(), "addCategoryDialog");
     }
 
 
@@ -202,6 +211,15 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
     public void getCategoriesBack(Category[] categories){
         this.allCategories = new ArrayList<Category>(Arrays.asList(categories));
         initilizeRecyclerview();
+    }
+
+    public void getNewCategoryBack(PostResponseCategories postResponseCategories){
+        addCategoryDialog.dismiss();
+        this.allCategories.add(postResponseCategories.getCreatedCategory());
+        this.categorylistRecyclerviewAdapter.setCategoryNew(this.allCategories);
+        this.categorylistRecyclerviewAdapter.notifyDataSetChanged();
+        this.categoryrecyclerview.scheduleLayoutAnimation();
+
     }
 
 
@@ -277,5 +295,13 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
     }
 
 
+    @Override
+    public void onAddCategoryDialogPositiveClick(DialogFragment dialog, EditText categoryname) {
+        dataBaseUtilTask.addNewCategory(this.group.get_id(), categoryname.getText().toString(),PersistanceDataHandler.getUniqueDatabaseId());
+    }
 
+    @Override
+    public void onAddCategoryDialogNegativeClick(DialogFragment dialog) {
+        dialog.dismiss();
+    }
 }

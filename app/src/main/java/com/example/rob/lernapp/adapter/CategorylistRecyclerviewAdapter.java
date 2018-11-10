@@ -21,6 +21,10 @@ public class CategorylistRecyclerviewAdapter extends RecyclerView.Adapter<Catego
         this.categories = categories;
     }
 
+    public void setCategoryNew(ArrayList<Category> newCategory) {
+        this.categories = newCategory;
+    }
+
     @NonNull
     @Override
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {

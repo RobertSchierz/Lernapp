@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Lernapp</string>
     <string name="learngroupactivitylabel">Lerngruppen</string>
+    <string name="categoryactivitylabel">Kategorien</string>
+
+
 
 
 
@@ -36,6 +39,12 @@
     <string name="join_link_hint">Gruppenlink</string>
     <string name="join_link_positivebutton">Beitreten</string>
     <string name="join_link_negativbutton">Zurück</string>
+
+    <!-- Add Category Dialog -->
+    <string name="add_category_dialog_text">Neue Kategory erstellen</string>
+    <string name="add_category_dialog_hint">Kategorienname</string>
+    <string name="add_category_dialog_positiv">Erstellen</string>
+    <string name="add_category_dialog_negativ">Zurück</string>
 
 
 </resources>
