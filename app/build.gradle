@@ -44,7 +44,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-
     //Spring Framework
     implementation 'org.springframework.android:spring-android-rest-template:2.0.0.M3'
     annotationProcessor "org.androidannotations:rest-spring:4.4.0"

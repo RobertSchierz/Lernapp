@@ -12,14 +12,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Learngroups_" android:label="@string/learngroupactivitylabel">
+        <activity
+            android:name=".LearngroupsActivity_"
+            android:label="@string/learngroupactivitylabel">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LearngroupViewActivity_" android:label="@string/categoryactivitylabel"></activity>
+        <activity
+            android:name=".LearngroupViewActivity_"
+            android:label="@string/categoryactivitylabel" />
+        <activity android:name=".CategoryViewActivity_" android:label="@string/topicsactivitylabel"></activity>
     </application>
 
 </manifest>

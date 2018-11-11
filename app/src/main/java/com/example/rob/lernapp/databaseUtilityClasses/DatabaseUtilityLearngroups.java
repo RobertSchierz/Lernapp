@@ -1,6 +1,6 @@
 package com.example.rob.lernapp.databaseUtilityClasses;
 
-import com.example.rob.lernapp.Learngroups;
+import com.example.rob.lernapp.LearngroupsActivity;
 import com.example.rob.lernapp.PersistanceDataHandler;
 import com.example.rob.lernapp.RestClient;
 import com.example.rob.lernapp.RestClient_;
@@ -30,7 +30,7 @@ import org.springframework.http.ResponseEntity;
 public class DatabaseUtilityLearngroups {
 
     @RootContext
-    Learngroups activity;
+    LearngroupsActivity activity;
 
     @RestService
     RestClient restClient;

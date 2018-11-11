@@ -36,4 +36,6 @@ public class NewCategoryToGroupPost {
     public void setCreator(String creator) {
         this.creator = creator;
     }
+
+
 }

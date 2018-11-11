@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 @EActivity(R.layout.activity_learngroups)
-public class Learngroups extends AppCompatActivity implements ConfirmGroupDialog.ConfirmGroupDialogListener, DeleteGroupDialog.DeleteGroupDialogListener, JointhroughlinkDialog.JointhroughlinkDialogListener {
+public class LearngroupsActivity extends AppCompatActivity implements ConfirmGroupDialog.ConfirmGroupDialogListener, DeleteGroupDialog.DeleteGroupDialogListener, JointhroughlinkDialog.JointhroughlinkDialogListener {
 
     private String uniqueClientId;
 

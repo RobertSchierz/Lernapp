@@ -74,7 +74,6 @@ public class GrouplistRecyclerviewAdapter extends RecyclerView.Adapter<Grouplist
                 selectedGroup.putExtra("group", group);
                 originactivity.startActivity(selectedGroup);
                 originactivity.findViewById(R.id.groupllist_recyclerview).setVisibility(View.INVISIBLE);
-                //originactivity.finish();
             }
         });
 
@@ -104,7 +103,6 @@ public class GrouplistRecyclerviewAdapter extends RecyclerView.Adapter<Grouplist
                 }else{
                     showMemberDialog.show(originfragmentmanager, "groupmember");
                 }
-
             }
         });
 

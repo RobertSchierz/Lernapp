@@ -119,7 +119,7 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
         categoryrecyclerview.setLayoutManager(gridlayoutmanager);
 
 
-        this.categorylistRecyclerviewAdapter = new CategorylistRecyclerviewAdapter(this.allCategories);
+        this.categorylistRecyclerviewAdapter = new CategorylistRecyclerviewAdapter(this.allCategories, this);
 
         categoryrecyclerview.setAdapter(this.categorylistRecyclerviewAdapter);
         categoryrecyclerview.setVisibility(View.VISIBLE);

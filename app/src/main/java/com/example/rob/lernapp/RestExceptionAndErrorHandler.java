@@ -13,7 +13,7 @@ import org.springframework.web.client.HttpClientErrorException;
 public class RestExceptionAndErrorHandler implements RestErrorHandler {
 
     @RootContext
-    Learngroups learngroupsactivity;
+    LearngroupsActivity learngroupsactivity;
 
     @RootContext
     LearngroupViewActivity learngroupViewActivity;
