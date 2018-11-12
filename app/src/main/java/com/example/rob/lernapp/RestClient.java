@@ -4,6 +4,7 @@ package com.example.rob.lernapp;
 import com.example.rob.lernapp.restDataPatch.NewMemberToGroupPatch;
 import com.example.rob.lernapp.restdataGet.DatasetCategories;
 import com.example.rob.lernapp.restdataGet.DatasetGroup;
+import com.example.rob.lernapp.restdataGet.DatasetTopics;
 import com.example.rob.lernapp.restdataGet.DatasetUser;
 import com.example.rob.lernapp.restdataPost.LearngroupPost;
 import com.example.rob.lernapp.restdataPost.NewCategoryToGroupPost;
@@ -59,6 +60,9 @@ public interface RestClient extends RestClientErrorHandling {
 
     @Post("/categories")
     ResponseEntity<JsonObject> postCategoryToGroup(@Body NewCategoryToGroupPost body);
+
+    @Get("/topics/{_id}")
+    ResponseEntity<DatasetTopics> getTopics(@Path String _id);
 
 
 

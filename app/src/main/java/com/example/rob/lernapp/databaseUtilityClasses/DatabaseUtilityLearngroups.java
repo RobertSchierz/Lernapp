@@ -61,7 +61,6 @@ public class DatabaseUtilityLearngroups {
             this.creatorLearngroups = new Learngroup[0];
             sendCreatorGroupsToActivity(this.creatorLearngroups);
         }
-
     }
 
     @Background
