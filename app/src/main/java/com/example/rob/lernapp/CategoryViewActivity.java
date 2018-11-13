@@ -1,6 +1,7 @@
 package com.example.rob.lernapp;
 
 import android.annotation.SuppressLint;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +31,7 @@ public class CategoryViewActivity extends AppCompatActivity {
     public ArrayList<Topic> topics;
     private TopiclistRecyclerviewAdapter topiclistRecyclerviewAdapter;
 
+
     @NonConfigurationInstance
     @Bean
     DatabaseUtilityCategory dataBaseUtilTask;
@@ -37,10 +39,66 @@ public class CategoryViewActivity extends AppCompatActivity {
     @ViewById(R.id.topicsrecyclerview)
     RecyclerView topicsrecyclerview;
 
+
+    RecyclerView.OnScrollListener horizontalScrollListener = new RecyclerView.OnScrollListener() {
+
+        private boolean dragged = false;
+        public int finalScrollPosition;
+
+        @Override
+        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            switch (newState) {
+                case RecyclerView.SCROLL_STATE_IDLE:
+                    dragged = false;
+                    recyclerView.smoothScrollToPosition(finalScrollPosition);
+                    break;
+                case RecyclerView.SCROLL_STATE_DRAGGING:
+                    dragged = true;
+                    break;
+                case RecyclerView.SCROLL_STATE_SETTLING:
+                    dragged = true;
+                    break;
+            }
+        }
+
+        @Override
+        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (layoutManager.getOrientation() == LinearLayoutManager.HORIZONTAL) {
+                    int totalItemsInView = layoutManager.getItemCount();
+                    this.finalScrollPosition = changeScrollHorizontal(totalItemsInView - 1, recyclerView);
+                }
+            }
+        }
+    };
+
+    private int changeScrollHorizontal(int totalItemsInView, RecyclerView recyclerview) {
+        int offset = recyclerview.computeHorizontalScrollOffset();
+        int extent = recyclerview.computeHorizontalScrollExtent();
+
+        int scrollValue = 0;
+
+        int offsetRest = offset % extent;
+        int offsetRestMinus = offset - offsetRest;
+
+        if(offsetRest > (extent / 2)){
+            int extentMinusRest = extent - offsetRest;
+            scrollValue = offset + extentMinusRest;
+        }else{
+            scrollValue = offsetRestMinus;
+        }
+
+        return scrollValue / extent;
+    }
+
+
     @SuppressLint("RestrictedApi")
     @AfterViews
-    void onCreate(){
-        if(getIntent().getExtras() != null){
+    void onCreate() {
+        if (getIntent().getExtras() != null) {
             this.category = getIntent().getExtras().getParcelable("category");
         }
 
@@ -54,7 +112,7 @@ public class CategoryViewActivity extends AppCompatActivity {
         dataBaseUtilTask.getTopics(this.category.get_id());
     }
 
-    void initilizeRecyclerview(){
+    void initilizeRecyclerview() {
         int animationID = R.anim.layout_animation_fall_down;
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getApplicationContext(), animationID);
 
@@ -67,13 +125,18 @@ public class CategoryViewActivity extends AppCompatActivity {
         this.topiclistRecyclerviewAdapter = new TopiclistRecyclerviewAdapter(this.topics, this);
 
         topicsrecyclerview.setAdapter(this.topiclistRecyclerviewAdapter);
+
+
+        topicsrecyclerview.addOnScrollListener(horizontalScrollListener);
+
         topicsrecyclerview.setVisibility(View.VISIBLE);
         topicsrecyclerview.setLayoutAnimation(animation);
     }
 
-    public void getTopicsBack(Topic[] topics){
+    public void getTopicsBack(Topic[] topics) {
         this.topics = new ArrayList<Topic>(Arrays.asList(topics));
         initilizeRecyclerview();
+
     }
 
 }
