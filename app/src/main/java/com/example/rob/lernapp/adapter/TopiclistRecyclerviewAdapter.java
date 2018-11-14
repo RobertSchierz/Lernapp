@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.rob.lernapp.R;
@@ -57,11 +58,13 @@ public class TopiclistRecyclerviewAdapter  extends RecyclerView.Adapter<Topiclis
 
         CardView topiccardview;
         TextView topicname;
+        LinearLayout linearlayout;
 
         public TopicViewHolder(@NonNull View itemView) {
             super(itemView);
             topiccardview = (CardView) itemView.findViewById(R.id.topiclist_cardView);
             topicname = (TextView) itemView.findViewById(R.id.topiclist_name);
+            linearlayout = (LinearLayout) itemView.findViewById(R.id.topiclist_linearlayout);
 
 
         }

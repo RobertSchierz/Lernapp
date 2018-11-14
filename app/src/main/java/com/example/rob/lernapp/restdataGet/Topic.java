@@ -2,10 +2,9 @@ package com.example.rob.lernapp.restdataGet;
 
 public class Topic {
 
-    public Topic(String _id, String name, String content, User creator, String state, String type, Category category) {
+    public Topic(String _id, String name, User creator, String state, String type, Category category) {
         this._id = _id;
         this.name = name;
-        this.content = content;
         this.creator = creator;
         this.state = state;
         this.type = type;
@@ -15,7 +14,6 @@ public class Topic {
 
     String _id;
     String name;
-    String content;
     User creator;
     String state;
     String type;
@@ -36,14 +34,6 @@ public class Topic {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public User getCreator() {

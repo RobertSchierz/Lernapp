@@ -4,8 +4,9 @@ import com.example.rob.lernapp.CategoryViewActivity;
 import com.example.rob.lernapp.RestClient;
 import com.example.rob.lernapp.RestClient_;
 import com.example.rob.lernapp.RestExceptionAndErrorHandler;
-import com.example.rob.lernapp.restdataGet.Category;
+import com.example.rob.lernapp.restdataGet.DatasetResponse;
 import com.example.rob.lernapp.restdataGet.DatasetTopics;
+import com.example.rob.lernapp.restdataGet.Response;
 import com.example.rob.lernapp.restdataGet.Topic;
 
 import org.androidannotations.annotations.AfterInject;
@@ -29,13 +30,34 @@ public class DatabaseUtilityCategory {
     @Bean
     RestExceptionAndErrorHandler restExceptionAndErrorHandler;
 
-    private Category category;
+
     private Topic[] topics;
+    private Response[] responses;
 
     @AfterInject
     void afterInject() {
         restClient = new RestClient_(activity);
         restClient.setRestErrorHandler(restExceptionAndErrorHandler);
+    }
+
+    @Background
+    public void getResponses(){
+
+        ResponseEntity<DatasetResponse> responseEntityResponses = restClient.getResponses();
+        if(responseEntityResponses != null){
+            DatasetResponse datasetResponse = responseEntityResponses.getBody();
+            this.responses = datasetResponse.getResponses();
+            sendResponsesBackToActivity(this.responses);
+        }else{
+            this.responses = new Response[0];
+            sendResponsesBackToActivity(this.responses);
+        }
+
+    }
+
+    @UiThread
+    public void sendResponsesBackToActivity(Response[] responses) {
+        activity.getResponsesBack(responses);
     }
 
     @Background

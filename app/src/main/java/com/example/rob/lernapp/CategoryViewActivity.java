@@ -12,6 +12,7 @@ import android.view.animation.LayoutAnimationController;
 import com.example.rob.lernapp.adapter.TopiclistRecyclerviewAdapter;
 import com.example.rob.lernapp.databaseUtilityClasses.DatabaseUtilityCategory;
 import com.example.rob.lernapp.restdataGet.Category;
+import com.example.rob.lernapp.restdataGet.Response;
 import com.example.rob.lernapp.restdataGet.Topic;
 
 import org.androidannotations.annotations.AfterViews;
@@ -29,6 +30,7 @@ public class CategoryViewActivity extends AppCompatActivity {
 
     public Category category;
     public ArrayList<Topic> topics;
+    public ArrayList<Response> responses;
     private TopiclistRecyclerviewAdapter topiclistRecyclerviewAdapter;
 
 
@@ -79,19 +81,57 @@ public class CategoryViewActivity extends AppCompatActivity {
         int offset = recyclerview.computeHorizontalScrollOffset();
         int extent = recyclerview.computeHorizontalScrollExtent();
 
-        int scrollValue = 0;
+        int scrollValue;
 
         int offsetRest = offset % extent;
         int offsetRestMinus = offset - offsetRest;
 
+        int viewposition;
+        int rangecalcmodulo = offset % (extent);
+
+
+        int percentage = 0;
+        percentage = ( (rangecalcmodulo) * 100) / extent;
+        float alphaValue = ((float)percentage / 100);
+
         if(offsetRest > (extent / 2)){
             int extentMinusRest = extent - offsetRest;
             scrollValue = offset + extentMinusRest;
+            viewposition =  scrollValue / extent;
+
+            float alphadesc = 1;
+            TopiclistRecyclerviewAdapter.TopicViewHolder lastItemVieholder = (TopiclistRecyclerviewAdapter.TopicViewHolder) recyclerview.findViewHolderForAdapterPosition(viewposition - 1);
+            if(lastItemVieholder != null) {
+                View lastItem = lastItemVieholder.itemView;
+                lastItem.setAlpha(alphadesc - alphaValue);
+            }
+
+            TopiclistRecyclerviewAdapter.TopicViewHolder currentItemviewholder = (TopiclistRecyclerviewAdapter.TopicViewHolder) recyclerview.findViewHolderForAdapterPosition(viewposition);
+            if(currentItemviewholder != null){
+                View currentItem = currentItemviewholder.itemView;
+                currentItem.setAlpha(alphaValue);
+            }
         }else{
             scrollValue = offsetRestMinus;
+            viewposition =  scrollValue / extent;
+
+            float alphadesc = 1;
+            TopiclistRecyclerviewAdapter.TopicViewHolder currentItemviewholder = (TopiclistRecyclerviewAdapter.TopicViewHolder) recyclerview.findViewHolderForAdapterPosition(viewposition);
+            if(currentItemviewholder != null){
+                View currentItem = currentItemviewholder.itemView;
+                currentItem.setAlpha(alphadesc - alphaValue);
+            }
+
+
+            TopiclistRecyclerviewAdapter.TopicViewHolder lastItemVieholder = (TopiclistRecyclerviewAdapter.TopicViewHolder) recyclerview.findViewHolderForAdapterPosition(viewposition + 1);
+            if(lastItemVieholder != null){
+                View lastItem = lastItemVieholder.itemView;
+                lastItem.setAlpha(alphaValue);
+            }
+
         }
 
-        return scrollValue / extent;
+        return viewposition;
     }
 
 
@@ -112,7 +152,7 @@ public class CategoryViewActivity extends AppCompatActivity {
         dataBaseUtilTask.getTopics(this.category.get_id());
     }
 
-    void initilizeRecyclerview() {
+    void initilizeTopicsRecyclerview() {
         int animationID = R.anim.layout_animation_fall_down;
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getApplicationContext(), animationID);
 
@@ -131,12 +171,17 @@ public class CategoryViewActivity extends AppCompatActivity {
 
         topicsrecyclerview.setVisibility(View.VISIBLE);
         topicsrecyclerview.setLayoutAnimation(animation);
+
+        dataBaseUtilTask.getResponses();
     }
 
     public void getTopicsBack(Topic[] topics) {
         this.topics = new ArrayList<Topic>(Arrays.asList(topics));
-        initilizeRecyclerview();
+        initilizeTopicsRecyclerview();
 
     }
 
+    public void getResponsesBack(Response[] responses) {
+        this.responses = new ArrayList<Response>(Arrays.asList(responses));
+    }
 }
