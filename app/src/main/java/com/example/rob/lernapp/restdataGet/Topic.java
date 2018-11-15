@@ -2,14 +2,16 @@ package com.example.rob.lernapp.restdataGet;
 
 public class Topic {
 
-    public Topic(String _id, String name, User creator, String state, String type, Category category) {
+    public Topic(String _id, String name, User creator, String state, String type, String text, String mediatype, String contenturl, Category category) {
         this._id = _id;
         this.name = name;
         this.creator = creator;
         this.state = state;
         this.type = type;
+        this.text = text;
+        this.mediatype = mediatype;
+        this.contenturl = contenturl;
         this.category = category;
-
     }
 
     String _id;
@@ -17,6 +19,9 @@ public class Topic {
     User creator;
     String state;
     String type;
+    String text;
+    String mediatype;
+    String contenturl;
     Category category;
 
 
@@ -60,6 +65,30 @@ public class Topic {
         this.type = type;
     }
 
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getMediatype() {
+        return mediatype;
+    }
+
+    public void setMediatype(String mediatype) {
+        this.mediatype = mediatype;
+    }
+
+    public String getContenturl() {
+        return contenturl;
+    }
+
+    public void setContenturl(String contenturl) {
+        this.contenturl = contenturl;
+    }
+
     public Category getCategory() {
         return category;
     }
@@ -67,5 +96,4 @@ public class Topic {
     public void setCategory(Category category) {
         this.category = category;
     }
-
 }

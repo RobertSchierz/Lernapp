@@ -34,12 +34,16 @@ public class CategoryViewActivity extends AppCompatActivity {
     private TopiclistRecyclerviewAdapter topiclistRecyclerviewAdapter;
 
 
+
+
+
     @NonConfigurationInstance
     @Bean
     DatabaseUtilityCategory dataBaseUtilTask;
 
     @ViewById(R.id.topicsrecyclerview)
     RecyclerView topicsrecyclerview;
+
 
 
     RecyclerView.OnScrollListener horizontalScrollListener = new RecyclerView.OnScrollListener() {
@@ -143,16 +147,16 @@ public class CategoryViewActivity extends AppCompatActivity {
         }
 
         setTitle(getResources().getText(R.string.topicsactivitylabel) + " - " + this.category.getName());
-        dataBaseUtilTask.getTopics(this.category.get_id());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        dataBaseUtilTask.getTopics(this.category.get_id());
+        dataBaseUtilTask.getResponses();
+
     }
 
-    void initilizeTopicsRecyclerview() {
+    private void initilizeTopicsRecyclerview() {
         int animationID = R.anim.layout_animation_fall_down;
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getApplicationContext(), animationID);
 
@@ -162,7 +166,7 @@ public class CategoryViewActivity extends AppCompatActivity {
         topicsrecyclerview.setLayoutManager(horizontalLayoutManagaer);
 
 
-        this.topiclistRecyclerviewAdapter = new TopiclistRecyclerviewAdapter(this.topics, this);
+        this.topiclistRecyclerviewAdapter = new TopiclistRecyclerviewAdapter(this.topics, this.responses, this);
 
         topicsrecyclerview.setAdapter(this.topiclistRecyclerviewAdapter);
 
@@ -172,16 +176,18 @@ public class CategoryViewActivity extends AppCompatActivity {
         topicsrecyclerview.setVisibility(View.VISIBLE);
         topicsrecyclerview.setLayoutAnimation(animation);
 
-        dataBaseUtilTask.getResponses();
+
     }
 
     public void getTopicsBack(Topic[] topics) {
         this.topics = new ArrayList<Topic>(Arrays.asList(topics));
         initilizeTopicsRecyclerview();
-
     }
 
     public void getResponsesBack(Response[] responses) {
         this.responses = new ArrayList<Response>(Arrays.asList(responses));
+        dataBaseUtilTask.getTopics(this.category.get_id());
     }
+
+
 }
