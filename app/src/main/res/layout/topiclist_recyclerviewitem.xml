@@ -85,10 +85,12 @@
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/topiclist_linearlayout_text"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:padding="15dp">
 
                         <TextView
                             android:id="@+id/topiclist_text"
@@ -99,10 +101,19 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/topiclist_linearlayout_media"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:orientation="horizontal"></LinearLayout>
+                        android:orientation="horizontal">
+
+                        <VideoView
+                            android:id="@+id/topiclist_media_videoview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:visibility="gone" />
+                    </LinearLayout>
                 </LinearLayout>
 
             </LinearLayout>

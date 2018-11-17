@@ -32,8 +32,11 @@ android {
 dependencies {
 
     //Android Annotations
-    annotationProcessor "org.androidannotations:androidannotations:4.4.0"
-    implementation 'org.androidannotations:androidannotations-api:4.4.0'
+    //annotationProcessor "org.androidannotations:androidannotations:4.4.0"
+    //implementation 'org.androidannotations:androidannotations-api:4.4.0'
+
+    annotationProcessor "org.androidannotations:androidannotations:4.5.2"
+    implementation 'org.androidannotations:androidannotations-api:4.5.2'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

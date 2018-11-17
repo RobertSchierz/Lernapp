@@ -1,10 +1,15 @@
 package com.example.rob.lernapp;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
@@ -32,9 +37,8 @@ public class CategoryViewActivity extends AppCompatActivity {
     public ArrayList<Topic> topics;
     public ArrayList<Response> responses;
     private TopiclistRecyclerviewAdapter topiclistRecyclerviewAdapter;
-
-
-
+    public boolean Read_External_Storage_Permission = false;
+    public boolean Write_External_Storgae_Permission = false;
 
 
     @NonConfigurationInstance
@@ -43,8 +47,6 @@ public class CategoryViewActivity extends AppCompatActivity {
 
     @ViewById(R.id.topicsrecyclerview)
     RecyclerView topicsrecyclerview;
-
-
 
     RecyclerView.OnScrollListener horizontalScrollListener = new RecyclerView.OnScrollListener() {
 
@@ -95,40 +97,40 @@ public class CategoryViewActivity extends AppCompatActivity {
 
 
         int percentage = 0;
-        percentage = ( (rangecalcmodulo) * 100) / extent;
-        float alphaValue = ((float)percentage / 100);
+        percentage = ((rangecalcmodulo) * 100) / extent;
+        float alphaValue = ((float) percentage / 100);
 
-        if(offsetRest > (extent / 2)){
+        if (offsetRest > (extent / 2)) {
             int extentMinusRest = extent - offsetRest;
             scrollValue = offset + extentMinusRest;
-            viewposition =  scrollValue / extent;
+            viewposition = scrollValue / extent;
 
             float alphadesc = 1;
             TopiclistRecyclerviewAdapter.TopicViewHolder lastItemVieholder = (TopiclistRecyclerviewAdapter.TopicViewHolder) recyclerview.findViewHolderForAdapterPosition(viewposition - 1);
-            if(lastItemVieholder != null) {
+            if (lastItemVieholder != null) {
                 View lastItem = lastItemVieholder.itemView;
                 lastItem.setAlpha(alphadesc - alphaValue);
             }
 
             TopiclistRecyclerviewAdapter.TopicViewHolder currentItemviewholder = (TopiclistRecyclerviewAdapter.TopicViewHolder) recyclerview.findViewHolderForAdapterPosition(viewposition);
-            if(currentItemviewholder != null){
+            if (currentItemviewholder != null) {
                 View currentItem = currentItemviewholder.itemView;
                 currentItem.setAlpha(alphaValue);
             }
-        }else{
+        } else {
             scrollValue = offsetRestMinus;
-            viewposition =  scrollValue / extent;
+            viewposition = scrollValue / extent;
 
             float alphadesc = 1;
             TopiclistRecyclerviewAdapter.TopicViewHolder currentItemviewholder = (TopiclistRecyclerviewAdapter.TopicViewHolder) recyclerview.findViewHolderForAdapterPosition(viewposition);
-            if(currentItemviewholder != null){
+            if (currentItemviewholder != null) {
                 View currentItem = currentItemviewholder.itemView;
                 currentItem.setAlpha(alphadesc - alphaValue);
             }
 
 
             TopiclistRecyclerviewAdapter.TopicViewHolder lastItemVieholder = (TopiclistRecyclerviewAdapter.TopicViewHolder) recyclerview.findViewHolderForAdapterPosition(viewposition + 1);
-            if(lastItemVieholder != null){
+            if (lastItemVieholder != null) {
                 View lastItem = lastItemVieholder.itemView;
                 lastItem.setAlpha(alphaValue);
             }
@@ -152,9 +154,87 @@ public class CategoryViewActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        dataBaseUtilTask.getResponses();
+        isReadStoragePermissionGranted();
+        isWriteStoragePermissionGranted();
 
     }
+
+
+    public boolean isReadStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v("Perrmission", "Permission is granted1");
+                dataBaseUtilTask.getResponses();
+                return true;
+            } else {
+
+                Log.v("Perrmission", "Permission is revoked1");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
+                return false;
+            }
+        } else { //permission is automatically granted on sdk<23 upon installation
+            Log.v("Perrmission", "Permission is granted1");
+            dataBaseUtilTask.getResponses();
+            return true;
+        }
+    }
+
+    public boolean isWriteStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v("Perrmission", "Permission is granted2");
+                dataBaseUtilTask.getResponses();
+                return true;
+            } else {
+
+                Log.v("Perrmission", "Permission is revoked2");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+                return false;
+            }
+        } else { //permission is automatically granted on sdk<23 upon installation
+            Log.v("Perrmission", "Permission is granted2");
+            dataBaseUtilTask.getResponses();
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length != 0) {
+            switch (requestCode) {
+                case 2:
+                    Log.d("PermissionResult", "External storage2");
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        Log.v("PermissionResult", "Permission: " + permissions[0] + "was " + grantResults[0]);
+                        this.Write_External_Storgae_Permission = true;
+                        if (this.Write_External_Storgae_Permission || this.Read_External_Storage_Permission) {
+                            dataBaseUtilTask.getResponses();
+                        }
+                    } else {
+
+                    }
+                    break;
+
+                case 3:
+                    Log.d("PermissionResult", "External storage1");
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        Log.v("", "Permission: " + permissions[0] + "was " + grantResults[0]);
+                        this.Read_External_Storage_Permission = true;
+                        if (this.Write_External_Storgae_Permission || this.Read_External_Storage_Permission) {
+                            dataBaseUtilTask.getResponses();
+                        }
+                    } else {
+
+                    }
+                    break;
+            }
+        }
+
+    }
+
 
     private void initilizeTopicsRecyclerview() {
         int animationID = R.anim.layout_animation_fall_down;
@@ -188,6 +268,8 @@ public class CategoryViewActivity extends AppCompatActivity {
         this.responses = new ArrayList<Response>(Arrays.asList(responses));
         dataBaseUtilTask.getTopics(this.category.get_id());
     }
+
+
 
 
 }

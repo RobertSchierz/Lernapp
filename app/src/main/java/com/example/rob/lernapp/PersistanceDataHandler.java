@@ -4,7 +4,12 @@ public class PersistanceDataHandler {
 
     private static String uniqueClientId;
     private static String uniqueDatabaseId;
+    private final static  String apiRootURL = "http://learnapp.enif.uberspace.de/restapi/";
 
+
+    public static String getApiRootURL() {
+        return apiRootURL;
+    }
 
     public static String getUniqueClientId() {
         return uniqueClientId;
