@@ -154,6 +154,7 @@ public class CategoryViewActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         isReadStoragePermissionGranted();
         isWriteStoragePermissionGranted();
 

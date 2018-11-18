@@ -3,7 +3,6 @@ package com.example.rob.lernapp.adapter;
 import android.app.Activity;
 import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
-import android.support.annotation.UiThread;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -51,35 +50,43 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
     }
 
 
-    @UiThread
+
     public void tester(String path, VideoView videoView){
 
         File file = new File(path);
 
-        videoView.setVideoPath(path);
-
-        videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-
-            @Override
-            public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
-                return false;
-            }
-        });
 
 
+        if(file != null){
 
-        MediaController mediaController = new MediaController(originactivity);
-        mediaController.setAnchorView(videoView);
-        videoView.setMediaController(mediaController);
+            videoView.setVideoPath(file.getAbsolutePath());
 
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
+            videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
 
-                mp.setOnCompletionListener(null);
-            }
-        });
+                @Override
+                public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+                    return false;
+                }
+            });
 
+
+
+            MediaController mediaController = new MediaController(originactivity);
+            mediaController.setAnchorView(videoView);
+            videoView.setMediaController(mediaController);
+
+            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+
+                    mp.setOnCompletionListener(null);
+                }
+            });
+
+
+
+
+        }
 
 
 

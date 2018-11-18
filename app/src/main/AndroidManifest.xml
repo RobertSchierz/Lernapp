@@ -28,6 +28,19 @@
             android:name=".LearngroupViewActivity_"
             android:label="@string/categoryactivitylabel" />
         <activity android:name=".CategoryViewActivity_" android:label="@string/topicsactivitylabel"></activity>
+
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_path"
+                ></meta-data>
+        </provider>
+
     </application>
 
 </manifest>

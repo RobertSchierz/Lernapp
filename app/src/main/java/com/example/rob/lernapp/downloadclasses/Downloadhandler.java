@@ -33,9 +33,12 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
     protected String doInBackground(String... downloadURL) {
 
         String completeContentURL = PersistanceDataHandler.getApiRootURL() + downloadURL[0];
-        File currentFile = null;
+        File mediadownloadsDir = new File(Environment.getExternalStorageDirectory() + "/Learnapp_mediadownloads");
 
+
+        File currentFile = null;
         try {
+
 
             URL contentURL = new URL(completeContentURL);
 
@@ -44,15 +47,15 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
             connection.setConnectTimeout(10000);
 
             InputStream inputStream = connection.getInputStream();
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, 1024 * 50);
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, 1024 * 5);
 
             String filename = downloadURL[0].substring(downloadURL[0].indexOf("/")+1);
 
-            //File file = new File(activity.getFilesDir(), filename);
 
 
 
-            File mediadownloadsDir = new File(Environment.getExternalStorageDirectory() + "/Android" + "/media" + "/Learnapp_mediadownloads");
+
+
             if(!mediadownloadsDir.exists()){
                 mediadownloadsDir.mkdir();
             }
@@ -60,12 +63,13 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
                 if(!currentFile.exists()){
                     currentFile.createNewFile();
                     FileOutputStream outStream = new FileOutputStream(currentFile);
-                    byte[] buff = new byte[50 * 1024];
+                    byte[] buff = new byte[5 * 1024];
 
                     int len;
                     while ((len = bufferedInputStream.read(buff)) != -1) {
                         outStream.write(buff, 0, len);
                     }
+
 
                     outStream.flush();
                     outStream.close();
@@ -76,6 +80,8 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
 
 
             this.filePath =  currentFile.getAbsolutePath();
+
+
 
         } catch (Exception e) {
             Log.e("Error: ", e.getMessage());

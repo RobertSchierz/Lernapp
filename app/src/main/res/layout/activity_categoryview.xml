@@ -14,6 +14,8 @@
         android:background="@color/colorrecyclerview"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="9dp" />
+        tools:layout_editor_absoluteY="9dp" >
+
+    </android.support.v7.widget.RecyclerView>
 
 </android.support.constraint.ConstraintLayout>
