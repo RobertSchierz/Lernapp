@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/storagepermission_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/add_category_dialog_margin_leftright"
+        android:layout_marginTop="@dimen/add_category_dialog_margin_topbottom"
+        android:layout_marginRight="@dimen/add_category_dialog_margin_leftright"
+        android:layout_marginBottom="@dimen/add_category_dialog_margin_title_bottom"
+        android:gravity="center_vertical|center_horizontal|center"
+        android:text="Speicherberechtigung"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/storagepermission_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center_vertical|center_horizontal|center"
+        android:text="@string/storagepermission_text"
+        android:textAllCaps="false"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/storagepermission_buttondivider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/add_category_dialog_margin_topbottom"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/storagepermission_negativebutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
+                android:backgroundTint="@android:color/transparent"
+                android:gravity="center"
+                android:text="Streamen"
+                android:textColor="@android:color/holo_red_light" />
+
+            <CheckBox
+                android:id="@+id/storagepermission_stream_checkbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nicht mehr fragen"
+                android:textColor="@android:color/holo_red_light"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="1dp" />
+
+
+        <Button
+            android:id="@+id/storagepermission_positivebutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@android:color/transparent"
+            android:backgroundTint="@android:color/transparent"
+            android:gravity="center"
+            android:text="Zwischenspeichern"
+            android:textColor="@android:color/holo_green_light" />
+
+
+    </LinearLayout>
+</LinearLayout>

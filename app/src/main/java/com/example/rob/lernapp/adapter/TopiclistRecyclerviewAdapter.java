@@ -1,11 +1,12 @@
 package com.example.rob.lernapp.adapter;
 
-import android.app.Activity;
 import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
+import android.support.annotation.UiThread;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.example.rob.lernapp.CategoryViewActivity;
+import com.example.rob.lernapp.PersistanceDataHandler;
 import com.example.rob.lernapp.R;
 import com.example.rob.lernapp.downloadclasses.Downloadhandler;
 import com.example.rob.lernapp.restdataGet.Response;
@@ -27,11 +30,11 @@ import java.util.ArrayList;
 public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<TopiclistRecyclerviewAdapter.TopicViewHolder> {
 
     public ArrayList<Topic> topics;
-    public static Activity originactivity;
+    public static CategoryViewActivity originactivity;
     public ArrayList<Response> responses;
     private ResponseRecyclerlistAdapter responseRecyclerlistAdapter;
 
-    public TopiclistRecyclerviewAdapter(ArrayList<Topic> topics, ArrayList<Response> responses, Activity activity) {
+    public TopiclistRecyclerviewAdapter(ArrayList<Topic> topics, ArrayList<Response> responses, CategoryViewActivity activity) {
         this.topics = topics;
         this.responses = responses;
         originactivity = activity;
@@ -50,66 +53,67 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
     }
 
 
+    @UiThread
+    public void setVideoPath(String path, VideoView videoView, String contentURL) {
 
-    public void tester(String path, VideoView videoView){
+        try {
 
-        File file = new File(path);
-
-
-
-        if(file != null){
-
-            videoView.setVideoPath(file.getAbsolutePath());
-
-            videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-
-                @Override
-                public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
-                    return false;
-                }
-            });
+            File file = new File(path);
 
 
+            if (file != null) {
 
-            MediaController mediaController = new MediaController(originactivity);
-            mediaController.setAnchorView(videoView);
-            videoView.setMediaController(mediaController);
+                videoView.setVideoPath(file.getAbsolutePath());
 
-            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-
-                    mp.setOnCompletionListener(null);
-                }
-            });
+                finishVideoView(videoView);
 
 
+            }else{
 
+                videoView.setVideoPath(contentURL);
+                finishVideoView(videoView);
+            }
 
+        } catch (Exception e) {
+            Log.v("SetVideoPathError", e.getMessage());
+            videoView.setVideoPath(contentURL);
+            finishVideoView(videoView);
         }
-
-
-
-
-
-
-
-
-
 
 
     }
 
+    private void finishVideoView(VideoView videoView) {
+        videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+
+            @Override
+            public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+                return false;
+            }
+        });
+
+
+        MediaController mediaController = new MediaController(originactivity);
+        mediaController.setAnchorView(videoView);
+        videoView.setMediaController(mediaController);
+
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+
+                mp.setOnCompletionListener(null);
+            }
+        });
+    }
+
     public void setVideoToTopic(VideoView videoView, String contentURL) {
 
-        String filePath = null;
-
-        Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, this, videoView).execute(contentURL);
-        filePath = downloadhandler.filePath;
-
-
-
-
+        if(!originactivity.streamContent){
+            Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, this, videoView).execute(contentURL);
+        }else{
+            videoView.setVideoPath(PersistanceDataHandler.getApiRootURL() + contentURL);
+            finishVideoView(videoView);
+        }
     }
 
     @Override
@@ -128,7 +132,6 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
             case "video":
                 setVideoToTopic(topicViewHolder.topicvideo, this.topics.get(i).getContenturl());
                 topicViewHolder.topicvideo.setVisibility(View.VISIBLE);
-
 
 
         }

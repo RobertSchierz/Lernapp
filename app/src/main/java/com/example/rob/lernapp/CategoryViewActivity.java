@@ -2,10 +2,13 @@ package com.example.rob.lernapp;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,9 +16,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.CheckBox;
+import android.widget.Toast;
 
 import com.example.rob.lernapp.adapter.TopiclistRecyclerviewAdapter;
 import com.example.rob.lernapp.databaseUtilityClasses.DatabaseUtilityCategory;
+import com.example.rob.lernapp.dialoge.StoragePermissionDialog;
+import com.example.rob.lernapp.dialoge.StoragePermissionDialog_;
 import com.example.rob.lernapp.restdataGet.Category;
 import com.example.rob.lernapp.restdataGet.Response;
 import com.example.rob.lernapp.restdataGet.Topic;
@@ -30,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 @EActivity(R.layout.activity_categoryview)
-public class CategoryViewActivity extends AppCompatActivity {
+public class CategoryViewActivity extends AppCompatActivity implements StoragePermissionDialog.StoragePermissionDialogListener {
 
 
     public Category category;
@@ -39,6 +46,10 @@ public class CategoryViewActivity extends AppCompatActivity {
     private TopiclistRecyclerviewAdapter topiclistRecyclerviewAdapter;
     public boolean Read_External_Storage_Permission = false;
     public boolean Write_External_Storgae_Permission = false;
+    public boolean streamContent = false;
+    public SharedPreferences prefs;
+
+    private StoragePermissionDialog storagePermissionDialog;
 
 
     @NonConfigurationInstance
@@ -148,6 +159,8 @@ public class CategoryViewActivity extends AppCompatActivity {
             this.category = getIntent().getExtras().getParcelable("category");
         }
 
+        this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
         setTitle(getResources().getText(R.string.topicsactivitylabel) + " - " + this.category.getName());
     }
 
@@ -155,51 +168,48 @@ public class CategoryViewActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        isReadStoragePermissionGranted();
-        isWriteStoragePermissionGranted();
+        if(Build.VERSION.SDK_INT >= 23) {
+
+            if (this.prefs.getBoolean("dontAskAgain", false)
+                    && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
+                    && checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                this.streamContent = true;
+                dataBaseUtilTask.getResponses();
+            } else if (this.prefs.getBoolean("dontAskAgain", false)
+                    && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                    && checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                this.streamContent = false;
+                prefs.edit().putBoolean("dontAskAgain", false).commit();
+                Toast.makeText(this, "Medien werden wieder gespeichert!", Toast.LENGTH_SHORT).show();
+                dataBaseUtilTask.getResponses();
+            } else {
+                showStoragePermissionDialog();
+            }
+        }else{
+            dataBaseUtilTask.getResponses();
+        }
 
     }
 
+    private void showStoragePermissionDialog() {
 
-    public boolean isReadStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                Log.v("Perrmission", "Permission is granted1");
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                    && checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 dataBaseUtilTask.getResponses();
-                return true;
+                prefs.edit().putBoolean("dontAskAgain", false).commit();
             } else {
-
-                Log.v("Perrmission", "Permission is revoked1");
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
-                return false;
+                storagePermissionDialog = new StoragePermissionDialog_();
+                storagePermissionDialog.setVars(this);
+                storagePermissionDialog.show(getSupportFragmentManager(), "storagePermissionDialog");
             }
-        } else { //permission is automatically granted on sdk<23 upon installation
-            Log.v("Perrmission", "Permission is granted1");
+
+        } else {
             dataBaseUtilTask.getResponses();
-            return true;
+            prefs.edit().putBoolean("dontAskAgain", false).commit();
         }
     }
 
-    public boolean isWriteStoragePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                Log.v("Perrmission", "Permission is granted2");
-                dataBaseUtilTask.getResponses();
-                return true;
-            } else {
-
-                Log.v("Perrmission", "Permission is revoked2");
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
-                return false;
-            }
-        } else { //permission is automatically granted on sdk<23 upon installation
-            Log.v("Perrmission", "Permission is granted2");
-            dataBaseUtilTask.getResponses();
-            return true;
-        }
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -271,6 +281,23 @@ public class CategoryViewActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void StoragePermissionDialogPositiveClick(DialogFragment dialog) {
+        this.streamContent = false;
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+        dialog.dismiss();
+    }
 
+    @Override
+    public void StoragePermissionDialogNegativeClick(DialogFragment dialog, CheckBox dontAskAgain) {
+        this.streamContent = true;
+        dataBaseUtilTask.getResponses();
 
+        if (dontAskAgain.isChecked()) {
+            prefs.edit().putBoolean("dontAskAgain", true).commit();
+        }
+
+        dialog.dismiss();
+    }
 }

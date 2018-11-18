@@ -5,8 +5,6 @@
     <string name="topicsactivitylabel">Topics</string>
 
 
-
-
     <!-- Berechtigungsdialog -->
     <string name="permission_dialog">Berechtigung der Kontakte</string>
     <string name="permission_dialog_positiv">Zugriff erlauben</string>
@@ -45,6 +43,12 @@
     <string name="add_category_dialog_hint">Kategorienname</string>
     <string name="add_category_dialog_positiv">Erstellen</string>
     <string name="add_category_dialog_negativ">Zurück</string>
+
+    <!-- Storage Permission Dialog -->
+    <string name="storagepermission_text">
+        Die Speicherzugriffsberechtigung wird benötigt um serverseitige Daten zwischenzuspeichern, um dein Traffic zu <u>sparen</u>. \n\n
+        Wenn du diese Berechtigung verweigerst, werden alle Medien die in den nachfolgenden Posts zusehen sind, <u>gestreamt</u>. \n
+    </string>
 
 
 </resources>

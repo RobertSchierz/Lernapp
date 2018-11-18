@@ -22,6 +22,7 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
     public String filePath;
     public TopiclistRecyclerviewAdapter topiclistRecyclerviewAdapter;
     public VideoView videoView;
+    public String contentURL;
 
     public Downloadhandler(Activity a, TopiclistRecyclerviewAdapter topiclistRecyclerviewAdapter, VideoView videoView) {
         this.activity = a;
@@ -32,7 +33,9 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... downloadURL) {
 
+
         String completeContentURL = PersistanceDataHandler.getApiRootURL() + downloadURL[0];
+        this.contentURL = completeContentURL;
         File mediadownloadsDir = new File(Environment.getExternalStorageDirectory() + "/Learnapp_mediadownloads");
 
 
@@ -49,51 +52,47 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
             InputStream inputStream = connection.getInputStream();
             BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, 1024 * 5);
 
-            String filename = downloadURL[0].substring(downloadURL[0].indexOf("/")+1);
+            String filename = downloadURL[0].substring(downloadURL[0].indexOf("/") + 1);
 
 
-
-
-
-
-            if(!mediadownloadsDir.exists()){
+            if (!mediadownloadsDir.exists()) {
                 mediadownloadsDir.mkdir();
             }
-                currentFile = new File(mediadownloadsDir.getPath() + "/" + filename);
-                if(!currentFile.exists()){
-                    currentFile.createNewFile();
-                    FileOutputStream outStream = new FileOutputStream(currentFile);
-                    byte[] buff = new byte[5 * 1024];
+            currentFile = new File(mediadownloadsDir.getPath() + "/" + filename);
+            if (!currentFile.exists()) {
+                currentFile.createNewFile();
+                FileOutputStream outStream = new FileOutputStream(currentFile);
+                byte[] buff = new byte[5 * 1024];
 
-                    int len;
-                    while ((len = bufferedInputStream.read(buff)) != -1) {
-                        outStream.write(buff, 0, len);
-                    }
-
-
-                    outStream.flush();
-                    outStream.close();
-                    bufferedInputStream.close();
+                int len;
+                while ((len = bufferedInputStream.read(buff)) != -1) {
+                    outStream.write(buff, 0, len);
                 }
 
 
+                outStream.flush();
+                outStream.close();
+                bufferedInputStream.close();
+            }
 
-
-            this.filePath =  currentFile.getAbsolutePath();
-
-
+            this.filePath = currentFile.getAbsolutePath();
 
         } catch (Exception e) {
             Log.e("Error: ", e.getMessage());
         }
 
-        return this.filePath;
+        return currentFile.getAbsolutePath();
 
     }
 
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        topiclistRecyclerviewAdapter.tester(s, this.videoView);
+        if (s.isEmpty()) {
+            topiclistRecyclerviewAdapter.setVideoPath(this.filePath, this.videoView, this.contentURL);
+        } else {
+            topiclistRecyclerviewAdapter.setVideoPath(s, this.videoView, this.contentURL);
+        }
+
     }
 }
