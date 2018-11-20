@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.VideoView;
 
 import com.example.rob.lernapp.PersistanceDataHandler;
@@ -23,11 +25,18 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
     public TopiclistRecyclerviewAdapter topiclistRecyclerviewAdapter;
     public VideoView videoView;
     public String contentURL;
+    public ProgressBar circlebar;
+    public ImageView imageView;
 
-    public Downloadhandler(Activity a, TopiclistRecyclerviewAdapter topiclistRecyclerviewAdapter, VideoView videoView) {
+
+
+    public Downloadhandler(Activity a, ProgressBar circlebar , TopiclistRecyclerviewAdapter topiclistRecyclerviewAdapter, VideoView videoView, ImageView imageView) {
         this.activity = a;
         this.topiclistRecyclerviewAdapter = topiclistRecyclerviewAdapter;
         this.videoView = videoView;
+        this.circlebar = circlebar;
+        this.imageView = imageView;
+
     }
 
     @Override
@@ -37,7 +46,6 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
         String completeContentURL = PersistanceDataHandler.getApiRootURL() + downloadURL[0];
         this.contentURL = completeContentURL;
         File mediadownloadsDir = new File(Environment.getExternalStorageDirectory() + "/Learnapp_mediadownloads");
-
 
         File currentFile = null;
         try {
@@ -50,7 +58,7 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
             connection.setConnectTimeout(10000);
 
             InputStream inputStream = connection.getInputStream();
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, 1024 * 5);
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, 512);
 
             String filename = downloadURL[0].substring(downloadURL[0].indexOf("/") + 1);
 
@@ -62,7 +70,7 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
             if (!currentFile.exists()) {
                 currentFile.createNewFile();
                 FileOutputStream outStream = new FileOutputStream(currentFile);
-                byte[] buff = new byte[5 * 1024];
+                byte[] buff = new byte[512];
 
                 int len;
                 while ((len = bufferedInputStream.read(buff)) != -1) {
@@ -89,10 +97,13 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         if (s.isEmpty()) {
-            topiclistRecyclerviewAdapter.setVideoPath(this.filePath, this.videoView, this.contentURL);
+            topiclistRecyclerviewAdapter.setMediaPath(this.filePath, this.circlebar, this.videoView, this.imageView, this.contentURL);
         } else {
-            topiclistRecyclerviewAdapter.setVideoPath(s, this.videoView, this.contentURL);
+            topiclistRecyclerviewAdapter.setMediaPath(s, this.circlebar, this.videoView, this.imageView, this.contentURL);
         }
 
     }
+
+
+
 }

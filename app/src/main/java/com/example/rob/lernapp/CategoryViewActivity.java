@@ -17,8 +17,9 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.CheckBox;
+import android.widget.MediaController;
 import android.widget.Toast;
-
+import android.widget.VideoView;
 import com.example.rob.lernapp.adapter.TopiclistRecyclerviewAdapter;
 import com.example.rob.lernapp.databaseUtilityClasses.DatabaseUtilityCategory;
 import com.example.rob.lernapp.dialoge.StoragePermissionDialog;
@@ -49,6 +50,7 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
     public boolean streamContent = false;
     public SharedPreferences prefs;
 
+
     private StoragePermissionDialog storagePermissionDialog;
 
 
@@ -58,6 +60,7 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
 
     @ViewById(R.id.topicsrecyclerview)
     RecyclerView topicsrecyclerview;
+
 
     RecyclerView.OnScrollListener horizontalScrollListener = new RecyclerView.OnScrollListener() {
 
@@ -79,11 +82,15 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
                     dragged = true;
                     break;
             }
+
+
         }
 
         @Override
         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
+
+
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                 if (layoutManager.getOrientation() == LinearLayoutManager.HORIZONTAL) {
@@ -111,12 +118,13 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
         percentage = ((rangecalcmodulo) * 100) / extent;
         float alphaValue = ((float) percentage / 100);
 
+
         if (offsetRest > (extent / 2)) {
             int extentMinusRest = extent - offsetRest;
             scrollValue = offset + extentMinusRest;
             viewposition = scrollValue / extent;
 
-            float alphadesc = 1;
+          /*  float alphadesc = 1;
             TopiclistRecyclerviewAdapter.TopicViewHolder lastItemVieholder = (TopiclistRecyclerviewAdapter.TopicViewHolder) recyclerview.findViewHolderForAdapterPosition(viewposition - 1);
             if (lastItemVieholder != null) {
                 View lastItem = lastItemVieholder.itemView;
@@ -127,11 +135,32 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
             if (currentItemviewholder != null) {
                 View currentItem = currentItemviewholder.itemView;
                 currentItem.setAlpha(alphaValue);
-            }
+            }*/
         } else {
             scrollValue = offsetRestMinus;
             viewposition = scrollValue / extent;
 
+
+               /* TopiclistRecyclerviewAdapter.TopicViewHolder currentItemviewholder = (TopiclistRecyclerviewAdapter.TopicViewHolder) recyclerview.findViewHolderForAdapterPosition(viewposition);
+
+                if (currentItemviewholder != null) {
+                    VideoView videoView = currentItemviewholder.itemView.findViewById(R.id.topiclist_media_videoview);
+
+                    if (videoView != null) {
+
+                        if (videoView.getTag() != null){
+                            if (videoView.getTag().equals(2)){
+                                if ((CustomMediaController) videoView.getTag(R.string.mediacontroller) != null) {
+                                    CustomMediaController mediaController = (CustomMediaController) videoView.getTag(R.string.mediacontroller);
+                                    mediaController.showforever();
+                                }
+                            }
+
+                        }
+                    }
+                }*/
+
+/*
             float alphadesc = 1;
             TopiclistRecyclerviewAdapter.TopicViewHolder currentItemviewholder = (TopiclistRecyclerviewAdapter.TopicViewHolder) recyclerview.findViewHolderForAdapterPosition(viewposition);
             if (currentItemviewholder != null) {
@@ -145,6 +174,25 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
                 View lastItem = lastItemVieholder.itemView;
                 lastItem.setAlpha(alphaValue);
             }
+*/
+        }
+
+        for (int i = 0; i < topiclistRecyclerviewAdapter.getItemCount(); i++) {
+
+            TopiclistRecyclerviewAdapter.TopicViewHolder itemviewholder = (TopiclistRecyclerviewAdapter.TopicViewHolder) recyclerview.findViewHolderForAdapterPosition(i);
+
+            if (itemviewholder != null) {
+                VideoView videoView = itemviewholder.itemView.findViewById(R.id.topiclist_media_videoview);
+
+                if (videoView != null) {
+                    if ((MediaController) videoView.getTag(R.string.mediacontroller) != null) {
+                        MediaController mediaController = (MediaController) videoView.getTag(R.string.mediacontroller);
+                        mediaController.hide();
+                    }
+
+                }
+            }
+
 
         }
 
@@ -168,7 +216,7 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
     protected void onResume() {
         super.onResume();
 
-        if(Build.VERSION.SDK_INT >= 23) {
+        if (Build.VERSION.SDK_INT >= 23) {
 
             if (this.prefs.getBoolean("dontAskAgain", false)
                     && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
@@ -185,7 +233,7 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
             } else {
                 showStoragePermissionDialog();
             }
-        }else{
+        } else {
             dataBaseUtilTask.getResponses();
         }
 
@@ -300,4 +348,8 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
 
         dialog.dismiss();
     }
+
+
 }
+
+
