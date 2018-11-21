@@ -20,6 +20,7 @@ import android.widget.CheckBox;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
+
 import com.example.rob.lernapp.adapter.TopiclistRecyclerviewAdapter;
 import com.example.rob.lernapp.databaseUtilityClasses.DatabaseUtilityCategory;
 import com.example.rob.lernapp.dialoge.StoragePermissionDialog;
@@ -60,6 +61,8 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
 
     @ViewById(R.id.topicsrecyclerview)
     RecyclerView topicsrecyclerview;
+
+
 
 
     RecyclerView.OnScrollListener horizontalScrollListener = new RecyclerView.OnScrollListener() {

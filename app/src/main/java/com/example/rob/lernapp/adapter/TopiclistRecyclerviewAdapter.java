@@ -40,11 +40,17 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
     public ArrayList<Response> responses;
     private ResponseRecyclerlistAdapter responseRecyclerlistAdapter;
 
+
     public TopiclistRecyclerviewAdapter(ArrayList<Topic> topics, ArrayList<Response> responses, CategoryViewActivity activity) {
         this.topics = topics;
         this.responses = responses;
         originactivity = activity;
+
     }
+
+
+
+
 
     public void setTopicNew(ArrayList<Topic> newTopic) {
         this.topics = newTopic;
@@ -184,7 +190,7 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
             case "audio":
                 topicViewHolder.topicvideo.setTag(new Integer(2));
                 ViewGroup.LayoutParams params = topicViewHolder.topicvideo.getLayoutParams();
-                params.height = 220;
+                params.height = 300;
                 topicViewHolder.topicvideo.setLayoutParams(params);
                 topicViewHolder.circlebar.setVisibility(View.VISIBLE);
                 progressbarAnimation(topicViewHolder);
@@ -235,7 +241,8 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
             topicViewHolder.responserecyclerview.setLayoutManager(verticalLayoutManager);
 
 
-            this.responseRecyclerlistAdapter = new ResponseRecyclerlistAdapter(this.responses, this.topics.get(i), originactivity);
+
+            this.responseRecyclerlistAdapter = new ResponseRecyclerlistAdapter(this.responses, this.topics.get(i), originactivity, topicViewHolder);
 
             topicViewHolder.responserecyclerview.setAdapter(this.responseRecyclerlistAdapter);
 
@@ -243,7 +250,6 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
             topicViewHolder.responserecyclerview.setVisibility(View.VISIBLE);
             topicViewHolder.responserecyclerview.setLayoutAnimation(animation);
         }
-
     }
 
     private void progressbarAnimation(@NonNull TopicViewHolder topicViewHolder) {
@@ -274,6 +280,8 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
         TextView topicmediatype;
         LinearLayout linearlayout;
         LinearLayout linearLayout_media;
+        LinearLayout topiclist_content;
+        LinearLayout topiclist_info;
         RecyclerView responserecyclerview;
         VideoView topicvideo;
         ProgressBar circlebar;
@@ -289,6 +297,8 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
             topicmediatype = (TextView) itemView.findViewById(R.id.topiclist_mediatype);
             linearlayout = (LinearLayout) itemView.findViewById(R.id.topiclist_linearlayout);
             linearLayout_media = (LinearLayout) itemView.findViewById(R.id.topiclist_linearlayout_media);
+            topiclist_content = (LinearLayout) itemView.findViewById(R.id.topiclist_content);
+            topiclist_info = (LinearLayout) itemView.findViewById(R.id.topiclist_info);
             responserecyclerview = (RecyclerView) itemView.findViewById(R.id.responserecyclerview);
             topicvideo = (VideoView) itemView.findViewById(R.id.topiclist_media_videoview);
             circlebar = (ProgressBar) itemView.findViewById(R.id.topicmedia_loadingcircle);
@@ -297,5 +307,11 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
 
         }
     }
+
+
+
+
+
+
 }
 

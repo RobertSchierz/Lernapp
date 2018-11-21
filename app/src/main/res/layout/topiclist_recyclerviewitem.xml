@@ -36,7 +36,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/colorTopic"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -44,6 +43,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@color/colorPrimaryDark"
                     android:orientation="horizontal"
                     android:padding="10dp">
 
@@ -70,7 +70,7 @@
                         android:gravity="end"
                         android:paddingTop="5sp"
                         android:paddingEnd="10dp"
-                        android:text="Topicname"
+                        android:text="Topiccreator"
                         android:textColor="@color/colorrecyclerview"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -82,6 +82,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="10"
+                    android:background="@color/colorPrimaryDark"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -139,9 +140,10 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/topiclist_info"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="5"
+                android:layout_weight="8"
                 android:orientation="horizontal"
                 android:padding="10dp">
 
@@ -176,7 +178,7 @@
                     android:id="@+id/topiclist_addresponse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
+                    android:layout_gravity="center|end"
                     android:layout_weight="1"
                     android:src="@drawable/add_response" />
             </LinearLayout>
@@ -190,6 +192,6 @@
         android:id="@+id/responserecyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2.5" />
+        android:layout_weight="2" />
 
 </LinearLayout>
