@@ -3,12 +3,14 @@ package com.example.rob.lernapp.downloadclasses;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.VideoView;
 
 import com.example.rob.lernapp.PersistanceDataHandler;
+import com.example.rob.lernapp.adapter.ResponseRecyclerlistAdapter;
 import com.example.rob.lernapp.adapter.TopiclistRecyclerviewAdapter;
 
 import java.io.BufferedInputStream;
@@ -23,19 +25,28 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
     public Activity activity;
     public String filePath;
     public TopiclistRecyclerviewAdapter topiclistRecyclerviewAdapter;
+    public ResponseRecyclerlistAdapter responseRecyclerlistAdapter;
     public VideoView videoView;
     public String contentURL;
     public ProgressBar circlebar;
     public ImageView imageView;
+    public boolean isTopic = false;
 
 
 
-    public Downloadhandler(Activity a, ProgressBar circlebar , TopiclistRecyclerviewAdapter topiclistRecyclerviewAdapter, VideoView videoView, ImageView imageView) {
+    public Downloadhandler(Activity a, ProgressBar circlebar , RecyclerView.Adapter recyclerviewAdapter, VideoView videoView, ImageView imageView) {
         this.activity = a;
-        this.topiclistRecyclerviewAdapter = topiclistRecyclerviewAdapter;
         this.videoView = videoView;
         this.circlebar = circlebar;
         this.imageView = imageView;
+
+        if(recyclerviewAdapter instanceof  TopiclistRecyclerviewAdapter){
+            this.isTopic = true;
+            this.topiclistRecyclerviewAdapter = (TopiclistRecyclerviewAdapter) recyclerviewAdapter;
+        }else if(recyclerviewAdapter instanceof  ResponseRecyclerlistAdapter){
+            this.isTopic = false;
+            this.responseRecyclerlistAdapter = (ResponseRecyclerlistAdapter) recyclerviewAdapter;
+        }
 
     }
 
@@ -97,9 +108,18 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         if (s.isEmpty()) {
-            topiclistRecyclerviewAdapter.setMediaPath(this.filePath, this.circlebar, this.videoView, this.imageView, this.contentURL);
+            if(isTopic){
+                topiclistRecyclerviewAdapter.setMediaPath(this.filePath, this.circlebar, this.videoView, this.imageView, this.contentURL);
+            }else{
+                responseRecyclerlistAdapter.setMediaPath(this.filePath, this.circlebar, this.videoView, this.imageView, this.contentURL);
+            }
+
         } else {
-            topiclistRecyclerviewAdapter.setMediaPath(s, this.circlebar, this.videoView, this.imageView, this.contentURL);
+            if(isTopic){
+                topiclistRecyclerviewAdapter.setMediaPath(s, this.circlebar, this.videoView, this.imageView, this.contentURL);
+            }else{
+                responseRecyclerlistAdapter.setMediaPath(this.filePath, this.circlebar, this.videoView, this.imageView, this.contentURL);
+            }
         }
 
     }

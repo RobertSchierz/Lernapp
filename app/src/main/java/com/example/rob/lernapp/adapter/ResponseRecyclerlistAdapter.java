@@ -2,18 +2,31 @@ package com.example.rob.lernapp.adapter;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
+import android.support.annotation.UiThread;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.VideoView;
 
+import com.example.rob.lernapp.CategoryViewActivity;
+import com.example.rob.lernapp.PersistanceDataHandler;
 import com.example.rob.lernapp.R;
+import com.example.rob.lernapp.downloadclasses.Downloadhandler;
 import com.example.rob.lernapp.restdataGet.Response;
 import com.example.rob.lernapp.restdataGet.Topic;
 
@@ -23,7 +36,7 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
 
     public ArrayList<Response> responses;
     public ArrayList<Response> currentResponses = new ArrayList<Response>();
-    public static Activity originactivity;
+    public static CategoryViewActivity originactivity;
     public Topic topic;
     public RecyclerView responserecyclerview;
     public TopiclistRecyclerviewAdapter.TopicViewHolder topiclistItemViewHolder;
@@ -33,7 +46,7 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
     public static boolean topiccontentShrink = false;
     public static boolean topiccontentExpand = true;
 
-    public ResponseRecyclerlistAdapter(ArrayList<Response> responses, Topic topic, Activity activity, TopiclistRecyclerviewAdapter.TopicViewHolder topicViewHolder) {
+    public ResponseRecyclerlistAdapter(ArrayList<Response> responses, Topic topic, CategoryViewActivity activity, TopiclistRecyclerviewAdapter.TopicViewHolder topicViewHolder) {
         this.responses = responses;
         this.topic = topic;
         originactivity = activity;
@@ -65,25 +78,20 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
         int offset = recyclerview.computeVerticalScrollOffset();
 
         CardView topiccardview = this.topiclistItemViewHolder.topiccardview;
-        final LinearLayout item = this.topiclistItemViewHolder.linearlayout;
         final LinearLayout topiclist_info = this.topiclistItemViewHolder.topiclist_info;
-        final RecyclerView responserecyclerview = this.topiclistItemViewHolder.responserecyclerview;
-
+        VideoView videoView = this.topiclistItemViewHolder.topicvideo;
         final LinearLayout topiclistcontent = this.topiclistItemViewHolder.topiclist_content;
-
-
-
-        handleResponseScroll(offset, topiccardview, topiclist_info, topiclistcontent);
+        handleResponseScroll(offset, topiccardview, topiclist_info, topiclistcontent, videoView);
 
 
     }
 
-    private void handleResponseScroll(final int offset, final CardView topiccardview, final LinearLayout topiclist_info, final LinearLayout topiclistcontent) {
-        if (offset > 10) {
-
-            if(!topiccontentAnimatedShrink && !topiccontentAnimatedExpand && topiccontentExpand){
+    private void handleResponseScroll(final int offset, final CardView topiccardview, final LinearLayout topiclist_info, final LinearLayout topiclistcontent, VideoView videoView) {
+        if (offset >= 10) {
+            if (!topiccontentAnimatedShrink && !topiccontentAnimatedExpand && topiccontentExpand) {
+                videoView.pause();
                 animateScrollWeight(topiccardview, 700, 5).start();
-               ObjectAnimator animShrink = animateScrollWeight(topiclist_info, 700, 1);
+                ObjectAnimator animShrink = animateScrollWeight(topiclist_info, 700, 1);
                 animShrink.addListener(new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animator) {
@@ -113,8 +121,8 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
                 animShrink.start();
             }
 
-        }else if(offset == 0){
-            if(!topiccontentAnimatedExpand && !topiccontentAnimatedShrink && topiccontentShrink){
+        } else if (offset == 0) {
+            if (!topiccontentAnimatedExpand && !topiccontentAnimatedShrink && topiccontentShrink) {
 
                 animateScrollWeight(topiccardview, 700, 1).start();
                 ObjectAnimator animExpand = animateScrollWeight(topiclist_info, 700, 8);
@@ -150,7 +158,7 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
         }
     }
 
-    private ObjectAnimator animateScrollWeight(View view, int duration, int weight){
+    private ObjectAnimator animateScrollWeight(View view, int duration, int weight) {
         ViewWeightAnimationWrapper animationWrapper = new ViewWeightAnimationWrapper(view);
         ObjectAnimator anim = ObjectAnimator.ofFloat(animationWrapper,
                 "weight",
@@ -176,7 +184,146 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
     @Override
     public void onBindViewHolder(@NonNull ResponseRecyclerlistAdapter.ResponseViewHolder responseViewHolder, int i) {
 
-        responseViewHolder.responsecreatorname.setText(this.responses.get(i).getCreator().getName());
+
+
+        responseViewHolder.responsecreatorname.setText("~ " + this.responses.get(i).getCreator().getName());
+        responseViewHolder.responsetext.setText(this.responses.get(i).getText());
+
+        String mediatype = this.responses.get(i).getMediatype();
+
+
+        switch (mediatype) {
+            case "text":
+                responseViewHolder.responsemediatype.setText("#Nachricht");
+                responseViewHolder.responseLayoutMedia.setVisibility(View.GONE);
+                break;
+
+            case "video":
+                responseViewHolder.responsemediatype.setText("#Video");
+               //topicViewHolder.topicvideo.setTag(new Integer(1));
+                responseViewHolder.circlebar.setVisibility(View.VISIBLE);
+                progressbarAnimation(responseViewHolder);
+                setMediaToResponse(responseViewHolder.responsevideoView, null, responseViewHolder.circlebar, this.responses.get(i).getContenturl(), 1);
+
+                break;
+
+            case "audio":
+                responseViewHolder.responsemediatype.setText("#Audio");
+                //topicViewHolder.topicvideo.setTag(new Integer(2));
+                ViewGroup.LayoutParams params = responseViewHolder.responsevideoView.getLayoutParams();
+                params.height = 300;
+                responseViewHolder.responsevideoView.setLayoutParams(params);
+                responseViewHolder.circlebar.setVisibility(View.VISIBLE);
+                progressbarAnimation(responseViewHolder);
+                setMediaToResponse(responseViewHolder.responsevideoView, null, responseViewHolder.circlebar, this.responses.get(i).getContenturl(), 2);
+                break;
+
+            case "image":
+                responseViewHolder.responsemediatype.setText("#Bild");
+                responseViewHolder.circlebar.setVisibility(View.VISIBLE);
+                progressbarAnimation(responseViewHolder);
+                setMediaToResponse(null, responseViewHolder.responseImageView, responseViewHolder.circlebar, this.responses.get(i).getContenturl(), 3);
+                break;
+
+        }
+
+    }
+
+    @UiThread
+    public void setMediaPath(String path, ProgressBar circlebar, VideoView videoView, ImageView imageView, String contentURL) {
+
+        if (imageView != null && videoView == null) {
+            try {
+                Bitmap image = BitmapFactory.decodeFile(path);
+                imageView.setImageBitmap(image);
+            } catch (Exception e) {
+                Bitmap image = BitmapFactory.decodeFile(contentURL);
+                imageView.setImageBitmap(image);
+            }
+
+            imageView.setVisibility(View.VISIBLE);
+            circlebar.setVisibility(View.GONE);
+
+        } else {
+            try {
+                videoView.setVideoPath(path);
+                finishVideoView(videoView, circlebar);
+            } catch (Exception e) {
+                Log.v("SetVideoPathError", e.getMessage());
+                videoView.setVideoPath(contentURL);
+                finishVideoView(videoView, circlebar);
+            }
+        }
+    }
+
+    public void setMediaToResponse(VideoView videoView, ImageView imageView, ProgressBar circlebar, String contentURL, int option) {
+
+
+        switch (option) {
+            case 1:
+                if (!originactivity.streamContent) {
+                    Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, circlebar, this, videoView, null);
+                    downloadhandler.execute(contentURL);
+                } else {
+                    videoView.setVideoPath(PersistanceDataHandler.getApiRootURL() + contentURL);
+                    finishVideoView(videoView, circlebar);
+                }
+                break;
+
+            case 2:
+
+
+                if (!originactivity.streamContent) {
+                    Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, circlebar, this, videoView, null);
+                    downloadhandler.execute(contentURL);
+                } else {
+                    videoView.setVideoPath(PersistanceDataHandler.getApiRootURL() + contentURL);
+                    finishVideoView(videoView, circlebar);
+                }
+
+                break;
+
+            case 3:
+                if (!originactivity.streamContent) {
+                    Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, circlebar, this, null, imageView);
+                    downloadhandler.execute(contentURL);
+                } else {
+                    Bitmap image = BitmapFactory.decodeFile(PersistanceDataHandler.getApiRootURL() + contentURL);
+                    imageView.setImageBitmap(image);
+                    circlebar.setVisibility(View.GONE);
+                    imageView.setVisibility(View.VISIBLE);
+                }
+                break;
+        }
+    }
+
+    private void finishVideoView(final VideoView videoView, ProgressBar circlebar) {
+
+        videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+                return false;
+            }
+        });
+
+
+        final MediaController mediaController = new MediaController(originactivity);
+        videoView.setTag(R.string.mediacontroller, mediaController);
+
+
+        mediaController.setAnchorView(videoView);
+        videoView.setMediaController(mediaController);
+
+
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+            }
+        });
+
+
+        circlebar.setVisibility(View.GONE);
+        videoView.setVisibility(View.VISIBLE);
 
     }
 
@@ -203,14 +350,34 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
 
         CardView responsecardview;
         TextView responsecreatorname;
+        TextView responsetext;
+        TextView responsemediatype;
+        LinearLayout responseLayoutMedia;
+        ProgressBar circlebar;
+        VideoView responsevideoView;
+        ImageView responseImageView;
 
         public ResponseViewHolder(@NonNull View itemView) {
             super(itemView);
             responsecardview = (CardView) itemView.findViewById(R.id.response_cardView);
             responsecreatorname = (TextView) itemView.findViewById(R.id.response_creatorname);
+            responsetext = (TextView) itemView.findViewById(R.id.response_text);
+            responsemediatype = (TextView) itemView.findViewById(R.id.response_mediatype);
+            responseLayoutMedia = (LinearLayout) itemView.findViewById(R.id.response_linearlayout_media);
+            circlebar = (ProgressBar) itemView.findViewById(R.id.response_loadingcircle);
+            responsevideoView = (VideoView) itemView.findViewById(R.id.response_media_videoview);
+            responseImageView = (ImageView) itemView.findViewById(R.id.response_media_imageview);
 
 
         }
+    }
+
+    private void progressbarAnimation(@NonNull ResponseRecyclerlistAdapter.ResponseViewHolder responseViewHolder) {
+        ObjectAnimator anim = ObjectAnimator.ofInt(responseViewHolder.circlebar, "progress", 0, 100);
+        anim.setDuration(1200);
+        anim.setRepeatCount(Animation.INFINITE);
+        anim.setInterpolator(new LinearInterpolator());
+        anim.start();
     }
 
     public class ViewWeightAnimationWrapper {

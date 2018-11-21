@@ -176,10 +176,12 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
 
         switch (mediatype) {
             case "text":
+                topicViewHolder.topicmediatype.setText("#Nachricht");
                 topicViewHolder.linearLayout_media.setVisibility(View.GONE);
                 break;
 
             case "video":
+                topicViewHolder.topicmediatype.setText("#Video");
                 topicViewHolder.topicvideo.setTag(new Integer(1));
                 topicViewHolder.circlebar.setVisibility(View.VISIBLE);
                 progressbarAnimation(topicViewHolder);
@@ -188,6 +190,7 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
                 break;
 
             case "audio":
+                topicViewHolder.topicmediatype.setText("#Audio");
                 topicViewHolder.topicvideo.setTag(new Integer(2));
                 ViewGroup.LayoutParams params = topicViewHolder.topicvideo.getLayoutParams();
                 params.height = 300;
@@ -198,6 +201,7 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
                 break;
 
             case "image":
+                topicViewHolder.topicmediatype.setText("#Bild");
                 topicViewHolder.circlebar.setVisibility(View.VISIBLE);
                 progressbarAnimation(topicViewHolder);
                 setMediaToTopic(null, topicViewHolder.topicimage, topicViewHolder.circlebar, this.topics.get(i).getContenturl(), 3);
@@ -211,22 +215,7 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
             topicViewHolder.topictype.setText("#Erklärung");
         }
 
-        switch (this.topics.get(i).getMediatype()) {
-            case "text":
-                topicViewHolder.topicmediatype.setText("#Nachricht");
-                break;
 
-            case "video":
-                topicViewHolder.topicmediatype.setText("#Video");
-                break;
-
-            case "audio":
-                topicViewHolder.topicmediatype.setText("#Audio");
-                break;
-
-            case "image":
-                topicViewHolder.topicmediatype.setText("#Bild");
-        }
 
         if (!this.topics.get(i).getText().isEmpty()) {
             topicViewHolder.topictext.setText(this.topics.get(i).getText());
@@ -240,9 +229,15 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
             LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(originactivity, LinearLayoutManager.VERTICAL, false);
             topicViewHolder.responserecyclerview.setLayoutManager(verticalLayoutManager);
 
+            ArrayList<Response> matchingResponses = new ArrayList<>();
+            for (Response response:
+                 this.responses) {
+                if(response.getTopic().get_id().equals(this.topics.get(i).get_id())){
+                    matchingResponses.add(response);
+                }
+            }
 
-
-            this.responseRecyclerlistAdapter = new ResponseRecyclerlistAdapter(this.responses, this.topics.get(i), originactivity, topicViewHolder);
+            this.responseRecyclerlistAdapter = new ResponseRecyclerlistAdapter(matchingResponses, this.topics.get(i), originactivity, topicViewHolder);
 
             topicViewHolder.responserecyclerview.setAdapter(this.responseRecyclerlistAdapter);
 
