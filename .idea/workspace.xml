@@ -19,7 +19,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/ResponseRecyclerlistAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/ResponseRecyclerlistAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/TopiclistRecyclerviewAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/TopiclistRecyclerviewAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/downloadclasses/Downloadhandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/downloadclasses/Downloadhandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/responselist_recyclerviewitem.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/responselist_recyclerviewitem.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -80,22 +79,53 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ResponseRecyclerlistAdapter.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ResponseRecyclerlistAdapter.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/ResponseRecyclerlistAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="188" column="37" selection-start-line="188" selection-start-column="37" selection-end-line="188" selection-end-column="37" />
+            <state relative-caret-position="458">
+              <caret line="112" column="35" selection-start-line="112" selection-start-column="35" selection-end-line="112" selection-end-column="35" />
+              <folding>
+                <element signature="e#1438#1448#0" expanded="true" />
+                <element signature="e#7712#8719#0" expanded="true" />
+                <element signature="e#8718#8719#0" expanded="true" />
+                <element signature="e#13871#14059#0" expanded="true" />
+                <element signature="e#14058#14059#0" expanded="true" />
+                <element signature="e#14174#14198#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TopiclistRecyclerviewAdapter.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="colors.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="3" column="42" selection-start-line="3" selection-start-column="35" selection-end-line="3" selection-end-column="42" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="media_audio.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/media_audio.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" selection-start-line="4" selection-end-line="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TopiclistRecyclerviewAdapter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/TopiclistRecyclerviewAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="380">
-              <caret line="228" column="61" lean-forward="true" selection-start-line="228" selection-start-column="61" selection-end-line="228" selection-end-column="61" />
+            <state relative-caret-position="397">
+              <caret line="197" column="33" selection-start-line="197" selection-start-column="33" selection-end-line="197" selection-end-column="33" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#3428#3616#0" expanded="true" />
+                <element signature="e#3615#3616#0" expanded="true" />
+                <element signature="e#3731#3755#0" expanded="true" />
+                <element signature="e#10369#10370#0" expanded="true" />
+                <element signature="e#10410#10411#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -131,8 +161,8 @@
             <state />
           </provider>
           <provider editor-type-id="text-editor">
-            <state relative-caret-position="1224">
-              <caret line="72" column="53" selection-start-line="72" selection-start-column="43" selection-end-line="72" selection-end-column="53" />
+            <state relative-caret-position="1156">
+              <caret line="79" column="53" selection-start-line="79" selection-start-column="43" selection-end-line="79" selection-end-column="53" />
             </state>
           </provider>
         </entry>
@@ -186,7 +216,6 @@
       <find>setVisibility(View.g</find>
       <find>linearlayout</find>
       <find>ResponseRecyclerlistAdapter</find>
-      <find>responserecyclerview</find>
       <find>horizontalScrollListener</find>
       <find>params</find>
       <find>responseRecyclerlistAdapter</find>
@@ -194,6 +223,7 @@
       <find>topiclist_linearlayout_text</find>
       <find>getta</find>
       <find>setMediaToResponse</find>
+      <find>responserecyclerview</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -2308,7 +2338,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/res/values/layoutvariables_hdpi.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/dialoge/AddCategoryDialog.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/restDataPatch/NewCategoryToGroupPatch.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/RestExceptionAndErrorHandler.java" />
@@ -2355,10 +2384,11 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/CategoryViewActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/anim/topiccontentlist_shrink.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/topiclist_recyclerviewitem.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/responselist_recyclerviewitem.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/downloadclasses/Downloadhandler.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/ResponseRecyclerlistAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/responselist_recyclerviewitem.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/drawable/media_audio.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/TopiclistRecyclerviewAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/ResponseRecyclerlistAdapter.java" />
       </list>
     </option>
   </component>
@@ -2398,9 +2428,19 @@
             <path>
               <item name="Lernapp" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="lernapp" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="adapter" type="462c0819:PsiDirectoryNode" />
+              <item name="res" type="d4f16f75:AndroidResFolderNode" />
+            </path>
+            <path>
+              <item name="Lernapp" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="res" type="d4f16f75:AndroidResFolderNode" />
+              <item name="drawable" type="ddeffd01:AndroidResFolderTypeNode" />
+            </path>
+            <path>
+              <item name="Lernapp" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="res" type="d4f16f75:AndroidResFolderNode" />
+              <item name="values" type="ddeffd01:AndroidResFolderTypeNode" />
             </path>
             <path>
               <item name="Lernapp" type="1abcf292:AndroidViewProjectNode" />
@@ -2676,31 +2716,31 @@
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="Android Profiler" order="7" weight="0.32983795" />
+      <window_info id="Build Variants" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5004651" side_tool="true" weight="0.20209724" />
+      <window_info active="true" anchor="bottom" id="Logcat" order="7" visible="true" weight="0.34795043" />
+      <window_info id="Capture Tool" order="2" />
+      <window_info id="Designer" order="2" />
+      <window_info anchor="right" id="Assistant" order="4" sideWeight="0.49952334" weight="0.32976744" />
+      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.49953488" weight="0.20209724" />
+      <window_info id="Structure" order="1" sideWeight="0.50047666" side_tool="true" weight="0.14139535" />
+      <window_info anchor="right" id="Device File Explorer" order="3" sideWeight="0.50047666" side_tool="true" visible="true" weight="0.18976744" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.27073404" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32983795" />
       <window_info id="simpleUML" order="2" weight="0.32976744" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
       <window_info id="Image Layers" order="2" />
-      <window_info id="Build Variants" order="2" side_tool="true" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5004651" side_tool="true" weight="0.20209724" />
+      <window_info anchor="right" id="Preview" order="4" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.24499524" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32983795" />
-      <window_info anchor="bottom" id="Logcat" order="7" weight="0.34795043" />
       <window_info id="Captures" order="2" weight="0.25" />
-      <window_info id="Capture Tool" order="2" />
-      <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49952334" visible="true" weight="0.13209303" />
-      <window_info anchor="right" id="Assistant" order="4" sideWeight="0.49952334" weight="0.32976744" />
-      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.49953488" weight="0.20209724" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49952334" visible="true" weight="0.13209303" />
       <window_info anchor="right" id="Gradle" order="3" weight="0.32976744" />
-      <window_info id="Structure" order="1" sideWeight="0.50047666" side_tool="true" weight="0.14139535" />
-      <window_info anchor="right" id="Device File Explorer" order="3" sideWeight="0.50047666" side_tool="true" visible="true" weight="0.18976744" />
       <window_info anchor="right" id="Theme Preview" order="3" />
-      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.27073404" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="right" id="Preview" order="4" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -2714,15 +2754,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/ResponseRecyclerlistAdapter.java</url>
-          <line>189</line>
-          <properties />
-          <option name="timeStamp" value="384" />
-        </line-breakpoint>
-      </breakpoints>
-      <option name="time" value="386" />
+      <option name="time" value="387" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="app">
@@ -2802,20 +2834,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="313">
-          <caret line="36" selection-start-line="36" selection-end-line="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="25" column="16" selection-start-line="25" selection-start-column="16" selection-end-line="25" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="471">
@@ -2936,33 +2954,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/loadingcircle.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="9" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/add_member.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="36" selection-start-line="11" selection-start-column="29" selection-end-line="11" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/add_response.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/addmemberdialog_contacts.xml">
@@ -3087,26 +3081,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/topiclist_recyclerviewitem.xml">
-      <provider selected="true" editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="3332">
-          <caret line="196" column="15" selection-start-line="196" selection-start-column="15" selection-end-line="196" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/responselist_recyclerviewitem.xml">
-      <provider selected="true" editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="1224">
-          <caret line="72" column="53" selection-start-line="72" selection-start-column="43" selection-end-line="72" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/CategoryViewActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1989">
@@ -3127,19 +3101,88 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/ResponseRecyclerlistAdapter.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/loadingcircle.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="188" column="37" selection-start-line="188" selection-start-column="37" selection-end-line="188" selection-end-column="37" />
+        <state relative-caret-position="306">
+          <caret line="18" column="9" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/add_response.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="36" lean-forward="true" selection-start-line="2" selection-start-column="29" selection-end-line="2" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/expand_response.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/topiclist_recyclerviewitem.xml">
+      <provider selected="true" editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="3332">
+          <caret line="196" column="15" selection-start-line="196" selection-start-column="15" selection-end-line="196" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/responselist_recyclerviewitem.xml">
+      <provider selected="true" editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="1156">
+          <caret line="79" column="53" selection-start-line="79" selection-start-column="43" selection-end-line="79" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="42" selection-start-line="3" selection-start-column="35" selection-end-line="3" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/media_audio.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/TopiclistRecyclerviewAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="228" column="61" lean-forward="true" selection-start-line="228" selection-start-column="61" selection-end-line="228" selection-end-column="61" />
+        <state relative-caret-position="397">
+          <caret line="197" column="33" selection-start-line="197" selection-start-column="33" selection-end-line="197" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#3428#3616#0" expanded="true" />
+            <element signature="e#3615#3616#0" expanded="true" />
+            <element signature="e#3731#3755#0" expanded="true" />
+            <element signature="e#10369#10370#0" expanded="true" />
+            <element signature="e#10410#10411#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/ResponseRecyclerlistAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="458">
+          <caret line="112" column="35" selection-start-line="112" selection-start-column="35" selection-end-line="112" selection-end-column="35" />
+          <folding>
+            <element signature="e#1438#1448#0" expanded="true" />
+            <element signature="e#7712#8719#0" expanded="true" />
+            <element signature="e#8718#8719#0" expanded="true" />
+            <element signature="e#13871#14059#0" expanded="true" />
+            <element signature="e#14058#14059#0" expanded="true" />
+            <element signature="e#14174#14198#0" expanded="true" />
           </folding>
         </state>
       </provider>

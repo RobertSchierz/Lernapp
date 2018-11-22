@@ -37,6 +37,19 @@
                 android:padding="10dp">
 
                 <TextView
+                    android:id="@+id/response_creatorname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.5"
+                    android:backgroundTint="@android:color/transparent"
+                    android:gravity="start"
+                    android:text="Creatorname"
+                    android:textColor="@color/colorTopic"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
                     android:id="@+id/response_mediatype"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -44,25 +57,19 @@
                     android:layout_weight="8"
                     android:backgroundTint="@android:color/transparent"
                     android:gravity="start"
-                    android:paddingStart="10dp"
                     android:text="Mediatype"
                     android:textColor="@color/colorTopic"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/response_creatorname"
+                <ImageView
+                    android:id="@+id/expand_response"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:backgroundTint="@android:color/transparent"
-                    android:gravity="start"
-                    android:paddingStart="10dp"
-                    android:text="Creatorname"
-                    android:textColor="@color/colorTopic"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:layout_weight="0.5"
+                    android:visibility="gone"
+                    card_view:srcCompat="@drawable/expand_response" />
 
             </LinearLayout>
 
