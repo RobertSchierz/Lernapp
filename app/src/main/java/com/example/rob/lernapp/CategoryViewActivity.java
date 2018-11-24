@@ -67,7 +67,6 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
 
     RecyclerView.OnScrollListener horizontalScrollListener = new RecyclerView.OnScrollListener() {
 
-        private boolean dragged = false;
         public int finalScrollPosition;
 
         @Override
@@ -75,14 +74,11 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
             super.onScrollStateChanged(recyclerView, newState);
             switch (newState) {
                 case RecyclerView.SCROLL_STATE_IDLE:
-                    dragged = false;
                     recyclerView.smoothScrollToPosition(finalScrollPosition);
                     break;
                 case RecyclerView.SCROLL_STATE_DRAGGING:
-                    dragged = true;
                     break;
                 case RecyclerView.SCROLL_STATE_SETTLING:
-                    dragged = true;
                     break;
             }
 

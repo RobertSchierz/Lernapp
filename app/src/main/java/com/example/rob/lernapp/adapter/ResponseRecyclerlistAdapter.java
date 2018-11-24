@@ -26,6 +26,7 @@ import android.widget.VideoView;
 import com.example.rob.lernapp.CategoryViewActivity;
 import com.example.rob.lernapp.PersistanceDataHandler;
 import com.example.rob.lernapp.R;
+import com.example.rob.lernapp.ResponseExpand;
 import com.example.rob.lernapp.downloadclasses.Downloadhandler;
 import com.example.rob.lernapp.restdataGet.Response;
 import com.example.rob.lernapp.restdataGet.Topic;
@@ -41,12 +42,10 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
     public Topic topic;
 
     public TopiclistRecyclerviewAdapter.TopicViewHolder topiclistItemViewHolder;
-    public static boolean topiccontentAnimatedShrink = false;
-    public static boolean topiccontentAnimatedExpand = false;
+    public static boolean topiccontentAnimated = false;
 
-    public static boolean topiccontentShrink = false;
-    public static boolean topiccontentExpand = true;
-    public static boolean singleExpand = false;
+
+    ResponseExpand responseExpand = new ResponseExpand();
 
 
     public ResponseRecyclerlistAdapter(ArrayList<Response> responses, Topic topic, CategoryViewActivity activity, TopiclistRecyclerviewAdapter.TopicViewHolder topicViewHolder) {
@@ -57,9 +56,22 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
 
 
         this.topiclistItemViewHolder.responserecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            public int finalScrollPosition;
+
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        recyclerView.smoothScrollToPosition(finalScrollPosition);
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+                        break;
+                    case RecyclerView.SCROLL_STATE_SETTLING:
+                        break;
+                }
             }
 
             @Override
@@ -69,7 +81,11 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
                 if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
                     LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                     if (layoutManager.getOrientation() == LinearLayoutManager.VERTICAL) {
-                        handleScroll(recyclerView, 0);
+
+                        //handleExpand(recyclerView, 0);
+
+                        int totalItemsInView = layoutManager.getItemCount();
+                        this.finalScrollPosition = changeScrollVertical(totalItemsInView - 1, recyclerView);
                     }
                 }
             }
@@ -77,97 +93,110 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
 
     }
 
-    private void handleScroll(RecyclerView recyclerview, int isSingleResponseMode) {
-        int offset = recyclerview.computeVerticalScrollOffset();
+    private int changeScrollVertical(int totalItemsInView, RecyclerView recyclerView) {
+
+        int offset = recyclerView.computeVerticalScrollOffset();
+        int extent = recyclerView.computeVerticalScrollExtent();
+
+        int scrollValue;
+
+        int offsetRest = offset % extent;
+        int offsetRestMinus = offset - offsetRest;
+
+        int viewposition;
+
+        if (offsetRest > (extent / 2)) {
+            int extentMinusRest = extent - offsetRest;
+            scrollValue = offset + extentMinusRest;
+            viewposition = scrollValue / extent;
+        } else {
+            scrollValue = offsetRestMinus;
+            viewposition = scrollValue / extent;
+        }
+
+        return viewposition;
+    }
+
+    private void handleExpand(RecyclerView recyclerview) {
+        // int offset = recyclerview.computeVerticalScrollOffset();
 
         CardView topiccardview = this.topiclistItemViewHolder.topiccardview;
         final LinearLayout topiclist_info = this.topiclistItemViewHolder.topiclist_info;
         VideoView videoView = this.topiclistItemViewHolder.topicvideo;
         final LinearLayout topiclistcontent = this.topiclistItemViewHolder.topiclist_content;
-        handleResponseScroll(offset, topiccardview, topiclist_info, topiclistcontent, videoView, isSingleResponseMode);
-
+        handleResponseScroll(topiccardview, topiclist_info, topiclistcontent, videoView);
 
     }
 
-    private void handleResponseScroll(final int offset, final CardView topiccardview, final LinearLayout topiclist_info, final LinearLayout topiclistcontent, VideoView videoView, final int isSingleResponseMode) {
-
-        if (offset >= 10 || isSingleResponseMode == 1) {
-            if (!topiccontentAnimatedShrink && !topiccontentAnimatedExpand && topiccontentExpand) {
-                videoView.pause();
-                animateScrollWeight(topiccardview, 700, 5).start();
-                ObjectAnimator animShrink = animateScrollWeight(topiclist_info, 700, 1);
-
-                animShrink.addListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animator) {
-                        topiccontentAnimatedShrink = true;
+    private void handleResponseScroll(final CardView topiccardview, final LinearLayout topiclist_info, final LinearLayout topiclistcontent, VideoView videoView) {
 
 
-                    }
+        if (!topiccontentAnimated && !this.responseExpand.isresponseExpand()) {
+            videoView.pause();
+            animateScrollWeight(topiccardview, 500, 5).start();
+            ObjectAnimator animShrink = animateScrollWeight(topiclist_info, 700, 1);
 
-                    @Override
-                    public void onAnimationEnd(Animator animator) {
-                        topiclistcontent.setVisibility(View.GONE);
-                        topiccontentAnimatedShrink = false;
-                        topiccontentShrink = true;
-                        topiccontentExpand = false;
-                        if(isSingleResponseMode != 0){
-                            singleExpand = true;
-                        }
+            animShrink.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
+                    topiccontentAnimated = true;
+                    responseExpand.setisresponseExpand(true);
+                }
 
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animator) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animator) {
-
-                    }
-                });
-                animShrink.start();
-            }
-
-        } else if (offset == 0 || isSingleResponseMode == 2) {
-            if (!topiccontentAnimatedExpand && !topiccontentAnimatedShrink && topiccontentShrink) {
-
-                animateScrollWeight(topiccardview, 700, 1).start();
-                ObjectAnimator animExpand = animateScrollWeight(topiclist_info, 700, 8);
-                animExpand.addListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animator) {
-                        topiccontentAnimatedExpand = true;
-                        topiclistcontent.setVisibility(View.VISIBLE);
-                        if(isSingleResponseMode != 0){
-                            singleExpand = false;
-                        }
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animator) {
-                        topiccontentAnimatedExpand = false;
-                        topiccontentExpand = true;
-                        topiccontentShrink = false;
-
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animator) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animator) {
-
-                    }
-                });
-                animExpand.start();
+                @Override
+                public void onAnimationEnd(Animator animator) {
+                    topiclistcontent.setVisibility(View.GONE);
+                    topiccontentAnimated = false;
 
 
-            }
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+
+                }
+            });
+            animShrink.start();
         }
+
+
+        if (!topiccontentAnimated && this.responseExpand.isresponseExpand()) {
+
+            animateScrollWeight(topiccardview, 500, 1).start();
+            ObjectAnimator animExpand = animateScrollWeight(topiclist_info, 700, 8);
+            animExpand.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
+                    topiccontentAnimated = true;
+                    topiclistcontent.setVisibility(View.VISIBLE);
+                    responseExpand.setisresponseExpand(false);
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animator) {
+                    topiccontentAnimated = false;
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+
+                }
+            });
+            animExpand.start();
+
+
+        }
+
     }
 
     private ObjectAnimator animateScrollWeight(View view, int duration, int weight) {
@@ -194,39 +223,54 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ResponseRecyclerlistAdapter.ResponseViewHolder responseViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final ResponseRecyclerlistAdapter.ResponseViewHolder responseViewHolder, int i) {
 
 
-        if (i == 0 && this.getItemCount() == 1) {
-            responseViewHolder.responseExpand.setVisibility(View.VISIBLE);
-            responseViewHolder.responseExpand.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (!singleExpand) {
 
-                        ImageView imageView = (ImageView) view;
-                        imageView.setImageResource(R.drawable.shrink_response);
+        this.responseExpand.setListener(new ResponseExpand.responseExpandListener() {
+            @Override
+            public void onChange(boolean isExpand) {
+                if (responseViewHolder.responseExpand != null) {
 
 
-                        if (topiclistItemViewHolder.responserecyclerview != null) {
-                            handleScroll(topiclistItemViewHolder.responserecyclerview, 1);
-                           // singleExpand = true;
-                        }
-
-                    } else if (singleExpand) {
-
-                        ImageView imageView = (ImageView) view;
-                        imageView.setImageResource(R.drawable.expand_response);
-                        if (topiclistItemViewHolder.responserecyclerview != null) {
-                            handleScroll(topiclistItemViewHolder.responserecyclerview, 2);
-                           // singleExpand = false;
-                        }
-
-
+                    if (isExpand) {
+                        responseViewHolder.responseExpand.setImageResource(R.drawable.shrink_response);
+                    } else {
+                        responseViewHolder.responseExpand.setImageResource(R.drawable.expand_response);
                     }
                 }
-            });
-        }
+
+
+            }
+        });
+
+
+        responseViewHolder.responseExpand.setVisibility(View.VISIBLE);
+        responseViewHolder.responseExpand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!responseExpand.isresponseExpand()) {
+
+
+
+
+                    if (topiclistItemViewHolder.responserecyclerview != null) {
+                        handleExpand(topiclistItemViewHolder.responserecyclerview);
+
+                    }
+
+                } else if (responseExpand.isresponseExpand()) {
+
+                    if (topiclistItemViewHolder.responserecyclerview != null) {
+                        handleExpand(topiclistItemViewHolder.responserecyclerview);
+
+                    }
+
+
+                }
+            }
+        });
+
 
         responseViewHolder.responsecreatorname.setText("~ " + this.responses.get(i).getCreator().getName());
         responseViewHolder.responsetext.setText(this.responses.get(i).getText());
@@ -276,6 +320,7 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
 
         if (imageView != null && videoView == null) {
             try {
+
                 Bitmap image = BitmapFactory.decodeFile(path);
                 imageView.setImageBitmap(image);
             } catch (Exception e) {

@@ -166,10 +166,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="8"
+                    android:layout_weight="0.5"
                     android:backgroundTint="@android:color/transparent"
                     android:gravity="start"
                     android:text="Mediatype"
+                    android:textColor="@color/colorTopic"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/topiclist_responsecount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="5"
+                    android:backgroundTint="@android:color/transparent"
+                    android:gravity="start"
+                    android:text="Responsecount"
                     android:textColor="@color/colorTopic"
                     android:textSize="15sp"
                     android:textStyle="bold" />

@@ -245,6 +245,11 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
                 }
             }
 
+            topicViewHolder.responsecount.setText("#" + matchingResponses.size() + "Antworten");
+            if(matchingResponses.size() == 0){
+                topicViewHolder.responsecount.setTextColor(R.color.colorSecondaryLight);
+            }
+
             this.responseRecyclerlistAdapter = new ResponseRecyclerlistAdapter(matchingResponses, this.topics.get(i), originactivity, topicViewHolder);
 
             topicViewHolder.responserecyclerview.setAdapter(this.responseRecyclerlistAdapter);
@@ -281,6 +286,7 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
         TextView topictype;
         TextView topictext;
         TextView topicmediatype;
+        TextView responsecount;
         LinearLayout linearlayout;
         LinearLayout linearLayout_media;
         LinearLayout topiclist_content;
@@ -298,6 +304,7 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
             topictype = (TextView) itemView.findViewById(R.id.topiclist_type);
             topictext = (TextView) itemView.findViewById(R.id.topiclist_text);
             topicmediatype = (TextView) itemView.findViewById(R.id.topiclist_mediatype);
+            responsecount = (TextView) itemView.findViewById(R.id.topiclist_responsecount);
             linearlayout = (LinearLayout) itemView.findViewById(R.id.topiclist_linearlayout);
             linearLayout_media = (LinearLayout) itemView.findViewById(R.id.topiclist_linearlayout_media);
             topiclist_content = (LinearLayout) itemView.findViewById(R.id.topiclist_content);
