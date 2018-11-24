@@ -23,6 +23,7 @@ public class ResponseExpand {
         if (listener != null){
             for (responseExpandListener rl :
                     this.listener) {
+
                 rl.onChange(isExpand);
             }
         }

@@ -225,6 +225,15 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
     @Override
     public void onBindViewHolder(@NonNull final ResponseRecyclerlistAdapter.ResponseViewHolder responseViewHolder, int i) {
 
+        /** Anzeigefehler beheben, wenn ein Element nachgeladen wird**/
+        ArrayList<ResponseExpand.responseExpandListener> listener = this.responseExpand.getListener();
+        if(listener.size() != 0){
+            if(this.responseExpand.isresponseExpand()){
+                responseViewHolder.responseExpand.setImageResource(R.drawable.shrink_response);
+            }else{
+                responseViewHolder.responseExpand.setImageResource(R.drawable.expand_response);
+            }
+        }
 
 
         this.responseExpand.setListener(new ResponseExpand.responseExpandListener() {
@@ -235,7 +244,7 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
 
                     if (isExpand) {
                         responseViewHolder.responseExpand.setImageResource(R.drawable.shrink_response);
-                    } else {
+                    } else if(!isExpand) {
                         responseViewHolder.responseExpand.setImageResource(R.drawable.expand_response);
                     }
                 }
@@ -250,9 +259,6 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
             @Override
             public void onClick(View view) {
                 if (!responseExpand.isresponseExpand()) {
-
-
-
 
                     if (topiclistItemViewHolder.responserecyclerview != null) {
                         handleExpand(topiclistItemViewHolder.responserecyclerview);
