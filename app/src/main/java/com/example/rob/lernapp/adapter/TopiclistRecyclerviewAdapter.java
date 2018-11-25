@@ -23,11 +23,13 @@ import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.rob.lernapp.CategoryViewActivity;
 import com.example.rob.lernapp.PersistanceDataHandler;
 import com.example.rob.lernapp.R;
+import com.example.rob.lernapp.downloadclasses.DownloadImagehandler;
 import com.example.rob.lernapp.downloadclasses.Downloadhandler;
 import com.example.rob.lernapp.restdataGet.Response;
 import com.example.rob.lernapp.restdataGet.Topic;
@@ -65,6 +67,10 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
         return topicViewHolder;
     }
 
+    @UiThread
+    public void notEnoughSpace(){
+        Toast.makeText(originactivity, "Nicht genug Speicherplatz für die Medien frei.", Toast.LENGTH_LONG).show();
+    }
 
     @UiThread
     public void setMediaPath(String path, ProgressBar circlebar, VideoView videoView, ImageView imageView, String contentURL) {
@@ -155,8 +161,8 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
                     Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, circlebar, this, null, imageView);
                     downloadhandler.execute(contentURL);
                 } else {
-                    Bitmap image = BitmapFactory.decodeFile(PersistanceDataHandler.getApiRootURL() + contentURL);
-                    imageView.setImageBitmap(image);
+                    DownloadImagehandler downloadImagehandler = new DownloadImagehandler(this, imageView);
+                    downloadImagehandler.execute(contentURL);
                     circlebar.setVisibility(View.GONE);
                     imageView.setVisibility(View.VISIBLE);
                 }
@@ -276,6 +282,10 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
     @Override
     public int getItemCount() {
         return this.topics.size();
+    }
+
+    public void setStreamedImage(ImageView imageView, Bitmap bitmap) {
+        imageView.setImageBitmap(bitmap);
     }
 
     public static class TopicViewHolder extends RecyclerView.ViewHolder {

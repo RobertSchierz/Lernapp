@@ -3,6 +3,7 @@ package com.example.rob.lernapp.downloadclasses;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.os.StatFs;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.ImageView;
@@ -33,17 +34,16 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
     public boolean isTopic = false;
 
 
-
-    public Downloadhandler(Activity a, ProgressBar circlebar , RecyclerView.Adapter recyclerviewAdapter, VideoView videoView, ImageView imageView) {
+    public Downloadhandler(Activity a, ProgressBar circlebar, RecyclerView.Adapter recyclerviewAdapter, VideoView videoView, ImageView imageView) {
         this.activity = a;
         this.videoView = videoView;
         this.circlebar = circlebar;
         this.imageView = imageView;
 
-        if(recyclerviewAdapter instanceof  TopiclistRecyclerviewAdapter){
+        if (recyclerviewAdapter instanceof TopiclistRecyclerviewAdapter) {
             this.isTopic = true;
             this.topiclistRecyclerviewAdapter = (TopiclistRecyclerviewAdapter) recyclerviewAdapter;
-        }else if(recyclerviewAdapter instanceof  ResponseRecyclerlistAdapter){
+        } else if (recyclerviewAdapter instanceof ResponseRecyclerlistAdapter) {
             this.isTopic = false;
             this.responseRecyclerlistAdapter = (ResponseRecyclerlistAdapter) recyclerviewAdapter;
         }
@@ -68,62 +68,87 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
             connection.setReadTimeout(5000);
             connection.setConnectTimeout(10000);
 
-            InputStream inputStream = connection.getInputStream();
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, 512);
+            int filesize = connection.getContentLength();
+            StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
+            long bytesAvailable;
 
-            String filename = downloadURL[0].substring(downloadURL[0].indexOf("/") + 1);
-
-
-            if (!mediadownloadsDir.exists()) {
-                mediadownloadsDir.mkdir();
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                bytesAvailable = stat.getBlockSizeLong() * stat.getAvailableBlocksLong();
+            } else {
+                bytesAvailable = stat.getBlockSize() * stat.getAvailableBlocks();
             }
-            currentFile = new File(mediadownloadsDir.getPath() + "/" + filename);
-            if (!currentFile.exists()) {
-                currentFile.createNewFile();
-                FileOutputStream outStream = new FileOutputStream(currentFile);
-                byte[] buff = new byte[512];
 
-                int len;
-                while ((len = bufferedInputStream.read(buff)) != -1) {
-                    outStream.write(buff, 0, len);
+            if (bytesAvailable < filesize) {
+                int u = 3;
+            } else {
+                InputStream inputStream = connection.getInputStream();
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, 512);
+
+                String filename = downloadURL[0].substring(downloadURL[0].indexOf("/") + 1);
+
+
+                if (!mediadownloadsDir.exists()) {
+                    mediadownloadsDir.mkdir();
+                }
+                currentFile = new File(mediadownloadsDir.getPath() + "/" + filename);
+                if (!currentFile.exists()) {
+                    currentFile.createNewFile();
+                    FileOutputStream outStream = new FileOutputStream(currentFile);
+                    byte[] buff = new byte[512];
+
+                    int len;
+                    while ((len = bufferedInputStream.read(buff)) != -1) {
+                        outStream.write(buff, 0, len);
+                    }
+
+
+                    outStream.flush();
+                    outStream.close();
+                    bufferedInputStream.close();
                 }
 
-
-                outStream.flush();
-                outStream.close();
-                bufferedInputStream.close();
+                this.filePath = currentFile.getAbsolutePath();
+                return currentFile.getAbsolutePath();
             }
 
-            this.filePath = currentFile.getAbsolutePath();
 
         } catch (Exception e) {
             Log.e("Error: ", e.getMessage());
         }
 
-        return currentFile.getAbsolutePath();
+        return "nospace";
 
     }
 
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        if (s.isEmpty()) {
+
+        String path;
+        if(s.isEmpty()){
+            path = this.filePath;
+        }else{
+            path = s;
+        }
+
+        if (s.equals("nospace")) {
             if(isTopic){
-                topiclistRecyclerviewAdapter.setMediaPath(this.filePath, this.circlebar, this.videoView, this.imageView, this.contentURL);
+                topiclistRecyclerviewAdapter.notEnoughSpace();
             }else{
-                responseRecyclerlistAdapter.setMediaPath(this.filePath, this.circlebar, this.videoView, this.imageView, this.contentURL);
+                responseRecyclerlistAdapter.notEnoughSpace();
             }
 
         } else {
-            if(isTopic){
-                topiclistRecyclerviewAdapter.setMediaPath(s, this.circlebar, this.videoView, this.imageView, this.contentURL);
-            }else{
-                responseRecyclerlistAdapter.setMediaPath(this.filePath, this.circlebar, this.videoView, this.imageView, this.contentURL);
+            if (isTopic) {
+                topiclistRecyclerviewAdapter.setMediaPath(path, this.circlebar, this.videoView, this.imageView, this.contentURL);
+            } else {
+                responseRecyclerlistAdapter.setMediaPath(path, this.circlebar, this.videoView, this.imageView, this.contentURL);
             }
         }
 
+
+
     }
 
-
-
 }
+

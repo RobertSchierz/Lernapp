@@ -21,12 +21,14 @@ import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.rob.lernapp.CategoryViewActivity;
 import com.example.rob.lernapp.PersistanceDataHandler;
 import com.example.rob.lernapp.R;
 import com.example.rob.lernapp.ResponseExpand;
+import com.example.rob.lernapp.downloadclasses.DownloadImagehandler;
 import com.example.rob.lernapp.downloadclasses.Downloadhandler;
 import com.example.rob.lernapp.restdataGet.Response;
 import com.example.rob.lernapp.restdataGet.Topic;
@@ -168,7 +170,7 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
         if (!topiccontentAnimated && this.responseExpand.isresponseExpand()) {
 
             animateScrollWeight(topiccardview, 500, 1).start();
-            ObjectAnimator animExpand = animateScrollWeight(topiclist_info, 700, 8);
+            ObjectAnimator animExpand = animateScrollWeight(topiclist_info, 700, 6);
             animExpand.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animator) {
@@ -240,8 +242,6 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
             @Override
             public void onChange(boolean isExpand) {
                 if (responseViewHolder.responseExpand != null) {
-
-
                     if (isExpand) {
                         responseViewHolder.responseExpand.setImageResource(R.drawable.shrink_response);
                     } else if(!isExpand) {
@@ -296,7 +296,6 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
                 responseViewHolder.circlebar.setVisibility(View.VISIBLE);
                 progressbarAnimation(responseViewHolder);
                 setMediaToResponse(responseViewHolder.responsevideoView, null, responseViewHolder.circlebar, this.responses.get(i).getContenturl(), 1);
-
                 break;
 
             case "audio":
@@ -381,8 +380,8 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
                     Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, circlebar, this, null, imageView);
                     downloadhandler.execute(contentURL);
                 } else {
-                    Bitmap image = BitmapFactory.decodeFile(PersistanceDataHandler.getApiRootURL() + contentURL);
-                    imageView.setImageBitmap(image);
+                    DownloadImagehandler downloadImagehandler = new DownloadImagehandler(this, imageView);
+                    downloadImagehandler.execute(contentURL);
                     circlebar.setVisibility(View.GONE);
                     imageView.setVisibility(View.VISIBLE);
                 }
@@ -437,6 +436,15 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
         }
 
         return this.currentResponses.size();
+    }
+
+    @UiThread
+    public void notEnoughSpace() {
+        Toast.makeText(originactivity, "Nicht genug Speicherplatz für die Medien frei.", Toast.LENGTH_LONG).show();
+    }
+
+    public void setStreamedImage(ImageView imageView, Bitmap bitmap) {
+        imageView.setImageBitmap(bitmap);
     }
 
     public static class ResponseViewHolder extends RecyclerView.ViewHolder {
@@ -496,6 +504,8 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
             return ((LinearLayout.LayoutParams) view.getLayoutParams()).weight;
         }
     }
+
+
 }
 
 
