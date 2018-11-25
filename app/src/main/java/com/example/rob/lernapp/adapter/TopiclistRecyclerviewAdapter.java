@@ -80,10 +80,14 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
         if (imageView != null && videoView == null) {
             try {
                 Bitmap image = BitmapFactory.decodeFile(path);
-                imageView.setImageBitmap(image);
+                int newheight = (int) ( image.getHeight() * (512.0 / image.getWidth()) );
+                Bitmap scaled = Bitmap.createScaledBitmap(image, 512, newheight, true);
+                imageView.setImageBitmap(scaled);
             } catch (Exception e) {
                 Bitmap image = BitmapFactory.decodeFile(contentURL);
-                imageView.setImageBitmap(image);
+                int newheight = (int) ( image.getHeight() * (512.0 / image.getWidth()) );
+                Bitmap scaled = Bitmap.createScaledBitmap(image, 512, newheight, true);
+                imageView.setImageBitmap(scaled);
             }
 
             imageView.setVisibility(View.VISIBLE);
@@ -315,7 +319,9 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
     }
 
     public void setStreamedImage(ImageView imageView, Bitmap bitmap) {
-        imageView.setImageBitmap(bitmap);
+        int newheight = (int) ( bitmap.getHeight() * (512.0 / bitmap.getWidth()) );
+        Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 512, newheight, true);
+        imageView.setImageBitmap(scaled);
     }
 
     public static class TopicViewHolder extends RecyclerView.ViewHolder {
