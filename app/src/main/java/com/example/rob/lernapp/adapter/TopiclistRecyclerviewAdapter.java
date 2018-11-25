@@ -18,6 +18,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.view.animation.LinearInterpolator;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
@@ -33,6 +34,8 @@ import com.example.rob.lernapp.downloadclasses.DownloadImagehandler;
 import com.example.rob.lernapp.downloadclasses.Downloadhandler;
 import com.example.rob.lernapp.restdataGet.Response;
 import com.example.rob.lernapp.restdataGet.Topic;
+
+import org.androidannotations.annotations.Click;
 
 import java.util.ArrayList;
 
@@ -52,9 +55,6 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
     }
 
 
-
-
-
     public void setTopicNew(ArrayList<Topic> newTopic) {
         this.topics = newTopic;
     }
@@ -68,9 +68,11 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
     }
 
     @UiThread
-    public void notEnoughSpace(){
+    public void notEnoughSpace(Button streamingButton) {
+        streamingButton.setVisibility(View.VISIBLE);
         Toast.makeText(originactivity, "Nicht genug Speicherplatz für die Medien frei.", Toast.LENGTH_LONG).show();
     }
+
 
     @UiThread
     public void setMediaPath(String path, ProgressBar circlebar, VideoView videoView, ImageView imageView, String contentURL) {
@@ -129,13 +131,13 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
 
     }
 
-    public void setMediaToTopic(VideoView videoView, ImageView imageView, ProgressBar circlebar, String contentURL, int option) {
+    public void setMediaToTopic(VideoView videoView, ImageView imageView, Button streamingButton, ProgressBar circlebar, String contentURL, int option) {
 
 
         switch (option) {
             case 1:
                 if (!originactivity.streamContent) {
-                    Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, circlebar, this, videoView, null);
+                    Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, circlebar, this, videoView, null, streamingButton);
                     downloadhandler.execute(contentURL);
                 } else {
                     videoView.setVideoPath(PersistanceDataHandler.getApiRootURL() + contentURL);
@@ -147,7 +149,7 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
 
 
                 if (!originactivity.streamContent) {
-                    Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, circlebar, this, videoView, null);
+                    Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, circlebar, this, videoView, null, streamingButton);
                     downloadhandler.execute(contentURL);
                 } else {
                     videoView.setVideoPath(PersistanceDataHandler.getApiRootURL() + contentURL);
@@ -158,7 +160,7 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
 
             case 3:
                 if (!originactivity.streamContent) {
-                    Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, circlebar, this, null, imageView);
+                    Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, circlebar, this, null, imageView, streamingButton);
                     downloadhandler.execute(contentURL);
                 } else {
                     DownloadImagehandler downloadImagehandler = new DownloadImagehandler(this, imageView);
@@ -173,7 +175,7 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final TopiclistRecyclerviewAdapter.TopicViewHolder topicViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final TopiclistRecyclerviewAdapter.TopicViewHolder topicViewHolder, final int i) {
 
         topicViewHolder.topicname.setText(this.topics.get(i).getName());
         topicViewHolder.topiccreator.setText("~ " + this.topics.get(i).getCreator().getName());
@@ -192,7 +194,17 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
                 topicViewHolder.topicvideo.setTag(new Integer(1));
                 topicViewHolder.circlebar.setVisibility(View.VISIBLE);
                 progressbarAnimation(topicViewHolder);
-                setMediaToTopic(topicViewHolder.topicvideo, null, topicViewHolder.circlebar, this.topics.get(i).getContenturl(), 1);
+
+                topicViewHolder.topicstreambutton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        topicViewHolder.topicvideo.setVideoPath(PersistanceDataHandler.getApiRootURL() + topics.get(i).getContenturl());
+                        finishVideoView(topicViewHolder.topicvideo, topicViewHolder.circlebar);
+                        topicViewHolder.topicstreambutton.setVisibility(View.GONE);
+                    }
+                });
+
+                setMediaToTopic(topicViewHolder.topicvideo, null, topicViewHolder.topicstreambutton, topicViewHolder.circlebar, this.topics.get(i).getContenturl(), 1);
 
                 break;
 
@@ -204,21 +216,40 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
                 params.height = 300;
                 params.width = 300;
                 topicViewHolder.topicvideo.setLayoutParams(params);
+
                 topicViewHolder.topicvideo.setBackground(ContextCompat.getDrawable(originactivity, R.drawable.media_audio));
-
-
-
-
                 topicViewHolder.circlebar.setVisibility(View.VISIBLE);
                 progressbarAnimation(topicViewHolder);
-                setMediaToTopic(topicViewHolder.topicvideo, null, topicViewHolder.circlebar, this.topics.get(i).getContenturl(), 2);
+
+                topicViewHolder.topicstreambutton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        topicViewHolder.topicvideo.setVideoPath(PersistanceDataHandler.getApiRootURL() + topics.get(i).getContenturl());
+                        finishVideoView(topicViewHolder.topicvideo, topicViewHolder.circlebar);
+                        topicViewHolder.topicstreambutton.setVisibility(View.GONE);
+                    }
+                });
+
+                setMediaToTopic(topicViewHolder.topicvideo, null, topicViewHolder.topicstreambutton, topicViewHolder.circlebar, this.topics.get(i).getContenturl(), 2);
                 break;
 
             case "image":
                 topicViewHolder.topicmediatype.setText("#Bild");
                 topicViewHolder.circlebar.setVisibility(View.VISIBLE);
                 progressbarAnimation(topicViewHolder);
-                setMediaToTopic(null, topicViewHolder.topicimage, topicViewHolder.circlebar, this.topics.get(i).getContenturl(), 3);
+                topicViewHolder.topicstreambutton.setTag(R.string.streamingbuttonAdapter, this);
+                topicViewHolder.topicstreambutton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DownloadImagehandler downloadImagehandler = new DownloadImagehandler((TopiclistRecyclerviewAdapter)view.getTag(R.string.streamingbuttonAdapter), topicViewHolder.topicimage);
+                        downloadImagehandler.execute(topics.get(i).getContenturl());
+                        topicViewHolder.topicimage.setVisibility(View.VISIBLE);
+                        topicViewHolder.topicstreambutton.setVisibility(View.GONE);
+                        topicViewHolder.circlebar.setVisibility(View.GONE);
+                    }
+                });
+
+                setMediaToTopic(null, topicViewHolder.topicimage, topicViewHolder.topicstreambutton, topicViewHolder.circlebar, this.topics.get(i).getContenturl(), 3);
                 break;
 
         }
@@ -228,7 +259,6 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
         } else if (this.topics.get(i).getType().equals("explanation")) {
             topicViewHolder.topictype.setText("#Erklärung");
         }
-
 
 
         if (!this.topics.get(i).getText().isEmpty()) {
@@ -244,15 +274,15 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
             topicViewHolder.responserecyclerview.setLayoutManager(verticalLayoutManager);
 
             ArrayList<Response> matchingResponses = new ArrayList<>();
-            for (Response response:
-                 this.responses) {
-                if(response.getTopic().get_id().equals(this.topics.get(i).get_id())){
+            for (Response response :
+                    this.responses) {
+                if (response.getTopic().get_id().equals(this.topics.get(i).get_id())) {
                     matchingResponses.add(response);
                 }
             }
 
             topicViewHolder.responsecount.setText("#" + matchingResponses.size() + "Antworten");
-            if(matchingResponses.size() == 0){
+            if (matchingResponses.size() == 0) {
                 topicViewHolder.responsecount.setTextColor(R.color.colorSecondaryLight);
             }
 
@@ -305,6 +335,7 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
         VideoView topicvideo;
         ProgressBar circlebar;
         ImageView topicimage;
+        Button topicstreambutton;
 
         public TopicViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -323,14 +354,11 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
             topicvideo = (VideoView) itemView.findViewById(R.id.topiclist_media_videoview);
             circlebar = (ProgressBar) itemView.findViewById(R.id.topicmedia_loadingcircle);
             topicimage = (ImageView) itemView.findViewById(R.id.topiclist_media_imageview);
+            topicstreambutton = (Button) itemView.findViewById(R.id.topiclist_streambutton);
 
 
         }
     }
-
-
-
-
 
 
 }

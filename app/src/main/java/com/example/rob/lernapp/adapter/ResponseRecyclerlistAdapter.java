@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
@@ -225,7 +226,7 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ResponseRecyclerlistAdapter.ResponseViewHolder responseViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final ResponseRecyclerlistAdapter.ResponseViewHolder responseViewHolder, final int i) {
 
         /** Anzeigefehler beheben, wenn ein Element nachgeladen wird**/
         ArrayList<ResponseExpand.responseExpandListener> listener = this.responseExpand.getListener();
@@ -295,7 +296,17 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
                 //topicViewHolder.topicvideo.setTag(new Integer(1));
                 responseViewHolder.circlebar.setVisibility(View.VISIBLE);
                 progressbarAnimation(responseViewHolder);
-                setMediaToResponse(responseViewHolder.responsevideoView, null, responseViewHolder.circlebar, this.responses.get(i).getContenturl(), 1);
+
+                responseViewHolder.responsestreamButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        responseViewHolder.responsevideoView.setVideoPath(PersistanceDataHandler.getApiRootURL() + responses.get(i).getContenturl());
+                        finishVideoView(responseViewHolder.responsevideoView, responseViewHolder.circlebar);
+                        responseViewHolder.responsestreamButton.setVisibility(View.GONE);
+                    }
+                });
+
+                setMediaToResponse(responseViewHolder.responsevideoView, null, responseViewHolder.responsestreamButton , responseViewHolder.circlebar, this.responses.get(i).getContenturl(), 1);
                 break;
 
             case "audio":
@@ -306,14 +317,37 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
                 responseViewHolder.responsevideoView.setLayoutParams(params);
                 responseViewHolder.circlebar.setVisibility(View.VISIBLE);
                 progressbarAnimation(responseViewHolder);
-                setMediaToResponse(responseViewHolder.responsevideoView, null, responseViewHolder.circlebar, this.responses.get(i).getContenturl(), 2);
+
+                responseViewHolder.responsestreamButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        responseViewHolder.responsevideoView.setVideoPath(PersistanceDataHandler.getApiRootURL() + responses.get(i).getContenturl());
+                        finishVideoView(responseViewHolder.responsevideoView, responseViewHolder.circlebar);
+                        responseViewHolder.responsestreamButton.setVisibility(View.GONE);
+                    }
+                });
+
+                setMediaToResponse(responseViewHolder.responsevideoView, null, responseViewHolder.responsestreamButton, responseViewHolder.circlebar, this.responses.get(i).getContenturl(), 2);
                 break;
 
             case "image":
                 responseViewHolder.responsemediatype.setText("#Bild");
                 responseViewHolder.circlebar.setVisibility(View.VISIBLE);
                 progressbarAnimation(responseViewHolder);
-                setMediaToResponse(null, responseViewHolder.responseImageView, responseViewHolder.circlebar, this.responses.get(i).getContenturl(), 3);
+
+                responseViewHolder.responsestreamButton.setTag(R.string.streamingbuttonAdapter, this);
+                responseViewHolder.responsestreamButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DownloadImagehandler downloadImagehandler = new DownloadImagehandler((ResponseRecyclerlistAdapter)view.getTag(R.string.streamingbuttonAdapter), responseViewHolder.responseImageView);
+                        downloadImagehandler.execute(responses.get(i).getContenturl());
+                        responseViewHolder.responseImageView.setVisibility(View.VISIBLE);
+                        responseViewHolder.responsestreamButton.setVisibility(View.GONE);
+                        responseViewHolder.circlebar.setVisibility(View.GONE);
+                    }
+                });
+
+                setMediaToResponse(null, responseViewHolder.responseImageView, responseViewHolder.responsestreamButton, responseViewHolder.circlebar, this.responses.get(i).getContenturl(), 3);
                 break;
 
         }
@@ -348,13 +382,13 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
         }
     }
 
-    public void setMediaToResponse(VideoView videoView, ImageView imageView, ProgressBar circlebar, String contentURL, int option) {
+    public void setMediaToResponse(VideoView videoView, ImageView imageView, Button streamingButton , ProgressBar circlebar, String contentURL, int option) {
 
 
         switch (option) {
             case 1:
                 if (!originactivity.streamContent) {
-                    Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, circlebar, this, videoView, null);
+                    Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, circlebar, this, videoView, null, streamingButton);
                     downloadhandler.execute(contentURL);
                 } else {
                     videoView.setVideoPath(PersistanceDataHandler.getApiRootURL() + contentURL);
@@ -366,7 +400,7 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
 
 
                 if (!originactivity.streamContent) {
-                    Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, circlebar, this, videoView, null);
+                    Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, circlebar, this, videoView, null, streamingButton);
                     downloadhandler.execute(contentURL);
                 } else {
                     videoView.setVideoPath(PersistanceDataHandler.getApiRootURL() + contentURL);
@@ -377,7 +411,7 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
 
             case 3:
                 if (!originactivity.streamContent) {
-                    Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, circlebar, this, null, imageView);
+                    Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, circlebar, this, null, imageView, streamingButton);
                     downloadhandler.execute(contentURL);
                 } else {
                     DownloadImagehandler downloadImagehandler = new DownloadImagehandler(this, imageView);
@@ -439,7 +473,8 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
     }
 
     @UiThread
-    public void notEnoughSpace() {
+    public void notEnoughSpace(Button streamButton) {
+        streamButton.setVisibility(View.VISIBLE);
         Toast.makeText(originactivity, "Nicht genug Speicherplatz für die Medien frei.", Toast.LENGTH_LONG).show();
     }
 
@@ -458,6 +493,7 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
         VideoView responsevideoView;
         ImageView responseImageView;
         ImageView responseExpand;
+        Button responsestreamButton;
 
         public ResponseViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -470,6 +506,7 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
             responsevideoView = (VideoView) itemView.findViewById(R.id.response_media_videoview);
             responseImageView = (ImageView) itemView.findViewById(R.id.response_media_imageview);
             responseExpand = (ImageView) itemView.findViewById(R.id.expand_response);
+            responsestreamButton = (Button) itemView.findViewById(R.id.responselist_streambutton);
 
 
         }

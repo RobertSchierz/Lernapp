@@ -2,6 +2,9 @@
 
     <!-- IDS TAGS-->
     <string name="mediacontroller">mediacontroller</string>
+    <string name="streamingbuttonAdapter">streamingbuttonAdapter</string>
+
+
 
     <string name="app_name">Lernapp</string>
     <string name="learngroupactivitylabel">Lerngruppen</string>

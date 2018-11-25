@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.VideoView;
@@ -32,13 +33,15 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
     public ProgressBar circlebar;
     public ImageView imageView;
     public boolean isTopic = false;
+    public Button streamingbutton;
 
 
-    public Downloadhandler(Activity a, ProgressBar circlebar, RecyclerView.Adapter recyclerviewAdapter, VideoView videoView, ImageView imageView) {
+    public Downloadhandler(Activity a, ProgressBar circlebar, RecyclerView.Adapter recyclerviewAdapter, VideoView videoView, ImageView imageView, Button streamingbutton) {
         this.activity = a;
         this.videoView = videoView;
         this.circlebar = circlebar;
         this.imageView = imageView;
+        this.streamingbutton = streamingbutton;
 
         if (recyclerviewAdapter instanceof TopiclistRecyclerviewAdapter) {
             this.isTopic = true;
@@ -133,9 +136,9 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
 
         if (s.equals("nospace")) {
             if(isTopic){
-                topiclistRecyclerviewAdapter.notEnoughSpace();
+                topiclistRecyclerviewAdapter.notEnoughSpace(this.streamingbutton);
             }else{
-                responseRecyclerlistAdapter.notEnoughSpace();
+                responseRecyclerlistAdapter.notEnoughSpace(this.streamingbutton);
             }
 
         } else {

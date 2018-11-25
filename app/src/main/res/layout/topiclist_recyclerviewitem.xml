@@ -120,6 +120,14 @@
                             android:progressDrawable="@drawable/loadingcircle"
                             android:secondaryProgress="0" />
 
+                        <Button
+                            android:id="@+id/topiclist_streambutton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/colorPrimary"
+                            android:text="Medienstream ?"
+                            android:visibility="gone" />
+
                         <VideoView
                             android:id="@+id/topiclist_media_videoview"
                             android:layout_width="match_parent"
