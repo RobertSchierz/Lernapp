@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -27,8 +26,9 @@
         <activity
             android:name=".LearngroupViewActivity_"
             android:label="@string/categoryactivitylabel" />
-        <activity android:name=".CategoryViewActivity_" android:label="@string/topicsactivitylabel"></activity>
-
+        <activity
+            android:name=".CategoryViewActivity_"
+            android:label="@string/topicsactivitylabel" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -37,10 +37,10 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_path"
-                ></meta-data>
+                android:resource="@xml/provider_path" />
         </provider>
 
+        <activity android:name=".NewContentActivity_"></activity>
     </application>
 
 </manifest>

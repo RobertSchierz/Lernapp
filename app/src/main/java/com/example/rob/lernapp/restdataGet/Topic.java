@@ -1,6 +1,9 @@
 package com.example.rob.lernapp.restdataGet;
 
-public class Topic {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Topic implements Parcelable {
 
     public Topic(String _id, String name, User creator, String state, String type, String text, String mediatype, String contenturl, Category category) {
         this._id = _id;
@@ -96,4 +99,47 @@ public class Topic {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this._id);
+        dest.writeString(this.name);
+        dest.writeParcelable(this.creator, flags);
+        dest.writeString(this.state);
+        dest.writeString(this.type);
+        dest.writeString(this.text);
+        dest.writeString(this.mediatype);
+        dest.writeString(this.contenturl);
+        dest.writeParcelable(this.category, flags);
+    }
+
+    protected Topic(Parcel in) {
+        this._id = in.readString();
+        this.name = in.readString();
+        this.creator = in.readParcelable(User.class.getClassLoader());
+        this.state = in.readString();
+        this.type = in.readString();
+        this.text = in.readString();
+        this.mediatype = in.readString();
+        this.contenturl = in.readString();
+        this.category = in.readParcelable(Category.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<Topic> CREATOR = new Parcelable.Creator<Topic>() {
+        @Override
+        public Topic createFromParcel(Parcel source) {
+            return new Topic(source);
+        }
+
+        @Override
+        public Topic[] newArray(int size) {
+            return new Topic[size];
+        }
+    };
 }

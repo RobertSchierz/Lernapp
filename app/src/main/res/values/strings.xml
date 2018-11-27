@@ -10,6 +10,7 @@
     <string name="learngroupactivitylabel">Lerngruppen</string>
     <string name="categoryactivitylabel">Kategorien</string>
     <string name="topicsactivitylabel">Topics</string>
+    <string name="contentactivitylabel">Neuer Post</string>
 
 
     <!-- Berechtigungsdialog -->

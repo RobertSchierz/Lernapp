@@ -1,9 +1,11 @@
 package com.example.rob.lernapp.adapter;
 
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
 import android.support.v4.content.ContextCompat;
@@ -28,14 +30,13 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.rob.lernapp.CategoryViewActivity;
+import com.example.rob.lernapp.NewContentActivity_;
 import com.example.rob.lernapp.PersistanceDataHandler;
 import com.example.rob.lernapp.R;
 import com.example.rob.lernapp.downloadclasses.DownloadImagehandler;
 import com.example.rob.lernapp.downloadclasses.Downloadhandler;
 import com.example.rob.lernapp.restdataGet.Response;
 import com.example.rob.lernapp.restdataGet.Topic;
-
-import org.androidannotations.annotations.Click;
 
 import java.util.ArrayList;
 
@@ -298,6 +299,18 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
             topicViewHolder.responserecyclerview.setVisibility(View.VISIBLE);
             topicViewHolder.responserecyclerview.setLayoutAnimation(animation);
         }
+
+
+        topicViewHolder.topicaddresponse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent newContent = new Intent(originactivity, NewContentActivity_.class);
+                Bundle extras = new Bundle();
+                extras.putParcelable("topic", topics.get(i));
+                newContent.putExtras(extras);
+                originactivity.startActivity(newContent);
+            }
+        });
     }
 
     private void progressbarAnimation(@NonNull TopicViewHolder topicViewHolder) {
@@ -342,6 +355,7 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
         ProgressBar circlebar;
         ImageView topicimage;
         Button topicstreambutton;
+        ImageView topicaddresponse;
 
         public TopicViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -361,6 +375,7 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
             circlebar = (ProgressBar) itemView.findViewById(R.id.topicmedia_loadingcircle);
             topicimage = (ImageView) itemView.findViewById(R.id.topiclist_media_imageview);
             topicstreambutton = (Button) itemView.findViewById(R.id.topiclist_streambutton);
+            topicaddresponse = (ImageView) itemView.findViewById(R.id.topiclist_addresponse);
 
 
         }

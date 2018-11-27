@@ -29,7 +29,7 @@
             app:srcCompat="@drawable/addmemberdialog_contacts" />
 
         <View
-            android:id="@+id/divider3"
+            android:id="@+id/divider"
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_marginStart="20dp"
