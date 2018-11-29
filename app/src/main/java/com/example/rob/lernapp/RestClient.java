@@ -17,13 +17,17 @@ import org.androidannotations.rest.spring.annotations.Get;
 import org.androidannotations.rest.spring.annotations.Patch;
 import org.androidannotations.rest.spring.annotations.Path;
 import org.androidannotations.rest.spring.annotations.Post;
+import org.androidannotations.rest.spring.annotations.RequiresHeader;
 import org.androidannotations.rest.spring.annotations.Rest;
 import org.androidannotations.rest.spring.api.RestClientErrorHandling;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
+import org.springframework.util.MultiValueMap;
 
-@Rest(rootUrl = "http://learnapp.enif.uberspace.de/restapi/", converters = { FormHttpMessageConverter.class, GsonHttpMessageConverter.class })
+@Rest(rootUrl = "http://learnapp.enif.uberspace.de/restapi/", converters = { FormHttpMessageConverter.class, GsonHttpMessageConverter.class, ByteArrayHttpMessageConverter.class })
 public interface RestClient extends RestClientErrorHandling {
 
     @Get("/users")
@@ -67,6 +71,11 @@ public interface RestClient extends RestClientErrorHandling {
 
     @Get("/responses")
     ResponseEntity<DatasetResponse> getResponses();
+
+    @Post("/topics")
+    @RequiresHeader(HttpHeaders.CONTENT_TYPE)
+    ResponseEntity<JsonObject> postTopic(@Body MultiValueMap<String, Object> data);
+
 
 
 

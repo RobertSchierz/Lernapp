@@ -5,6 +5,6 @@
         name="external_files"
         path=".">
     </external-path>
-   <!-- <root-path name="external_files" path="/storage/" />-->
+
 
 </paths>

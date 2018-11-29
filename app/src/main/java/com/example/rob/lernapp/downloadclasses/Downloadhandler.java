@@ -59,7 +59,7 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
 
         String completeContentURL = PersistanceDataHandler.getApiRootURL() + downloadURL[0];
         this.contentURL = completeContentURL;
-        File mediadownloadsDir = new File(Environment.getExternalStorageDirectory() + "/Learnapp_mediadownloads");
+        File mediadownloadsDir = new File(Environment.getExternalStorageDirectory() + "/Learnapp_media");
 
         File currentFile = null;
         try {

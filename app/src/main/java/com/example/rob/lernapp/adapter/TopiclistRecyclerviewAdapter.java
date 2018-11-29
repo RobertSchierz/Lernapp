@@ -81,12 +81,12 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
         if (imageView != null && videoView == null) {
             try {
                 Bitmap image = BitmapFactory.decodeFile(path);
-                int newheight = (int) ( image.getHeight() * (512.0 / image.getWidth()) );
+                int newheight = (int) (image.getHeight() * (512.0 / image.getWidth()));
                 Bitmap scaled = Bitmap.createScaledBitmap(image, 512, newheight, true);
                 imageView.setImageBitmap(scaled);
             } catch (Exception e) {
                 Bitmap image = BitmapFactory.decodeFile(contentURL);
-                int newheight = (int) ( image.getHeight() * (512.0 / image.getWidth()) );
+                int newheight = (int) (image.getHeight() * (512.0 / image.getWidth()));
                 Bitmap scaled = Bitmap.createScaledBitmap(image, 512, newheight, true);
                 imageView.setImageBitmap(scaled);
             }
@@ -246,11 +246,11 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
                 topicViewHolder.topicstreambutton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        DownloadImagehandler downloadImagehandler = new DownloadImagehandler((TopiclistRecyclerviewAdapter)view.getTag(R.string.streamingbuttonAdapter), topicViewHolder.topicimage);
-                        downloadImagehandler.execute(topics.get(i).getContenturl());
-                        topicViewHolder.topicimage.setVisibility(View.VISIBLE);
-                        topicViewHolder.topicstreambutton.setVisibility(View.GONE);
-                        topicViewHolder.circlebar.setVisibility(View.GONE);
+                DownloadImagehandler downloadImagehandler = new DownloadImagehandler((TopiclistRecyclerviewAdapter) view.getTag(R.string.streamingbuttonAdapter), topicViewHolder.topicimage);
+                downloadImagehandler.execute(topics.get(i).getContenturl());
+                topicViewHolder.topicimage.setVisibility(View.VISIBLE);
+                topicViewHolder.topicstreambutton.setVisibility(View.GONE);
+                topicViewHolder.circlebar.setVisibility(View.GONE);
                     }
                 });
 
@@ -332,7 +332,7 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
     }
 
     public void setStreamedImage(ImageView imageView, Bitmap bitmap) {
-        int newheight = (int) ( bitmap.getHeight() * (512.0 / bitmap.getWidth()) );
+        int newheight = (int) (bitmap.getHeight() * (512.0 / bitmap.getWidth()));
         Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 512, newheight, true);
         imageView.setImageBitmap(scaled);
     }
