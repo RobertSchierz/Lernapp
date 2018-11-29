@@ -18,8 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.io.File;
-
 @EBean
 public class DatabaseUtilityNewContent {
 
@@ -36,7 +34,7 @@ public class DatabaseUtilityNewContent {
     }
 
     @Background
-    public void postTopic(String name, String state, String type, String text, String mediatype, String category, File contenturl, String creator) {
+    public void postTopic(String name, String state, String type, String text, String mediatype, String category, String contenturl, String creator) {
 
         MultiValueMap<String, Object> data = new LinkedMultiValueMap<>();
 
@@ -46,7 +44,12 @@ public class DatabaseUtilityNewContent {
         data.set("text", text);
         data.set("mediatype", mediatype);
         data.set("category", category);
-        data.set("contenturl", new FileSystemResource(contenturl.getAbsolutePath()));
+
+        if(!contenturl.isEmpty()){
+            data.set("contenturl", new FileSystemResource(contenturl));
+        }else{
+            data.set("contenturl", "");
+        }
         data.set("creator", creator);
 
 

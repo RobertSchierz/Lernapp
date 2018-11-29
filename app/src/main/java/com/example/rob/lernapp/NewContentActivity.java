@@ -113,6 +113,9 @@ public class NewContentActivity extends AppCompatActivity {
                 !newcontentText.getText().toString().isEmpty() &&
                 (newcontentRadiobuttonquestion.isChecked() || newcontentRadiobuttonexplanation.isChecked())){
             newcontentSend.setEnabled(true);
+            if(this.contentFile == null){
+                this.mediatype = 4;
+            }
         }else{
             newcontentSend.setEnabled(false);
         }
@@ -200,14 +203,17 @@ public class NewContentActivity extends AppCompatActivity {
                     case 3:
                         mediatypeString = "audio";
                         break;
+                    case 4:
+                        mediatypeString = "text";
+                        break;
                 }
 
             }
 
             if(this.contentFile == null){
-                this.dataBaseUtilTask.postTopic(this.newcontentName.getText().toString(), "open", type, this.newcontentText.getText().toString(), mediatypeString, this.topic.getCategory().get_id(), null, PersistanceDataHandler.getUniqueDatabaseId());
+                this.dataBaseUtilTask.postTopic(this.newcontentName.getText().toString(), "open", type, this.newcontentText.getText().toString(), mediatypeString, this.topic.getCategory().get_id(), "", PersistanceDataHandler.getUniqueDatabaseId());
             }else{
-                this.dataBaseUtilTask.postTopic(this.newcontentName.getText().toString(), "open", type, this.newcontentText.getText().toString(), mediatypeString, this.topic.getCategory().get_id(), this.contentFile, PersistanceDataHandler.getUniqueDatabaseId());
+                this.dataBaseUtilTask.postTopic(this.newcontentName.getText().toString(), "open", type, this.newcontentText.getText().toString(), mediatypeString, this.topic.getCategory().get_id(), this.contentFile.getAbsolutePath(), PersistanceDataHandler.getUniqueDatabaseId());
             }
 
         }
