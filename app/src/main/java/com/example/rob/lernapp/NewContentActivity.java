@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,6 +49,7 @@ public class NewContentActivity extends AppCompatActivity {
     Uri mCurrentPhotoPath;
     int mediatype = 0;
     File contentFile;
+    File acceptedFile;
 
     @NonConfigurationInstance
     @Bean
@@ -131,13 +133,14 @@ public class NewContentActivity extends AppCompatActivity {
 
             File photoFile = null;
             try {
+                if(this.contentFile != null){
+                    this.acceptedFile = this.contentFile;
+                }
                 photoFile = createImageFile();
-                photoFile.createNewFile();
                 this.contentFile = photoFile;
 
             } catch (IOException ex) {
-
-
+                Log.v("Photo", ex.getMessage());
             }
 
             if (photoFile != null) {
@@ -158,6 +161,12 @@ public class NewContentActivity extends AppCompatActivity {
             this.newcontentVideoselector.setImageAlpha(127);
             this.mediatype = 1;
 
+            try {
+                this.contentFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
 
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), this.mCurrentPhotoPath);
@@ -168,6 +177,18 @@ public class NewContentActivity extends AppCompatActivity {
             }
 
 
+
+        }else if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_CANCELED){
+           this.contentFile.delete();
+
+           if(this.acceptedFile != null){
+               this.contentFile = this.acceptedFile;
+               this.mCurrentPhotoPath = FileProvider.getUriForFile(this, getPackageName() + ".provider",this.contentFile);
+               this.acceptedFile = null;
+           }else{
+               this.contentFile = null;
+               this.mCurrentPhotoPath = null;
+           }
 
         }
     }

@@ -17,11 +17,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f23fb79-1a9e-4eab-aa88-edc7e3c0f5a0" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/NewContentActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/NewContentActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/databaseUtilityClasses/DatabaseUtilityNewContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/databaseUtilityClasses/DatabaseUtilityNewContent.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -84,7 +81,7 @@
       <file leaf-file-name="TopiclistRecyclerviewAdapter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/TopiclistRecyclerviewAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
+            <state relative-caret-position="3383">
               <caret line="241" column="64" selection-start-line="241" selection-start-column="64" selection-end-line="241" selection-end-column="64" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -96,7 +93,7 @@
       <file leaf-file-name="DatabaseUtilityLearngroups.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/databaseUtilityClasses/DatabaseUtilityLearngroups.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-375">
+            <state relative-caret-position="1479">
               <caret line="111" column="11" selection-start-line="111" selection-start-column="11" selection-end-line="111" selection-end-column="11" />
             </state>
           </provider>
@@ -105,7 +102,7 @@
       <file leaf-file-name="DownloadImagehandler.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/downloadclasses/DownloadImagehandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
+            <state relative-caret-position="561">
               <caret line="45" column="41" selection-start-line="45" selection-start-column="41" selection-end-line="45" selection-end-column="41" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -117,7 +114,7 @@
       <file leaf-file-name="RestClient.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/RestClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="428">
+            <state relative-caret-position="884">
               <caret line="76" column="36" selection-start-line="76" selection-start-column="36" selection-end-line="76" selection-end-column="36" />
             </state>
           </provider>
@@ -126,8 +123,8 @@
       <file leaf-file-name="NewContentActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/NewContentActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="417">
-              <caret line="116" column="35" selection-start-line="116" selection-start-column="35" selection-end-line="116" selection-end-column="35" />
+            <state relative-caret-position="544">
+              <caret line="186" column="40" selection-start-line="186" selection-start-column="40" selection-end-line="186" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -135,11 +132,29 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="FragmentActivity.class" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/support-fragment-28.0.0.aar/690eb64f9c30ab8a1a26c02df06db5dc/jars/classes.jar!/android/support/v4/app/FragmentActivity.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="431" column="16" selection-start-line="431" selection-start-column="16" selection-end-line="431" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="File.java" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-28/java/io/File.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="246">
+              <caret line="1001" column="19" selection-start-line="1001" selection-start-column="19" selection-end-line="1001" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="DatabaseUtilityNewContent.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/databaseUtilityClasses/DatabaseUtilityNewContent.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="513">
-              <caret line="56" column="46" lean-forward="true" selection-start-line="56" selection-start-column="46" selection-end-line="56" selection-end-column="46" />
+            <state relative-caret-position="646">
+              <caret line="56" column="46" selection-start-line="56" selection-start-column="46" selection-end-line="56" selection-end-column="46" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -150,7 +165,7 @@
       <file leaf-file-name="DatabaseUtilityNewContent_.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/build/generated/source/apt/debug/com/example/rob/lernapp/databaseUtilityClasses/DatabaseUtilityNewContent_.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="469">
+            <state relative-caret-position="952">
               <caret line="67" column="53" selection-start-line="67" selection-start-column="53" selection-end-line="67" selection-end-column="53" />
             </state>
           </provider>
@@ -180,8 +195,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>handleScroll</find>
-      <find>setisresponseExpand</find>
       <find>this.activity</find>
       <find>this.circlebar</find>
       <find>setMediaToTopic</find>
@@ -200,7 +213,6 @@
       <find>categories</find>
       <find>newcontentImagePreview</find>
       <find>setStreamedImage</find>
-      <find>createImageFile</find>
       <find>initializeRecyclerview</find>
       <find>setAllGroups</find>
       <find>sendAllGroupsToActivity</find>
@@ -210,6 +222,9 @@
       <find>sendIdToActivity</find>
       <find>this.mediatype</find>
       <find>mediatype</find>
+      <find>this.mCurrentPhotoPath</find>
+      <find>createImageFile</find>
+      <find>mCurrentPhotoPath</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -2392,6 +2407,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -2408,47 +2425,9 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="AndroidView">
         <subPane>
           <expand>
-            <path>
-              <item name="Lernapp" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-            </path>
-            <path>
-              <item name="Lernapp" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="manifests" type="f94875db:AndroidManifestsGroupNode" />
-            </path>
-            <path>
-              <item name="Lernapp" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-            </path>
-            <path>
-              <item name="Lernapp" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="generatedJava" type="edd41e36:AndroidSourceTypeNode" />
-            </path>
-            <path>
-              <item name="Lernapp" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="generatedJava" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="lernapp" type="cbb59c9e:AndroidPsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Lernapp" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="generatedJava" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="lernapp" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="databaseUtilityClasses" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Lernapp" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-            </path>
             <path>
               <item name="Lernapp" type="1abcf292:AndroidViewProjectNode" />
               <item name="Gradle Scripts" type="ae0cef3a:AndroidBuildScriptsGroupNode" />
@@ -2457,7 +2436,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2718,30 +2696,29 @@
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="Android Profiler" order="7" weight="0.32983795" />
-      <window_info id="Build Variants" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50093025" side_tool="true" weight="0.20209724" />
-      <window_info anchor="bottom" id="Logcat" order="7" weight="0.2564347" />
-      <window_info id="Capture Tool" order="2" />
-      <window_info id="Designer" order="2" />
-      <window_info anchor="right" id="Assistant" order="4" sideWeight="0.49803922" weight="0.32976744" />
-      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.49906978" weight="0.20209724" />
-      <window_info id="Structure" order="1" sideWeight="0.50047666" side_tool="true" weight="0.14139535" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.27073404" />
-      <window_info anchor="right" id="Device File Explorer" order="3" sideWeight="0.5019608" side_tool="true" visible="true" weight="0.23534884" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32983795" />
       <window_info id="simpleUML" order="2" weight="0.32976744" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
       <window_info id="Image Layers" order="2" />
+      <window_info id="Build Variants" order="2" side_tool="true" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50093025" side_tool="true" weight="0.20209724" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.24499524" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32983795" />
+      <window_info anchor="bottom" id="Logcat" order="7" weight="0.2564347" />
       <window_info id="Captures" order="2" weight="0.25" />
+      <window_info id="Capture Tool" order="2" />
+      <window_info id="Designer" order="2" />
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49952334" visible="true" weight="0.13488372" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32983795" />
+      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.49906978" weight="0.20209724" />
       <window_info anchor="right" id="Gradle" order="3" weight="0.32976744" />
+      <window_info id="Structure" order="1" sideWeight="0.50047666" side_tool="true" weight="0.14139535" />
+      <window_info active="true" anchor="right" id="Device File Explorer" order="3" sideWeight="0.5019608" side_tool="true" visible="true" weight="0.23534884" />
       <window_info anchor="right" id="Theme Preview" order="3" />
+      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.27073404" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="right" id="Assistant" order="4" sideWeight="0.49803922" weight="0.32976744" />
       <window_info active="true" anchor="bottom" id="Messages" order="7" visible="true" weight="0.32983795" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Preview" order="4" />
@@ -2750,6 +2727,7 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" sideWeight="0.49872124" weight="0.24976744" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32983795" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -2771,7 +2749,7 @@
           <option name="timeStamp" value="444" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="445" />
+      <option name="time" value="450" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="app">
@@ -2801,6 +2779,41 @@
     </expressions>
     <expressions id="evaluateExpression">
       <expression>
+        <expression-string>contentFile.delete()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>contentFile.exists()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>fdelete.getPath()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>fdelete.getAbsolutePath()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>fdelete.getCanonicalFile().isDirectory()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>fdelete.getCanonicalFile().delete()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>RESULT_CANCELED</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
         <expression-string>restClient.getUsers()</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
@@ -2810,58 +2823,9 @@
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>topicViewHolder.linearLayout_media</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>topicViewHolder.</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>originactivity.getApplicationContext().getPackageName()</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>activity.getFilesDir()</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>activity.get</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>Environment.getRootDirectory()</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/AppData/Local/Android/sdk/platforms/android-28/android.jar!/android/view/View.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="338" column="35" selection-start-line="338" selection-start-column="35" selection-end-line="338" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/AppData/Local/Android/sdk/platforms/android-28/android.jar!/android/os/Handler.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="31" column="46" selection-start-line="31" selection-start-column="46" selection-end-line="31" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/AppData/Local/Android/sdk/platforms/android-28/android.jar!/android/os/AsyncTask.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="561">
@@ -3012,24 +2976,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/support-fragment-28.0.0.aar/690eb64f9c30ab8a1a26c02df06db5dc/jars/classes.jar!/android/support/v4/app/FragmentActivity.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="77" column="19" selection-start-line="77" selection-start-column="19" selection-end-line="77" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../../AndroidStudio/DeviceExplorer/Pixel_API_25 [emulator-5554]/storage/emulated/0/Learnapp_media/JPEG_20181128_212235_290320227.jpg" />
-    <entry file="file://$PROJECT_DIR$/../../../AndroidStudio/DeviceExplorer/emulator-5554/storage/emulated/0/Learnapp_media/JPEG_20181128_223635_1208890930.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../AndroidStudio/DeviceExplorer/emulator-5554/storage/emulated/0/Learnapp_media/8h40r13g7h5_JPEG_20181128_223635_1208890930.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../AndroidStudio/DeviceExplorer/emulator-5554/storage/emulated/0/Learnapp_media/JPEG_20181128_223635_1208890930.jpg" />
+    <entry file="file://$PROJECT_DIR$/../../../AndroidStudio/DeviceExplorer/emulator-5554/storage/emulated/0/Learnapp_media/8h40r13g7h5_JPEG_20181128_223635_1208890930.jpg" />
     <entry file="file://$PROJECT_DIR$/captures/com.example.rob.lernapp_2018.11.29_19.04.li">
       <provider selected="true" editor-type-id="capture-editor">
         <state />
@@ -3042,13 +2991,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../AndroidStudio/DeviceExplorer/emulator-5554/data/data/com.example.rob.lernapp/files/LearnappUniqueID">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../AndroidStudio/DeviceExplorer/emulator-5554/data/data/com.example.rob.lernapp/files/LearnappUniqueID" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/CategoryViewActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3799">
@@ -3070,9 +3013,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="246">
           <caret line="247" column="57" selection-start-line="247" selection-start-column="57" selection-end-line="247" selection-end-column="57" />
-          <folding>
-            <element signature="e#7710#7711#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3090,7 +3030,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/TopiclistRecyclerviewAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
+        <state relative-caret-position="3383">
           <caret line="241" column="64" selection-start-line="241" selection-start-column="64" selection-end-line="241" selection-end-column="64" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -3117,6 +3057,9 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider editor-type-id="android-manifest">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="12" selection-start-line="12" selection-end-line="12" />
@@ -3127,9 +3070,6 @@
             <element signature="e#1438#1467#0" expanded="true" />
           </folding>
         </state>
-      </provider>
-      <provider editor-type-id="android-manifest">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/xml/provider_imagepath.xml">
@@ -3148,7 +3088,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/downloadclasses/DownloadImagehandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
+        <state relative-caret-position="561">
           <caret line="45" column="41" selection-start-line="45" selection-start-column="41" selection-end-line="45" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -3158,7 +3098,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/databaseUtilityClasses/DatabaseUtilityLearngroups.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-375">
+        <state relative-caret-position="1479">
           <caret line="111" column="11" selection-start-line="111" selection-start-column="11" selection-end-line="111" selection-end-column="11" />
         </state>
       </provider>
@@ -3179,32 +3119,53 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/RestClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="428">
+        <state relative-caret-position="884">
           <caret line="76" column="36" selection-start-line="76" selection-start-column="36" selection-end-line="76" selection-end-column="36" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/build/generated/source/apt/debug/com/example/rob/lernapp/databaseUtilityClasses/DatabaseUtilityNewContent_.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="469">
+        <state relative-caret-position="952">
           <caret line="67" column="53" selection-start-line="67" selection-start-column="53" selection-end-line="67" selection-end-column="53" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/databaseUtilityClasses/DatabaseUtilityNewContent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="513">
-          <caret line="56" column="46" lean-forward="true" selection-start-line="56" selection-start-column="46" selection-end-line="56" selection-end-column="46" />
+        <state relative-caret-position="646">
+          <caret line="56" column="46" selection-start-line="56" selection-start-column="46" selection-end-line="56" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-28/android/app/Activity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="239">
+          <caret line="7453" selection-start-line="7453" selection-end-line="7453" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-28/java/io/File.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="246">
+          <caret line="1001" column="19" selection-start-line="1001" selection-start-column="19" selection-end-line="1001" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/support-fragment-28.0.0.aar/690eb64f9c30ab8a1a26c02df06db5dc/jars/classes.jar!/android/support/v4/app/FragmentActivity.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="431" column="16" selection-start-line="431" selection-start-column="16" selection-end-line="431" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/NewContentActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="417">
-          <caret line="116" column="35" selection-start-line="116" selection-start-column="35" selection-end-line="116" selection-end-column="35" />
+        <state relative-caret-position="544">
+          <caret line="186" column="40" selection-start-line="186" selection-start-column="40" selection-end-line="186" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
