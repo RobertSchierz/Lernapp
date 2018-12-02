@@ -2,6 +2,7 @@ package com.example.rob.lernapp;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.VideoView;
@@ -45,11 +47,21 @@ public class NewContentActivity extends AppCompatActivity {
 
     int source = 0;
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_VIDEO_CAPTURE = 2;
 
     Uri mCurrentPhotoPath;
+    Uri mCurrentVideoPath;
+    Uri mCurrentAudioPath;
+
     int mediatype = 0;
-    File contentFile;
-    File acceptedFile;
+    File imageContentFile;
+    File imageAcceptedFile;
+
+    File videoContentFile;
+    File videoAcceptedFile;
+
+    File audioContentFile;
+    File audioAcceptedFile;
 
     @NonConfigurationInstance
     @Bean
@@ -78,9 +90,9 @@ public class NewContentActivity extends AppCompatActivity {
             this.newcontentVideoselector.setImageAlpha(127);
         }
 
-        if(source == 2){
+        if (source == 2) {
             newcontent_radiogroup.setVisibility(View.GONE);
-        }else if (source == 1){
+        } else if (source == 1) {
             newcontent_radiogroup.setVisibility(View.VISIBLE);
         }
 
@@ -90,54 +102,57 @@ public class NewContentActivity extends AppCompatActivity {
     }
 
     @TextChange(R.id.newcontent_name)
-    void nameChange(){
+    void nameChange() {
         checkElements();
     }
 
     @TextChange(R.id.newcontent_text)
-    void textChange(){
+    void textChange() {
         checkElements();
     }
 
     @CheckedChange(R.id.newcontent_radiobuttonquestion)
-    void radioQuestionChange(){
+    void radioQuestionChange() {
         checkElements();
     }
 
     @CheckedChange(R.id.newcontent_radiobuttonexplanation)
-    void radioExplanationChange(){
+    void radioExplanationChange() {
         checkElements();
     }
 
 
-    private void checkElements(){
-        if(!newcontentName.getText().toString().isEmpty() &&
+    private void checkElements() {
+        if (!newcontentName.getText().toString().isEmpty() &&
                 !newcontentText.getText().toString().isEmpty() &&
-                (newcontentRadiobuttonquestion.isChecked() || newcontentRadiobuttonexplanation.isChecked())){
+                (newcontentRadiobuttonquestion.isChecked() || newcontentRadiobuttonexplanation.isChecked())) {
             newcontentSend.setEnabled(true);
-            if(this.contentFile == null){
+            if (this.imageContentFile == null) {
                 this.mediatype = 4;
             }
-        }else{
+        } else {
             newcontentSend.setEnabled(false);
         }
     }
 
 
     @Click(R.id.newcontent_imageselector)
-    void clickImage(){
+    void clickImage() {
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 
+            this.newcontentVideoPreview.setVisibility(View.GONE);
+
             File photoFile = null;
             try {
-                if(this.contentFile != null){
-                    this.acceptedFile = this.contentFile;
+                if (this.imageContentFile != null) {
+                    this.imageAcceptedFile = this.imageContentFile;
                 }
-                photoFile = createImageFile();
-                this.contentFile = photoFile;
+                photoFile = createMediaFile(1);
+                this.mCurrentPhotoPath = FileProvider.getUriForFile(this, getPackageName() + ".provider", photoFile);
+                this.imageContentFile = photoFile;
 
             } catch (IOException ex) {
                 Log.v("Photo", ex.getMessage());
@@ -151,6 +166,69 @@ public class NewContentActivity extends AppCompatActivity {
         }
     }
 
+    @Click(R.id.newcontent_videoselector)
+    void clickVideo() {
+
+        Intent takeViodepIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+
+        if (takeViodepIntent.resolveActivity(getPackageManager()) != null) {
+
+            this.newcontentImagePreview.setVisibility(View.GONE);
+
+            File videoFile = null;
+            try {
+                if (this.videoContentFile != null) {
+                    this.videoAcceptedFile = this.videoContentFile;
+                }
+                videoFile = createMediaFile(2);
+                this.videoContentFile = videoFile;
+                this.mCurrentVideoPath = FileProvider.getUriForFile(this, getPackageName() + ".provider", videoFile);
+
+            } catch (IOException ex) {
+                Log.v("Video", ex.getMessage());
+            }
+
+            if (videoFile != null) {
+                takeViodepIntent.putExtra(MediaStore.EXTRA_OUTPUT, this.mCurrentVideoPath);
+                startActivityForResult(takeViodepIntent, REQUEST_VIDEO_CAPTURE);
+            }
+
+
+        }
+
+    }
+
+    private File createMediaFile(int option) throws IOException {
+
+        String suffix = null;
+
+        if(option == 1){
+            suffix = ".jpg";
+        }else if(option == 2){
+            suffix = ".mp4";
+        }else if(option == 3){
+            suffix = ".mp3";
+        }
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName =  timeStamp + "_";
+        File storageDir = new File(Environment.getExternalStorageDirectory() + "/Learnapp_media");
+        if (!storageDir.exists()) {
+            storageDir.mkdir();
+        }
+        File file = File.createTempFile(
+                imageFileName,
+                suffix,
+                storageDir
+        );
+
+        return file;
+    }
+
+
+
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -162,7 +240,7 @@ public class NewContentActivity extends AppCompatActivity {
             this.mediatype = 1;
 
             try {
-                this.contentFile.createNewFile();
+                this.imageContentFile.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -177,44 +255,100 @@ public class NewContentActivity extends AppCompatActivity {
             }
 
 
+        } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_CANCELED) {
+            this.imageContentFile.delete();
 
-        }else if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_CANCELED){
-           this.contentFile.delete();
-
-           if(this.acceptedFile != null){
-               this.contentFile = this.acceptedFile;
-               this.mCurrentPhotoPath = FileProvider.getUriForFile(this, getPackageName() + ".provider",this.contentFile);
-               this.acceptedFile = null;
-           }else{
-               this.contentFile = null;
-               this.mCurrentPhotoPath = null;
-           }
+            if (this.imageAcceptedFile != null) {
+                this.imageContentFile = this.imageAcceptedFile;
+                this.mCurrentPhotoPath = FileProvider.getUriForFile(this, getPackageName() + ".provider", this.imageContentFile);
+                this.imageAcceptedFile = null;
+            } else {
+                this.imageContentFile = null;
+                this.mCurrentPhotoPath = null;
+            }
 
         }
+
+        if(requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK){
+
+            this.newcontent_imageselector.setImageAlpha(127);
+            this.newcontentMicselector.setImageAlpha(127);
+            this.newcontentVideoselector.setImageAlpha(255);
+
+            this.mediatype = 2;
+
+            try{
+                this.videoContentFile.createNewFile();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+
+           setVideoPreview();
+            this.newcontentVideoPreview.setVideoPath(this.videoContentFile.getAbsolutePath());
+
+        }else if(requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_CANCELED){
+            this.videoContentFile.delete();
+
+            if(this.videoAcceptedFile != null){
+                this.videoContentFile = this.videoAcceptedFile;
+                this.mCurrentVideoPath = FileProvider.getUriForFile(this, getPackageName() + ".provider", this.videoContentFile);
+                this.videoAcceptedFile = null;
+            }else{
+                this.videoContentFile = null;
+                this.videoAcceptedFile = null;
+            }
+        }
+
+
+
+    }
+
+    void setVideoPreview(){
+
+        this.newcontentVideoPreview.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                return false;
+            }
+        });
+
+        final MediaController mediaController = new MediaController(this);
+        mediaController.setAnchorView(this.newcontentVideoPreview);
+        this.newcontentVideoPreview.setMediaController(mediaController);
+
+        this.newcontentVideoPreview.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+
+            }
+        });
+
+        this.newcontentVideoPreview.setVisibility(View.VISIBLE);
+
+
     }
 
 
     @Click(R.id.newcontent_send)
-    void clickSend(){
+    void clickSend() {
 
 
-
-        if(this.source == 1){
+        if (this.source == 1) {
 
             int selectedRadiobutton = this.newcontent_radiogroup.getCheckedRadioButtonId();
             String type = "noType";
-            if(selectedRadiobutton != -1){
-                if(selectedRadiobutton == this.newcontentRadiobuttonexplanation.getId()){
+            if (selectedRadiobutton != -1) {
+                if (selectedRadiobutton == this.newcontentRadiobuttonexplanation.getId()) {
                     type = "explanation";
-                }else if(selectedRadiobutton == this.newcontentRadiobuttonquestion.getId()){
+                } else if (selectedRadiobutton == this.newcontentRadiobuttonquestion.getId()) {
                     type = "question";
                 }
             }
 
             String mediatypeString = "noMediatype";
 
-            if(this.mediatype != 0){
-                switch (this.mediatype){
+            if (this.mediatype != 0) {
+                switch (this.mediatype) {
                     case 1:
                         mediatypeString = "image";
                         break;
@@ -231,43 +365,30 @@ public class NewContentActivity extends AppCompatActivity {
 
             }
 
-            if(this.contentFile == null){
+            if (this.imageContentFile != null) {
+                this.dataBaseUtilTask.postTopic(this.newcontentName.getText().toString(), "open", type, this.newcontentText.getText().toString(), mediatypeString, this.topic.getCategory().get_id(), this.imageContentFile.getAbsolutePath(), PersistanceDataHandler.getUniqueDatabaseId());
+            } else if (this.videoContentFile != null) {
+                this.dataBaseUtilTask.postTopic(this.newcontentName.getText().toString(), "open", type, this.newcontentText.getText().toString(), mediatypeString, this.topic.getCategory().get_id(), this.videoContentFile.getAbsolutePath(), PersistanceDataHandler.getUniqueDatabaseId());
+            } else if (this.audioContentFile != null) {
+                this.dataBaseUtilTask.postTopic(this.newcontentName.getText().toString(), "open", type, this.newcontentText.getText().toString(), mediatypeString, this.topic.getCategory().get_id(), this.audioContentFile.getAbsolutePath(), PersistanceDataHandler.getUniqueDatabaseId());
+            } else {
                 this.dataBaseUtilTask.postTopic(this.newcontentName.getText().toString(), "open", type, this.newcontentText.getText().toString(), mediatypeString, this.topic.getCategory().get_id(), "", PersistanceDataHandler.getUniqueDatabaseId());
-            }else{
-                this.dataBaseUtilTask.postTopic(this.newcontentName.getText().toString(), "open", type, this.newcontentText.getText().toString(), mediatypeString, this.topic.getCategory().get_id(), this.contentFile.getAbsolutePath(), PersistanceDataHandler.getUniqueDatabaseId());
+
             }
 
+
         }
 
     }
 
 
-    private File createImageFile() throws IOException {
-
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = new File(Environment.getExternalStorageDirectory() + "/Learnapp_media");
-        if (!storageDir.exists()) {
-            storageDir.mkdir();
-        }
-        File image = File.createTempFile(
-                imageFileName,
-                ".jpg",
-                storageDir
-        );
-
-
-        this.mCurrentPhotoPath = FileProvider.getUriForFile(this, getPackageName() + ".provider",image);
-        return image;
-    }
 
     public void handleCreateTopic(PostResponse postResponse) {
 
-        if(postResponse != null){
+        if (postResponse != null) {
 
         }
     }
-
 
 
     @ViewById(R.id.newcontent_radiogroup)

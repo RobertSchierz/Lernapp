@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.rob.lernapp.PersistanceDataHandler;
@@ -62,6 +63,7 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
         File mediadownloadsDir = new File(Environment.getExternalStorageDirectory() + "/Learnapp_media");
 
         File currentFile = null;
+        String downloadState = "downloaderror";
         try {
 
 
@@ -82,7 +84,7 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
             }
 
             if (bytesAvailable < filesize) {
-                int u = 3;
+                downloadState = "nospace";
             } else {
                 InputStream inputStream = connection.getInputStream();
                 BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, 512);
@@ -94,6 +96,7 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
                     mediadownloadsDir.mkdir();
                 }
                 currentFile = new File(mediadownloadsDir.getPath() + "/" + filename);
+
                 if (!currentFile.exists()) {
                     currentFile.createNewFile();
                     FileOutputStream outStream = new FileOutputStream(currentFile);
@@ -111,7 +114,7 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
                 }
 
                 this.filePath = currentFile.getAbsolutePath();
-                return currentFile.getAbsolutePath();
+                downloadState = currentFile.getAbsolutePath();
             }
 
 
@@ -119,7 +122,7 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
             Log.e("Error: ", e.getMessage());
         }
 
-        return "nospace";
+        return downloadState;
 
     }
 
@@ -134,20 +137,26 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
             path = s;
         }
 
-        if (s.equals("nospace")) {
-            if(isTopic){
-                topiclistRecyclerviewAdapter.notEnoughSpace(this.streamingbutton);
-            }else{
-                responseRecyclerlistAdapter.notEnoughSpace(this.streamingbutton);
-            }
+        if(s.equals("downloaderror")){
+            Toast.makeText(activity, "Fehler beim Download der Mediadatei", Toast.LENGTH_SHORT).show();
+        }else{
+            if (s.equals("nospace")) {
+                if(isTopic){
+                    topiclistRecyclerviewAdapter.notEnoughSpace(this.streamingbutton);
+                }else{
+                    responseRecyclerlistAdapter.notEnoughSpace(this.streamingbutton);
+                }
 
-        } else {
-            if (isTopic) {
-                topiclistRecyclerviewAdapter.setMediaPath(path, this.circlebar, this.videoView, this.imageView, this.contentURL);
             } else {
-                responseRecyclerlistAdapter.setMediaPath(path, this.circlebar, this.videoView, this.imageView, this.contentURL);
+                if (isTopic) {
+                    topiclistRecyclerviewAdapter.setMediaPath(path, this.circlebar, this.videoView, this.imageView, this.contentURL);
+                } else {
+                    responseRecyclerlistAdapter.setMediaPath(path, this.circlebar, this.videoView, this.imageView, this.contentURL);
+                }
             }
         }
+
+
 
 
 
