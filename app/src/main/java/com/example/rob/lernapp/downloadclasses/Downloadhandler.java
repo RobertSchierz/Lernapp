@@ -70,8 +70,10 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
             URL contentURL = new URL(completeContentURL);
 
             URLConnection connection = contentURL.openConnection();
-            connection.setReadTimeout(5000);
-            connection.setConnectTimeout(10000);
+            connection.setConnectTimeout(180000);
+            connection.setReadTimeout(180000);
+
+
 
             int filesize = connection.getContentLength();
             StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
@@ -88,6 +90,8 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
             } else {
                 InputStream inputStream = connection.getInputStream();
                 BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, 512);
+
+
 
                 String filename = downloadURL[0].substring(downloadURL[0].indexOf("/") + 1);
 
@@ -119,7 +123,13 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
 
 
         } catch (Exception e) {
-            Log.e("Error: ", e.getMessage());
+            if(e.getMessage().equals("unexpected end of stream")){
+                this.filePath = currentFile.getAbsolutePath();
+                downloadState = currentFile.getAbsolutePath();
+            }else{
+                Log.e("Error: ", e.getMessage());
+            }
+
         }
 
         return downloadState;
