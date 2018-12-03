@@ -109,12 +109,45 @@
                 android:layout_weight="0"
                 android:background="@color/colorAccent" />
 
-            <ImageView
-                android:id="@+id/newcontent_micselector"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="5"
-                app:srcCompat="@drawable/newcontent_microselector" />
+                android:orientation="horizontal"
+                android:paddingLeft="3dp">
+
+                <LinearLayout
+                    android:id="@+id/newcontent_recaudiocontrolls"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/newcontent_recaudio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="3"
+                        app:srcCompat="@drawable/newcontent_recordaudio" />
+
+                    <Chronometer
+                        android:id="@+id/newcontent_reclength"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="3"
+                        android:lines="1" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/newcontent_micselector"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/newcontent_microselector" />
+            </LinearLayout>
 
         </LinearLayout>
 
