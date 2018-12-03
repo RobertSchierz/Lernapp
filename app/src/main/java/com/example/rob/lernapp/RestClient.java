@@ -72,10 +72,14 @@ public interface RestClient extends RestClientErrorHandling {
     @Get("/responses")
     ResponseEntity<DatasetResponse> getResponses();
 
+
     @Post("/topics")
     @RequiresHeader(HttpHeaders.CONTENT_TYPE)
     ResponseEntity<JsonObject> postTopic(@Body MultiValueMap<String, Object> data);
 
+    @Post("/responses")
+    @RequiresHeader(HttpHeaders.CONTENT_TYPE)
+    ResponseEntity<JsonObject> postResponse(@Body MultiValueMap<String, Object> data);
 
 
 

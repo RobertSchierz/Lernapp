@@ -2,9 +2,11 @@ package com.example.rob.lernapp;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -15,6 +17,8 @@ import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
@@ -66,6 +70,30 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
     RecyclerView topicsrecyclerview;
 
 
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_categoryview, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.add_topic) {
+            Intent newContent = new Intent(this, NewContentActivity_.class);
+            Bundle extras = new Bundle();
+            extras.putParcelable("category", this.category);
+            newContent.putExtras(extras);
+            this.startActivity(newContent);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
 
     RecyclerView.OnScrollListener horizontalScrollListener = new RecyclerView.OnScrollListener() {
@@ -214,6 +242,7 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
         this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
         snapHelper.attachToRecyclerView(topicsrecyclerview);
         setTitle(getResources().getText(R.string.topicsactivitylabel) + " - " + this.category.getName());
+
     }
 
     @Override
@@ -300,6 +329,8 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
 
 
     private void initilizeTopicsRecyclerview() {
+
+
         int animationID = R.anim.layout_animation_fall_down;
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getApplicationContext(), animationID);
 

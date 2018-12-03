@@ -61,6 +61,35 @@ public class DatabaseUtilityNewContent {
         }
     }
 
+    @Background
+    public void postResponse(String name, String text, String mediatype, String topic, String contenturl, String creator){
+
+        MultiValueMap<String, Object> data = new LinkedMultiValueMap<>();
+        data.set("name", name);
+        data.set("text", text);
+        data.set("mediatype", mediatype);
+        data.set("topic", topic);
+        data.set("creator", creator);
+
+        if(!contenturl.isEmpty()){
+            data.set("contenturl", new FileSystemResource(contenturl));
+        }else{
+            data.set("contenturl", "");
+        }
+
+        ResponseEntity<JsonObject> responseEntityResponsecreate = restClient.postResponse(data);
+        Gson gson = new Gson();
+        PostResponse postResponse = gson.fromJson(responseEntityResponsecreate.getBody(), PostResponse.class);
+        sendcreateResponseResponseToActivity(postResponse);
+
+
+    }
+
+    @UiThread
+    void sendcreateResponseResponseToActivity(PostResponse postResponse) {
+        activity.handleCreateResponse(postResponse);
+    }
+
     @UiThread
     void sendcreateTopicResponseToActivity(PostResponse postResponse) {
         activity.handleCreateTopic(postResponse);

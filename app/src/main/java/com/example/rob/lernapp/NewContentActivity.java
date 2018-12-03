@@ -92,12 +92,12 @@ public class NewContentActivity extends AppCompatActivity {
 
             if (bundle.getParcelable("topic") != null) {
                 this.topic = bundle.getParcelable("topic");
-                this.source = 1;
+                this.source = 2;
             }
 
             if (bundle.getParcelable("category") != null) {
                 this.category = bundle.getParcelable("category");
-                this.source = 2;
+                this.source = 1;
             }
 
             this.newcontentImageselector.setImageAlpha(127);
@@ -107,12 +107,14 @@ public class NewContentActivity extends AppCompatActivity {
 
         if (source == 2) {
             newcontent_radiogroup.setVisibility(View.GONE);
+            setTitle(getResources().getText(R.string.contentactivitylabel) + " für - " + this.topic.getName());
         } else if (source == 1) {
             newcontent_radiogroup.setVisibility(View.VISIBLE);
+            setTitle("Neuer Post für Kategory: " + this.category.getName());
         }
 
 
-        setTitle(getResources().getText(R.string.contentactivitylabel) + " für - " + this.topic.getName());
+
 
     }
 
@@ -159,16 +161,29 @@ public class NewContentActivity extends AppCompatActivity {
 
 
     private void checkElements() {
-        if (!newcontentName.getText().toString().isEmpty() &&
-                !newcontentText.getText().toString().isEmpty() &&
-                (newcontentRadiobuttonquestion.isChecked() || newcontentRadiobuttonexplanation.isChecked())) {
-            newcontentSend.setEnabled(true);
-            if (this.imageContentFile == null) {
-                this.mediatype = 4;
+        if(this.source == 1){
+            if (!newcontentName.getText().toString().isEmpty() &&
+                    !newcontentText.getText().toString().isEmpty() &&
+                    (newcontentRadiobuttonquestion.isChecked() || newcontentRadiobuttonexplanation.isChecked())) {
+                newcontentSend.setEnabled(true);
+                if (this.imageContentFile == null && this.videoContentFile == null && this.audioContentFile == null) {
+                    this.mediatype = 4;
+                }
+            } else {
+                newcontentSend.setEnabled(false);
             }
-        } else {
-            newcontentSend.setEnabled(false);
+        }else if(this.source == 2){
+            if (!newcontentName.getText().toString().isEmpty() &&
+                    !newcontentText.getText().toString().isEmpty()) {
+                newcontentSend.setEnabled(true);
+                if (this.imageContentFile == null && this.videoContentFile == null && this.audioContentFile == null) {
+                    this.mediatype = 4;
+                }
+            } else {
+                newcontentSend.setEnabled(false);
+            }
         }
+
     }
 
 
@@ -557,6 +572,26 @@ public class NewContentActivity extends AppCompatActivity {
     void clickSend() {
 
 
+        String mediatypeString = "noMediatype";
+
+        if (this.mediatype != 0) {
+            switch (this.mediatype) {
+                case 1:
+                    mediatypeString = "image";
+                    break;
+                case 2:
+                    mediatypeString = "video";
+                    break;
+                case 3:
+                    mediatypeString = "audio";
+                    break;
+                case 4:
+                    mediatypeString = "text";
+                    break;
+            }
+
+        }
+
         if (this.source == 1) {
 
             int selectedRadiobutton = this.newcontent_radiogroup.getCheckedRadioButtonId();
@@ -569,45 +604,39 @@ public class NewContentActivity extends AppCompatActivity {
                 }
             }
 
-            String mediatypeString = "noMediatype";
-
-            if (this.mediatype != 0) {
-                switch (this.mediatype) {
-                    case 1:
-                        mediatypeString = "image";
-                        break;
-                    case 2:
-                        mediatypeString = "video";
-                        break;
-                    case 3:
-                        mediatypeString = "audio";
-                        break;
-                    case 4:
-                        mediatypeString = "text";
-                        break;
-                }
-
-            }
-
             if (this.imageContentFile != null) {
-                this.dataBaseUtilTask.postTopic(this.newcontentName.getText().toString(), "open", type, this.newcontentText.getText().toString(), mediatypeString, this.topic.getCategory().get_id(), this.imageContentFile.getAbsolutePath(), PersistanceDataHandler.getUniqueDatabaseId());
+                this.dataBaseUtilTask.postTopic(this.newcontentName.getText().toString(), "open", type, this.newcontentText.getText().toString(), mediatypeString, this.category.get_id(), this.imageContentFile.getAbsolutePath(), PersistanceDataHandler.getUniqueDatabaseId());
             } else if (this.videoContentFile != null) {
-                this.dataBaseUtilTask.postTopic(this.newcontentName.getText().toString(), "open", type, this.newcontentText.getText().toString(), mediatypeString, this.topic.getCategory().get_id(), this.videoContentFile.getAbsolutePath(), PersistanceDataHandler.getUniqueDatabaseId());
+                this.dataBaseUtilTask.postTopic(this.newcontentName.getText().toString(), "open", type, this.newcontentText.getText().toString(), mediatypeString, this.category.get_id(), this.videoContentFile.getAbsolutePath(), PersistanceDataHandler.getUniqueDatabaseId());
             } else if (this.audioContentFile != null) {
-                this.dataBaseUtilTask.postTopic(this.newcontentName.getText().toString(), "open", type, this.newcontentText.getText().toString(), mediatypeString, this.topic.getCategory().get_id(), this.audioContentFile.getAbsolutePath(), PersistanceDataHandler.getUniqueDatabaseId());
+                this.dataBaseUtilTask.postTopic(this.newcontentName.getText().toString(), "open", type, this.newcontentText.getText().toString(), mediatypeString,  this.category.get_id(), this.audioContentFile.getAbsolutePath(), PersistanceDataHandler.getUniqueDatabaseId());
             } else {
-                this.dataBaseUtilTask.postTopic(this.newcontentName.getText().toString(), "open", type, this.newcontentText.getText().toString(), mediatypeString, this.topic.getCategory().get_id(), "", PersistanceDataHandler.getUniqueDatabaseId());
-
+                this.dataBaseUtilTask.postTopic(this.newcontentName.getText().toString(), "open", type, this.newcontentText.getText().toString(), mediatypeString,  this.category.get_id(), "", PersistanceDataHandler.getUniqueDatabaseId());
             }
 
 
+        } else if (source == 2) {
+            if (this.imageContentFile != null) {
+                this.dataBaseUtilTask.postResponse(this.newcontentName.getText().toString(), this.newcontentText.getText().toString(), mediatypeString, this.topic.get_id(), this.imageContentFile.getAbsolutePath(), PersistanceDataHandler.getUniqueDatabaseId());
+            } else if (this.videoContentFile != null) {
+                this.dataBaseUtilTask.postResponse(this.newcontentName.getText().toString(), this.newcontentText.getText().toString(), mediatypeString, this.topic.get_id(), this.videoContentFile.getAbsolutePath(), PersistanceDataHandler.getUniqueDatabaseId());
+            } else if (this.audioContentFile != null) {
+                this.dataBaseUtilTask.postResponse(this.newcontentName.getText().toString(), this.newcontentText.getText().toString(), mediatypeString, this.topic.get_id(), this.audioContentFile.getAbsolutePath(), PersistanceDataHandler.getUniqueDatabaseId());
+            } else {
+                this.dataBaseUtilTask.postResponse(this.newcontentName.getText().toString(), this.newcontentText.getText().toString(), mediatypeString, this.topic.get_id(), "", PersistanceDataHandler.getUniqueDatabaseId());
+            }
         }
 
     }
 
 
     public void handleCreateTopic(PostResponse postResponse) {
+        if (postResponse != null) {
 
+        }
+    }
+
+    public void handleCreateResponse(PostResponse postResponse) {
         if (postResponse != null) {
 
         }
