@@ -24,7 +24,7 @@ import com.example.rob.lernapp.dialoge.JointhroughlinkDialog_;
 import com.example.rob.lernapp.restDataPatch.PatchResponse;
 import com.example.rob.lernapp.restdataDelete.DeleteResponse;
 import com.example.rob.lernapp.restdataGet.Learngroup;
-import com.example.rob.lernapp.restdataPost.PostResponse;
+import com.example.rob.lernapp.restdataPost.PostResponseLearngroup;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -184,11 +184,11 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
         }
     }
 
-    public void handleCreateResponse(PostResponse postResponse) {
+    public void handleCreateResponse(PostResponseLearngroup postResponseLearngroup) {
 
-        if(postResponse != null){
-            this.creatorLearngroups.add(postResponse.getCreatedGroups());
-            this.learngroupsAll.add(postResponse.getCreatedGroups());
+        if(postResponseLearngroup != null){
+            this.creatorLearngroups.add(postResponseLearngroup.getCreatedGroups());
+            this.learngroupsAll.add(postResponseLearngroup.getCreatedGroups());
             updateRecyclerview(groupfilter.isChecked());
             this.confirmGroupDialog.dismiss();
         }

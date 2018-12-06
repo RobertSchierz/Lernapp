@@ -1,7 +1,7 @@
 package com.example.rob.lernapp;
 
 import android.Manifest;
-import android.annotation.TargetApi;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -20,20 +20,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.rob.lernapp.databaseUtilityClasses.DatabaseUtilityNewContent;
 import com.example.rob.lernapp.restdataGet.Category;
 import com.example.rob.lernapp.restdataGet.Topic;
-import com.example.rob.lernapp.restdataPost.PostResponse;
+import com.google.gson.JsonObject;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -63,6 +67,7 @@ public class NewContentActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_IMAGE = 10;
     private static final int PERMISSION_REQUEST_VIDEO = 20;
     private static final int PERMISSION_REQUEST_MIC = 30;
+    private static final int PERMISSION_REQUEST_STORAGE = 40;
 
     Uri mCurrentPhotoPath;
     Uri mCurrentVideoPath;
@@ -77,6 +82,7 @@ public class NewContentActivity extends AppCompatActivity {
     File audioContentFile;
 
     MediaRecorder audio_rec;
+    Boolean hasStoragePermissions = false;
 
     @NonConfigurationInstance
     @Bean
@@ -103,24 +109,50 @@ public class NewContentActivity extends AppCompatActivity {
             this.newcontentImageselector.setImageAlpha(127);
             this.newcontentMicselector.setImageAlpha(127);
             this.newcontentVideoselector.setImageAlpha(127);
-        }
 
-        if (source == 2) {
-            newcontent_radiogroup.setVisibility(View.GONE);
-            setTitle(getResources().getText(R.string.contentactivitylabel) + " für - " + this.topic.getName());
-        } else if (source == 1) {
-            newcontent_radiogroup.setVisibility(View.VISIBLE);
-            setTitle("Neuer Post für Kategory: " + this.category.getName());
+            if (source == 2) {
+                newcontent_radiogroup.setVisibility(View.GONE);
+                setTitle(getResources().getText(R.string.contentactivitylabel) + " für - " + this.topic.getName());
+            } else if (source == 1) {
+                newcontent_radiogroup.setVisibility(View.VISIBLE);
+                setTitle("Neuer Post für Kategory: " + this.category.getName());
+            }
+        }else{
+            Toast.makeText(this, "Fehler beim Initialisieren der Ansicht", Toast.LENGTH_SHORT).show();
+            this.finish();
         }
-
 
 
 
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onResume() {
+        super.onResume();
+        checkStoragePermission(true);
+
+    }
+
+    private void checkStoragePermission(boolean isStart) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (this.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                    && this.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+              this.hasStoragePermissions = true;
+            } else {
+                if(isStart){
+                    this.requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            PERMISSION_REQUEST_STORAGE);
+                }
+                this.hasStoragePermissions = false;
+            }
+        } else {
+            this.hasStoragePermissions = true;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         if (this.imageAcceptedFile != null) {
             this.imageAcceptedFile.delete();
         }
@@ -136,8 +168,8 @@ public class NewContentActivity extends AppCompatActivity {
         if (this.audioContentFile != null) {
             this.audioContentFile.delete();
         }
-
     }
+
 
     @TextChange(R.id.newcontent_name)
     void nameChange() {
@@ -165,22 +197,26 @@ public class NewContentActivity extends AppCompatActivity {
             if (!newcontentName.getText().toString().isEmpty() &&
                     !newcontentText.getText().toString().isEmpty() &&
                     (newcontentRadiobuttonquestion.isChecked() || newcontentRadiobuttonexplanation.isChecked())) {
-                newcontentSend.setEnabled(true);
+                this.newcontentSend.setEnabled(true);
+
+
                 if (this.imageContentFile == null && this.videoContentFile == null && this.audioContentFile == null) {
                     this.mediatype = 4;
                 }
             } else {
-                newcontentSend.setEnabled(false);
+                this.newcontentSend.setEnabled(false);
             }
         }else if(this.source == 2){
             if (!newcontentName.getText().toString().isEmpty() &&
                     !newcontentText.getText().toString().isEmpty()) {
-                newcontentSend.setEnabled(true);
+                this.newcontentSend.setEnabled(true);
+
+
                 if (this.imageContentFile == null && this.videoContentFile == null && this.audioContentFile == null) {
                     this.mediatype = 4;
                 }
             } else {
-                newcontentSend.setEnabled(false);
+                this.newcontentSend.setEnabled(false);
             }
         }
 
@@ -190,25 +226,29 @@ public class NewContentActivity extends AppCompatActivity {
     @Click(R.id.newcontent_imageselector)
     void clickImage() {
 
-        this.newcontentImageselector.setEnabled(false);
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                newcontentImageselector.setEnabled(true);
-            }
-        }, 1000);
+        if(this.hasStoragePermissions){
+            this.newcontentImageselector.setEnabled(false);
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    newcontentImageselector.setEnabled(true);
+                }
+            }, 1000);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (this.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                makePicture();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (this.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    makePicture();
+                } else {
+                    this.requestPermissions(new String[]{Manifest.permission.CAMERA},
+                            PERMISSION_REQUEST_IMAGE);
+
+                }
             } else {
-                this.requestPermissions(new String[]{Manifest.permission.CAMERA},
-                        PERMISSION_REQUEST_IMAGE);
-
+                makePicture();
             }
-        } else {
-            makePicture();
+        }else{
+            checkStoragePermission(false);
         }
     }
 
@@ -243,31 +283,38 @@ public class NewContentActivity extends AppCompatActivity {
     @Click(R.id.newcontent_videoselector)
     void clickVideo() {
 
-        this.newcontentVideoselector.setEnabled(false);
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                newcontentVideoselector.setEnabled(true);
-            }
-        }, 1000);
+        if(this.hasStoragePermissions){
+            this.newcontentVideoselector.setEnabled(false);
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    newcontentVideoselector.setEnabled(true);
+                }
+            }, 1000);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (this.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (this.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
 
-                takeVideo();
+                    takeVideo();
+                } else {
+                    this.requestPermissions(new String[]{Manifest.permission.CAMERA},
+                            PERMISSION_REQUEST_VIDEO);
+
+                }
             } else {
-                this.requestPermissions(new String[]{Manifest.permission.CAMERA},
-                        PERMISSION_REQUEST_VIDEO);
-
+                takeVideo();
             }
-        } else {
-            takeVideo();
+        }else{
+            checkStoragePermission(false);
         }
+
+
 
     }
 
     private void takeVideo() {
+
         Intent takeViodepIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 
         if (takeViodepIntent.resolveActivity(getPackageManager()) != null) {
@@ -299,21 +346,27 @@ public class NewContentActivity extends AppCompatActivity {
     void touchMic(MotionEvent event) {
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (this.checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
-                recordAudio(event);
-            } else {
-                this.requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO},
-                        PERMISSION_REQUEST_MIC);
+        if(this.hasStoragePermissions){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (this.checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+                    recordAudio(event);
+                } else {
+                    this.requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO},
+                            PERMISSION_REQUEST_MIC);
 
+                }
+            } else {
+                recordAudio(event);
             }
-        } else {
-            recordAudio(event);
+        }else{
+            checkStoragePermission(false);
         }
+
+
 
     }
 
-    @TargetApi(Build.VERSION_CODES.O)
+
     private void recordAudio(MotionEvent event) {
 
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -326,6 +379,7 @@ public class NewContentActivity extends AppCompatActivity {
             this.audio_rec = new MediaRecorder();
             this.audio_rec.setAudioSource(MediaRecorder.AudioSource.MIC);
             this.audio_rec.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+            this.audio_rec.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
             try {
                 if (this.audioContentFile != null) {
@@ -334,8 +388,11 @@ public class NewContentActivity extends AppCompatActivity {
                 }
                 this.audioContentFile = createMediaFile(3);
                 this.audioContentFile.createNewFile();
-                this.audio_rec.setOutputFile(this.audioContentFile);
-                this.audio_rec.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+                this.audio_rec.setOutputFile(this.audioContentFile.getAbsolutePath());
+
+
+
                 this.audio_rec.prepare();
                 this.audio_rec.start();
                 this.newcontentReclength.setBase(SystemClock.elapsedRealtime());
@@ -346,37 +403,40 @@ public class NewContentActivity extends AppCompatActivity {
 
 
         } else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
-            this.newcontent_recaudiocontrolls.setVisibility(View.GONE);
-            this.audio_rec.stop();
-            this.audio_rec.release();
-            this.audio_rec = null;
-            this.newcontentReclength.setBase(SystemClock.elapsedRealtime());
-            this.newcontentReclength.stop();
+            if(this.audio_rec != null){
+                this.newcontent_recaudiocontrolls.setVisibility(View.GONE);
+                this.audio_rec.stop();
+                this.audio_rec.release();
+                this.audio_rec = null;
+                this.newcontentReclength.setBase(SystemClock.elapsedRealtime());
+                this.newcontentReclength.stop();
 
-            this.newcontentImageselector.setImageAlpha(127);
-            this.newcontentMicselector.setImageAlpha(255);
-            this.newcontentVideoselector.setImageAlpha(127);
-            this.mediatype = 3;
-            deleteImage();
-            deleteVideo();
-
-
-            setVideoPreview();
-            this.newcontentVideoPreview.setVideoPath(this.audioContentFile.getAbsolutePath());
+                this.newcontentImageselector.setImageAlpha(127);
+                this.newcontentMicselector.setImageAlpha(255);
+                this.newcontentVideoselector.setImageAlpha(127);
+                this.mediatype = 3;
+                deleteImage();
+                deleteVideo();
 
 
-            this.newcontentVideoPreview.setVisibility(View.GONE);
-            this.newcontentVideoPreview.setVisibility(View.VISIBLE);
-            this.newcontentVideoPreview.setBackground(ContextCompat.getDrawable(this, R.drawable.media_audio));
+                setVideoPreview();
+                this.newcontentVideoPreview.setVideoPath(this.audioContentFile.getAbsolutePath());
 
-            this.newcontentMicselector.setEnabled(false);
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    newcontentMicselector.setEnabled(true);
-                }
-            }, 1000);
+
+                this.newcontentVideoPreview.setVisibility(View.GONE);
+                this.newcontentVideoPreview.setVisibility(View.VISIBLE);
+                this.newcontentVideoPreview.setBackground(ContextCompat.getDrawable(this, R.drawable.media_audio));
+
+                this.newcontentMicselector.setEnabled(false);
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        newcontentMicselector.setEnabled(true);
+                    }
+                }, 1000);
+
+            }
 
 
         }
@@ -387,20 +447,27 @@ public class NewContentActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case PERMISSION_REQUEST_IMAGE: {
+            case PERMISSION_REQUEST_IMAGE:
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     clickImage();
                 }
                 break;
-            }
-            case PERMISSION_REQUEST_VIDEO: {
+
+            case PERMISSION_REQUEST_VIDEO:
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     clickVideo();
                 }
                 break;
-            }
+
+
+            case PERMISSION_REQUEST_STORAGE:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    this.hasStoragePermissions = true;
+                }
+                break;
 
 
         }
@@ -415,7 +482,7 @@ public class NewContentActivity extends AppCompatActivity {
         } else if (option == 2) {
             suffix = ".mp4";
         } else if (option == 3) {
-            suffix = ".mp3";
+            suffix = ".3gp";
         }
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -627,18 +694,31 @@ public class NewContentActivity extends AppCompatActivity {
             }
         }
 
+        Toast.makeText(this, "Uploadstart", Toast.LENGTH_SHORT).show();
+        this.newcontent_loadingcircle.setVisibility(View.VISIBLE);
+        progressbarAnimation();
+
     }
 
 
-    public void handleCreateTopic(PostResponse postResponse) {
-        if (postResponse != null) {
+    void progressbarAnimation() {
+        ObjectAnimator anim = ObjectAnimator.ofInt(this.newcontent_loadingcircle, "progress", 0, 100);
+        anim.setDuration(1200);
+        anim.setRepeatCount(Animation.INFINITE);
+        anim.setInterpolator(new LinearInterpolator());
+        anim.start();
+    }
 
+
+    public void handleCreateTopic(JsonObject postResponseTopic) {
+        if (postResponseTopic != null) {
+        //    this.newcontent_loadingcircle.setVisibility(View.GONE);
         }
     }
 
-    public void handleCreateResponse(PostResponse postResponse) {
-        if (postResponse != null) {
-
+    public void handleCreateResponse(JsonObject postResponseResponse) {
+        if (postResponseResponse != null) {
+        //    this.newcontent_loadingcircle.setVisibility(View.GONE);
         }
     }
 
@@ -691,6 +771,10 @@ public class NewContentActivity extends AppCompatActivity {
 
     @ViewById(R.id.newcontent_recaudiocontrolls)
     LinearLayout newcontent_recaudiocontrolls;
+
+    @ViewById(R.id.newcontent_loadingcircle)
+    ProgressBar newcontent_loadingcircle;
+
 
 
 }

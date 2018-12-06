@@ -70,7 +70,11 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
     RecyclerView topicsrecyclerview;
 
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        this.topicsrecyclerview.setVisibility(View.INVISIBLE);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

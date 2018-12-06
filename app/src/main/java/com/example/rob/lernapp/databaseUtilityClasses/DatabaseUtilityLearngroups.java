@@ -13,7 +13,7 @@ import com.example.rob.lernapp.restdataGet.DatasetUser;
 import com.example.rob.lernapp.restdataGet.Learngroup;
 import com.example.rob.lernapp.restdataGet.User;
 import com.example.rob.lernapp.restdataPost.LearngroupPost;
-import com.example.rob.lernapp.restdataPost.PostResponse;
+import com.example.rob.lernapp.restdataPost.PostResponseLearngroup;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -84,8 +84,8 @@ public class DatabaseUtilityLearngroups {
         ResponseEntity<JsonObject> responseEntityGroupcreate = restClient.postGroup(newgroup);
         if(responseEntityGroupcreate != null){
             Gson gson = new Gson();
-            PostResponse postResponse = gson.fromJson(responseEntityGroupcreate.getBody(), PostResponse.class);
-            sendcreateResponseToActivity(postResponse);
+            PostResponseLearngroup postResponseLearngroup = gson.fromJson(responseEntityGroupcreate.getBody(), PostResponseLearngroup.class);
+            sendcreateResponseToActivity(postResponseLearngroup);
         }
     }
 
@@ -176,8 +176,8 @@ public class DatabaseUtilityLearngroups {
     }
 
     @UiThread
-    void sendcreateResponseToActivity(PostResponse postResponse) {
-        activity.handleCreateResponse(postResponse);
+    void sendcreateResponseToActivity(PostResponseLearngroup postResponseLearngroup) {
+        activity.handleCreateResponse(postResponseLearngroup);
     }
 
     @UiThread

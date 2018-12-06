@@ -3,8 +3,6 @@ package com.example.rob.lernapp.databaseUtilityClasses;
 import com.example.rob.lernapp.NewContentActivity;
 import com.example.rob.lernapp.RestClient;
 import com.example.rob.lernapp.RestClient_;
-import com.example.rob.lernapp.restdataPost.PostResponse;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import org.androidannotations.annotations.AfterInject;
@@ -55,9 +53,7 @@ public class DatabaseUtilityNewContent {
 
         ResponseEntity<JsonObject> responseEntityTopiccreate = restClient.postTopic(data);
         if(responseEntityTopiccreate != null){
-            Gson gson = new Gson();
-            PostResponse postResponse = gson.fromJson(responseEntityTopiccreate.getBody(), PostResponse.class);
-            sendcreateTopicResponseToActivity(postResponse);
+            sendcreateTopicResponseToActivity(responseEntityTopiccreate.getBody());
         }
     }
 
@@ -78,21 +74,18 @@ public class DatabaseUtilityNewContent {
         }
 
         ResponseEntity<JsonObject> responseEntityResponsecreate = restClient.postResponse(data);
-        Gson gson = new Gson();
-        PostResponse postResponse = gson.fromJson(responseEntityResponsecreate.getBody(), PostResponse.class);
-        sendcreateResponseResponseToActivity(postResponse);
-
+        sendcreateResponseResponseToActivity(responseEntityResponsecreate.getBody());
 
     }
 
     @UiThread
-    void sendcreateResponseResponseToActivity(PostResponse postResponse) {
-        activity.handleCreateResponse(postResponse);
+    void sendcreateResponseResponseToActivity(JsonObject postResponseResponse) {
+        activity.handleCreateResponse(postResponseResponse);
     }
 
     @UiThread
-    void sendcreateTopicResponseToActivity(PostResponse postResponse) {
-        activity.handleCreateTopic(postResponse);
+    void sendcreateTopicResponseToActivity(JsonObject postResponseTopic) {
+        activity.handleCreateTopic(postResponseTopic);
     }
 
 }
