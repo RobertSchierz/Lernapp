@@ -13,6 +13,7 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.example.rob.lernapp.adapter.GrouplistRecyclerviewAdapter;
 import com.example.rob.lernapp.databaseUtilityClasses.DatabaseUtilityLearngroups;
@@ -25,6 +26,8 @@ import com.example.rob.lernapp.restDataPatch.PatchResponse;
 import com.example.rob.lernapp.restdataDelete.DeleteResponse;
 import com.example.rob.lernapp.restdataGet.Learngroup;
 import com.example.rob.lernapp.restdataPost.PostResponseLearngroup;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.Socket;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -32,11 +35,13 @@ import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.NonConfigurationInstance;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 
 @EActivity(R.layout.activity_learngroups)
 public class LearngroupsActivity extends AppCompatActivity implements ConfirmGroupDialog.ConfirmGroupDialogListener, DeleteGroupDialog.DeleteGroupDialogListener, JointhroughlinkDialog.JointhroughlinkDialogListener {
@@ -59,6 +64,9 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
 
     private JointhroughlinkDialog jointhroughlinkDialog;
 
+    private Socket learnappSocket;
+
+
     @ViewById(R.id.groupllist_recyclerview)
     RecyclerView grouplistRecyclerview;
 
@@ -79,6 +87,7 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
     DatabaseUtilityLearngroups dataBaseUtilTask;
 
 
+
     @AfterViews
     void onCreate() {
         UniqueIDHandler uniqueIDHandler = UniqueIDHandler.getInstance(this);
@@ -88,7 +97,35 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+        this.learnappSocket = SocketHandler.getInstance().getlearnappSocket();
+        this.learnappSocket.connect();
+        this.learnappSocket.on("status", onNewMessage);
+
+        this.learnappSocket.emit("joined", "yes");
+
+
+
+
     }
+
+
+    private Emitter.Listener onNewMessage = new Emitter.Listener(){
+
+        @Override
+        public void call(Object... args) {
+            getStatus();
+        }
+    };
+
+
+    @UiThread
+    void getStatus(){
+        Toast.makeText(this, "test", Toast.LENGTH_SHORT).show();
+    }
+
+
 
 
     @Override

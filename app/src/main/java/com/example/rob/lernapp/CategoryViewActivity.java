@@ -99,6 +99,165 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
         return super.onOptionsItemSelected(item);
     }
 
+    /*
+    @Override
+    protected void onNewIntent(Intent intent) {
+        if (intent != null)
+            setIntent(intent);
+    }*/
+
+
+    @SuppressLint("RestrictedApi")
+    @AfterViews
+    void onCreate() {
+        if (getIntent().getExtras() != null) {
+            this.category = getIntent().getExtras().getParcelable("category");
+        }
+
+        this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        snapHelper.attachToRecyclerView(topicsrecyclerview);
+        setTitle(getResources().getText(R.string.topicsactivitylabel) + " - " + this.category.getName());
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+
+        if (Build.VERSION.SDK_INT >= 23) {
+
+            if (this.prefs.getBoolean("dontAskAgain", false)
+                    && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
+                    && checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                this.streamContent = true;
+                dataBaseUtilTask.getResponses();
+            } else if (this.prefs.getBoolean("dontAskAgain", false)
+                    && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                    && checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                this.streamContent = false;
+                prefs.edit().putBoolean("dontAskAgain", false).commit();
+                Toast.makeText(this, "Medien werden wieder gespeichert!", Toast.LENGTH_SHORT).show();
+                dataBaseUtilTask.getResponses();
+            } else {
+                showStoragePermissionDialog();
+            }
+        } else {
+            dataBaseUtilTask.getResponses();
+        }
+
+
+    }
+
+    private void showStoragePermissionDialog() {
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                    && checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                dataBaseUtilTask.getResponses();
+                prefs.edit().putBoolean("dontAskAgain", false).commit();
+            } else {
+                storagePermissionDialog = new StoragePermissionDialog_();
+                storagePermissionDialog.setVars(this);
+                storagePermissionDialog.show(getSupportFragmentManager(), "storagePermissionDialog");
+            }
+
+        } else {
+            dataBaseUtilTask.getResponses();
+            prefs.edit().putBoolean("dontAskAgain", false).commit();
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length != 0) {
+            switch (requestCode) {
+                case 2:
+                    Log.d("PermissionResult", "External storage2");
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        Log.v("PermissionResult", "Permission: " + permissions[0] + "was " + grantResults[0]);
+                        this.Write_External_Storgae_Permission = true;
+                        if (this.Write_External_Storgae_Permission || this.Read_External_Storage_Permission) {
+                            dataBaseUtilTask.getResponses();
+                        }
+                    } else {
+
+                    }
+                    break;
+
+                case 3:
+                    Log.d("PermissionResult", "External storage1");
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        Log.v("", "Permission: " + permissions[0] + "was " + grantResults[0]);
+                        this.Read_External_Storage_Permission = true;
+                        if (this.Write_External_Storgae_Permission || this.Read_External_Storage_Permission) {
+                            dataBaseUtilTask.getResponses();
+                        }
+                    } else {
+
+                    }
+                    break;
+            }
+        }
+
+    }
+
+
+    private void initilizeTopicsRecyclerview() {
+
+
+        int animationID = R.anim.layout_animation_fall_down;
+        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getApplicationContext(), animationID);
+
+
+        topicsrecyclerview.setHasFixedSize(true);
+        LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        topicsrecyclerview.setLayoutManager(horizontalLayoutManagaer);
+
+        this.topiclistRecyclerviewAdapter = new TopiclistRecyclerviewAdapter(this.topics, this.responses, this);
+        topicsrecyclerview.setAdapter(this.topiclistRecyclerviewAdapter);
+        topicsrecyclerview.addOnScrollListener(horizontalScrollListener);
+
+        topicsrecyclerview.setVisibility(View.VISIBLE);
+        topicsrecyclerview.setLayoutAnimation(animation);
+
+
+    }
+
+    public void getTopicsBack(Topic[] topics) {
+        this.topics = new ArrayList<Topic>(Arrays.asList(topics));
+        initilizeTopicsRecyclerview();
+    }
+
+    public void getResponsesBack(Response[] responses) {
+        this.responses = new ArrayList<Response>(Arrays.asList(responses));
+        dataBaseUtilTask.getTopics(this.category.get_id());
+    }
+
+
+    @Override
+    public void StoragePermissionDialogPositiveClick(DialogFragment dialog) {
+        this.streamContent = false;
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+        dialog.dismiss();
+    }
+
+    @Override
+    public void StoragePermissionDialogNegativeClick(DialogFragment dialog, CheckBox dontAskAgain) {
+        this.streamContent = true;
+        dataBaseUtilTask.getResponses();
+
+        if (dontAskAgain.isChecked()) {
+            prefs.edit().putBoolean("dontAskAgain", true).commit();
+        }
+
+        dialog.dismiss();
+    }
 
     RecyclerView.OnScrollListener horizontalScrollListener = new RecyclerView.OnScrollListener() {
 
@@ -109,7 +268,7 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
             super.onScrollStateChanged(recyclerView, newState);
             switch (newState) {
                 case RecyclerView.SCROLL_STATE_IDLE:
-                 //   recyclerView.smoothScrollToPosition(finalScrollPosition);
+                    //   recyclerView.smoothScrollToPosition(finalScrollPosition);
                     break;
                 case RecyclerView.SCROLL_STATE_DRAGGING:
                     break;
@@ -234,163 +393,6 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
 
         return viewposition;
     }*/
-
-
-    @SuppressLint("RestrictedApi")
-    @AfterViews
-    void onCreate() {
-        if (getIntent().getExtras() != null) {
-            this.category = getIntent().getExtras().getParcelable("category");
-        }
-
-        this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        snapHelper.attachToRecyclerView(topicsrecyclerview);
-        setTitle(getResources().getText(R.string.topicsactivitylabel) + " - " + this.category.getName());
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (Build.VERSION.SDK_INT >= 23) {
-
-            if (this.prefs.getBoolean("dontAskAgain", false)
-                    && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
-                    && checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                this.streamContent = true;
-                dataBaseUtilTask.getResponses();
-            } else if (this.prefs.getBoolean("dontAskAgain", false)
-                    && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                    && checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                this.streamContent = false;
-                prefs.edit().putBoolean("dontAskAgain", false).commit();
-                Toast.makeText(this, "Medien werden wieder gespeichert!", Toast.LENGTH_SHORT).show();
-                dataBaseUtilTask.getResponses();
-            } else {
-                showStoragePermissionDialog();
-            }
-        } else {
-            dataBaseUtilTask.getResponses();
-        }
-
-    }
-
-    private void showStoragePermissionDialog() {
-
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                    && checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                dataBaseUtilTask.getResponses();
-                prefs.edit().putBoolean("dontAskAgain", false).commit();
-            } else {
-                storagePermissionDialog = new StoragePermissionDialog_();
-                storagePermissionDialog.setVars(this);
-                storagePermissionDialog.show(getSupportFragmentManager(), "storagePermissionDialog");
-            }
-
-        } else {
-            dataBaseUtilTask.getResponses();
-            prefs.edit().putBoolean("dontAskAgain", false).commit();
-        }
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (grantResults.length != 0) {
-            switch (requestCode) {
-                case 2:
-                    Log.d("PermissionResult", "External storage2");
-                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        Log.v("PermissionResult", "Permission: " + permissions[0] + "was " + grantResults[0]);
-                        this.Write_External_Storgae_Permission = true;
-                        if (this.Write_External_Storgae_Permission || this.Read_External_Storage_Permission) {
-                            dataBaseUtilTask.getResponses();
-                        }
-                    } else {
-
-                    }
-                    break;
-
-                case 3:
-                    Log.d("PermissionResult", "External storage1");
-                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        Log.v("", "Permission: " + permissions[0] + "was " + grantResults[0]);
-                        this.Read_External_Storage_Permission = true;
-                        if (this.Write_External_Storgae_Permission || this.Read_External_Storage_Permission) {
-                            dataBaseUtilTask.getResponses();
-                        }
-                    } else {
-
-                    }
-                    break;
-            }
-        }
-
-    }
-
-
-    private void initilizeTopicsRecyclerview() {
-
-
-        int animationID = R.anim.layout_animation_fall_down;
-        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getApplicationContext(), animationID);
-
-
-        topicsrecyclerview.setHasFixedSize(true);
-        LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        topicsrecyclerview.setLayoutManager(horizontalLayoutManagaer);
-
-
-        this.topiclistRecyclerviewAdapter = new TopiclistRecyclerviewAdapter(this.topics, this.responses, this);
-
-        topicsrecyclerview.setAdapter(this.topiclistRecyclerviewAdapter);
-
-
-        topicsrecyclerview.addOnScrollListener(horizontalScrollListener);
-
-
-
-
-        topicsrecyclerview.setVisibility(View.VISIBLE);
-        topicsrecyclerview.setLayoutAnimation(animation);
-
-
-    }
-
-    public void getTopicsBack(Topic[] topics) {
-        this.topics = new ArrayList<Topic>(Arrays.asList(topics));
-        initilizeTopicsRecyclerview();
-    }
-
-    public void getResponsesBack(Response[] responses) {
-        this.responses = new ArrayList<Response>(Arrays.asList(responses));
-        dataBaseUtilTask.getTopics(this.category.get_id());
-    }
-
-
-    @Override
-    public void StoragePermissionDialogPositiveClick(DialogFragment dialog) {
-        this.streamContent = false;
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
-        dialog.dismiss();
-    }
-
-    @Override
-    public void StoragePermissionDialogNegativeClick(DialogFragment dialog, CheckBox dontAskAgain) {
-        this.streamContent = true;
-        dataBaseUtilTask.getResponses();
-
-        if (dontAskAgain.isChecked()) {
-            prefs.edit().putBoolean("dontAskAgain", true).commit();
-        }
-
-        dialog.dismiss();
-    }
-
 
 }
 

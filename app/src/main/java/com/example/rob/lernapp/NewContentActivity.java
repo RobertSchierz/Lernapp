@@ -694,7 +694,6 @@ public class NewContentActivity extends AppCompatActivity {
             }
         }
 
-        Toast.makeText(this, "Uploadstart", Toast.LENGTH_SHORT).show();
         this.newcontent_loadingcircle.setVisibility(View.VISIBLE);
         progressbarAnimation();
 
@@ -712,13 +711,30 @@ public class NewContentActivity extends AppCompatActivity {
 
     public void handleCreateTopic(JsonObject postResponseTopic) {
         if (postResponseTopic != null) {
-        //    this.newcontent_loadingcircle.setVisibility(View.GONE);
+           this.newcontent_loadingcircle.setVisibility(View.GONE);
+
+            Intent openCategoryActivity= new Intent(this, CategoryViewActivity_.class);
+
+         /*   String contentID = null;
+            if(!postResponseTopic.get("createdTopic").getAsJsonObject().get("_id").toString().isEmpty()){
+                contentID = postResponseTopic.get("createdTopic").getAsJsonObject().get("_id").toString();
+            }
+            openCategoryActivity.putExtra("contentID", contentID);*/
+            openCategoryActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivityIfNeeded(openCategoryActivity, 0);
+
+
         }
     }
 
     public void handleCreateResponse(JsonObject postResponseResponse) {
         if (postResponseResponse != null) {
-        //    this.newcontent_loadingcircle.setVisibility(View.GONE);
+           this.newcontent_loadingcircle.setVisibility(View.GONE);
+
+
+            Intent openCategoryActivity= new Intent(this, CategoryViewActivity_.class);
+            openCategoryActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivityIfNeeded(openCategoryActivity, 0);
         }
     }
 
