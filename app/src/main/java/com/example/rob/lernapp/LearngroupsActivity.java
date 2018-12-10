@@ -28,6 +28,9 @@ import com.example.rob.lernapp.restdataGet.Learngroup;
 import com.example.rob.lernapp.restdataPost.PostResponseLearngroup;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -66,6 +69,8 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
 
     private Socket learnappSocket;
 
+    private Gson gsonhelper = new Gson();
+
 
     @ViewById(R.id.groupllist_recyclerview)
     RecyclerView grouplistRecyclerview;
@@ -87,7 +92,6 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
     DatabaseUtilityLearngroups dataBaseUtilTask;
 
 
-
     @AfterViews
     void onCreate() {
         UniqueIDHandler uniqueIDHandler = UniqueIDHandler.getInstance(this);
@@ -101,31 +105,89 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
 
         this.learnappSocket = SocketHandler.getInstance().getlearnappSocket();
         this.learnappSocket.connect();
-        this.learnappSocket.on("status", onNewMessage);
 
-        this.learnappSocket.emit("joined", "yes");
-
-
+        this.learnappSocket.on("deletedGroup", onDeletedGroup);
+        this.learnappSocket.on("groupMemberDeleted", onMemberLeaveGroup);
 
 
     }
 
-
-    private Emitter.Listener onNewMessage = new Emitter.Listener(){
-
+    private Emitter.Listener onMemberLeaveGroup = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            getStatus();
+            if (args[0] != null && args != null) {
+
+                socketIOMemberLeaveGroup(getJsonObjectforSocketIO(args[0]), false);
+            } else {
+                socketIOMemberLeaveGroup(null, true);
+            }
+
+        }
+    };
+
+    @UiThread
+    void socketIOMemberLeaveGroup(JsonObject data, boolean error) {
+
+        if (!error) {
+            PatchResponse deletedMemberPatchResponse = this.gsonhelper.fromJson(data, PatchResponse.class);
+
+            for (Learngroup learngroup : this.creatorLearngroups) {
+                if (learngroup.get_id().equals(deletedMemberPatchResponse.getGroup())) {
+                    if(learngroup.deleteMember(deletedMemberPatchResponse.getMember()) == false){
+                        Toast.makeText(this, "SocketIO - Fehler (Delete Member from Group)", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                }
+            }
+
+            for (Learngroup learngroup : this.learngroupsAll) {
+                if (learngroup.get_id().equals(deletedMemberPatchResponse.getGroup())) {
+                    if(learngroup.deleteMember(deletedMemberPatchResponse.getMember()) == false){
+                        Toast.makeText(this, "SocketIO - Fehler (Delete Member from Group)", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                }
+            }
+
+        } else {
+            Toast.makeText(LearngroupsActivity.this, "Fehler beim Datenempfang (Gelöschtes Member)", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    private Emitter.Listener onDeletedGroup = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            if (args[0] != null && args != null) {
+
+                socketIODeletedGroup(getJsonObjectforSocketIO(args[0]), false);
+            } else {
+                socketIODeletedGroup(null, true);
+            }
+
         }
     };
 
 
     @UiThread
-    void getStatus(){
-        Toast.makeText(this, "test", Toast.LENGTH_SHORT).show();
+    void socketIODeletedGroup(JsonObject data, boolean error) {
+        if (!error) {
+            Learngroup deletedLearngroup = this.gsonhelper.fromJson(data, Learngroup.class);
+            if (deleteGroupLocally(deletedLearngroup)) {
+                updateRecyclerview(groupfilter.isChecked());
+            }
+
+        } else {
+            Toast.makeText(LearngroupsActivity.this, "Fehler beim Datenempfang (Gelöschte Gruppe)", Toast.LENGTH_LONG).show();
+        }
+
+
     }
 
-
+    private JsonObject getJsonObjectforSocketIO(Object arg) {
+        JsonParser parser = new JsonParser();
+        return parser.parse(String.valueOf(arg)).getAsJsonObject();
+    }
 
 
     @Override
@@ -223,7 +285,7 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
 
     public void handleCreateResponse(PostResponseLearngroup postResponseLearngroup) {
 
-        if(postResponseLearngroup != null){
+        if (postResponseLearngroup != null) {
             this.creatorLearngroups.add(postResponseLearngroup.getCreatedGroups());
             this.learngroupsAll.add(postResponseLearngroup.getCreatedGroups());
             updateRecyclerview(groupfilter.isChecked());
@@ -235,22 +297,36 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
 
 
         if (postResponse != null) {
-            for (Learngroup learngroup : this.creatorLearngroups) {
-                if (learngroup.get_id().equals(deletedGroup.get_id())) {
-                    this.creatorLearngroups.remove(learngroup);
-                    break;
-                }
-            }
-
-            for (Learngroup learngroup : this.learngroupsAll) {
-                if (learngroup.get_id().equals(deletedGroup.get_id())) {
-                    this.learngroupsAll.remove(learngroup);
-                    break;
-                }
-            }
+            deleteGroupLocally(deletedGroup);
             this.deleteGroupDialog.dismiss();
             updateRecyclerview(groupfilter.isChecked());
+
+            //SocketIO Function
+            String deletedGroupJson = this.gsonhelper.toJson(deletedGroup);
+            this.learnappSocket.emit("GroupDeleted", deletedGroupJson);
+
         }
+    }
+
+    private boolean deleteGroupLocally(Learngroup deletedGroup) {
+        boolean booldeletedGroup = false;
+        for (Learngroup learngroup : this.creatorLearngroups) {
+            if (learngroup.get_id().equals(deletedGroup.get_id())) {
+                this.creatorLearngroups.remove(learngroup);
+                booldeletedGroup = true;
+                break;
+            }
+        }
+
+        for (Learngroup learngroup : this.learngroupsAll) {
+            if (learngroup.get_id().equals(deletedGroup.get_id())) {
+                this.learngroupsAll.remove(learngroup);
+                booldeletedGroup = true;
+                break;
+            }
+        }
+
+        return booldeletedGroup;
     }
 
     @Click(R.id.learngroup_actionbutton_addgrouplink)
@@ -261,7 +337,7 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
     }
 
     @Click(R.id.learngroup_actionbutton_addgroup)
-    void addgroupClicked(){
+    void addgroupClicked() {
         this.confirmGroupDialog = new ConfirmGroupDialog_();
         this.confirmGroupDialog.setActivity(this);
         this.confirmGroupDialog.show(getSupportFragmentManager(), "groupDialog");
@@ -279,6 +355,11 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
     }
 
     public void getResponseDeleteMember(PatchResponse patchResponseGSON) {
+
+        //SocketIO Function
+        String deletedMemberPatchJson = this.gsonhelper.toJson(patchResponseGSON);
+        this.learnappSocket.emit("GroupMemberDeleted", deletedMemberPatchJson);
+
         dataBaseUtilTask.getDatabaseId();
         this.deleteGroupDialog.dismiss();
     }
@@ -291,10 +372,10 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
     @Click(R.id.learngroup_actionbutton)
     void actionbuttonClicked() {
 
-        if(!this.isFabOpen){
+        if (!this.isFabOpen) {
             this.isFabOpen = true;
             showFabMenu();
-        }else{
+        } else {
             this.isFabOpen = false;
             closeFabMenu();
         }
@@ -302,14 +383,14 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
 
     }
 
-    private void showFabMenu(){
+    private void showFabMenu() {
         this.fab_addgroup.animate().translationY(-getResources().getDimension(R.dimen.fabmargin_1));
         this.fab_addgrouplink.animate().translationY(-getResources().getDimension(R.dimen.fabmargin_2));
         this.fab_addgroup.animate().alpha(1);
         this.fab_addgrouplink.animate().alpha(1);
     }
 
-    private void closeFabMenu(){
+    private void closeFabMenu() {
         this.fab_addgroup.animate().translationY(0);
         this.fab_addgrouplink.animate().translationY(0);
         this.fab_addgroup.animate().alpha(0);
