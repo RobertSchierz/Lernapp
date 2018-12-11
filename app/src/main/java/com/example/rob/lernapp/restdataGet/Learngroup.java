@@ -24,7 +24,7 @@ public class Learngroup implements Parcelable {
     }
 
 
-    public void setNewMember(Member member){
+    public void setNewMember(Member member) {
         ArrayList<Member> tempArraylistMember = new ArrayList<Member>(Arrays.asList(this.members));
         tempArraylistMember.add(member);
 
@@ -34,32 +34,23 @@ public class Learngroup implements Parcelable {
         this.members = tempmeberarray;
     }
 
-    public boolean deleteMember(Member member){
+    public void deleteMember(Member member) {
 
-        boolean success = false;
 
         ArrayList<Member> tempArraylistMember = new ArrayList<Member>(Arrays.asList(this.members));
 
+
         for (Member groupmember :
                 tempArraylistMember) {
-            if(groupmember.get_id().equals(member.get_id())){
+            if (groupmember.get_id().equals(member.get_id())) {
                 tempArraylistMember.remove(groupmember);
 
                 Member[] tempmeberarray = new Member[tempArraylistMember.size()];
                 tempmeberarray = tempArraylistMember.toArray(tempmeberarray);
                 this.members = tempmeberarray;
-                success = true;
                 break;
-            }else{
-                success = false;
             }
         }
-
-        return success;
-
-
-
-
     }
 
     public void setCreator(User creator) {

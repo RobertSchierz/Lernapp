@@ -102,15 +102,82 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        this.learnappSocket = null;
+        SocketHandler.getInstance().resetSocket();
+
+        this.isFabOpen = false;
+        this.closeFabMenu();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+
+        dataBaseUtilTask.getDatabaseId();
+        Animation floatingactionanimation = AnimationUtils.loadAnimation(this, R.anim.floatingaction_onviewanim);
+        fab_learngroupmain.setAnimation(floatingactionanimation);
 
         this.learnappSocket = SocketHandler.getInstance().getlearnappSocket();
         this.learnappSocket.connect();
 
         this.learnappSocket.on("deletedGroup", onDeletedGroup);
         this.learnappSocket.on("groupMemberDeleted", onMemberLeaveGroup);
-
+        this.learnappSocket.on("groupMemberAdded", onMemberAddedGroup);
 
     }
+
+    private Emitter.Listener onMemberAddedGroup = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            if (args[0] != null && args != null) {
+
+                socketIOMemberAddedGroup(getJsonObjectforSocketIO(args[0]), false);
+            } else {
+                socketIOMemberAddedGroup(null, true);
+            }
+
+        }
+    };
+
+    @UiThread
+    void socketIOMemberAddedGroup(JsonObject data, boolean error) {
+
+        if (!error) {
+            PatchResponse addedMemberPatchResponse = this.gsonhelper.fromJson(data, PatchResponse.class);
+
+            for (Learngroup learngroup : this.creatorLearngroups) {
+                if (learngroup.get_id().equals(addedMemberPatchResponse.getGroup())) {
+                    learngroup.setNewMember(addedMemberPatchResponse.getMember());
+                    break;
+                }
+            }
+
+            for (Learngroup learngroup : this.learngroupsAll) {
+                if (learngroup.get_id().equals(addedMemberPatchResponse.getGroup())) {
+                    learngroup.setNewMember(addedMemberPatchResponse.getMember());
+                    break;
+                }
+            }
+
+            if(addedMemberPatchResponse.getMember().getMember().get_id().equals(PersistanceDataHandler.getUniqueDatabaseId())){
+                dataBaseUtilTask.getDatabaseId();
+            }
+
+        } else {
+            Toast.makeText(LearngroupsActivity.this, "Fehler beim Datenempfang (Hinzugefügter Member)", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+
 
     private Emitter.Listener onMemberLeaveGroup = new Emitter.Listener() {
         @Override
@@ -133,18 +200,14 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
 
             for (Learngroup learngroup : this.creatorLearngroups) {
                 if (learngroup.get_id().equals(deletedMemberPatchResponse.getGroup())) {
-                    if(learngroup.deleteMember(deletedMemberPatchResponse.getMember()) == false){
-                        Toast.makeText(this, "SocketIO - Fehler (Delete Member from Group)", Toast.LENGTH_SHORT).show();
-                    }
+                    learngroup.deleteMember(deletedMemberPatchResponse.getMember());
                     break;
                 }
             }
 
             for (Learngroup learngroup : this.learngroupsAll) {
                 if (learngroup.get_id().equals(deletedMemberPatchResponse.getGroup())) {
-                    if(learngroup.deleteMember(deletedMemberPatchResponse.getMember()) == false){
-                        Toast.makeText(this, "SocketIO - Fehler (Delete Member from Group)", Toast.LENGTH_SHORT).show();
-                    }
+                    learngroup.deleteMember(deletedMemberPatchResponse.getMember());
                     break;
                 }
             }
@@ -190,20 +253,7 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        dataBaseUtilTask.getDatabaseId();
-        Animation floatingactionanimation = AnimationUtils.loadAnimation(this, R.anim.floatingaction_onviewanim);
-        fab_learngroupmain.setAnimation(floatingactionanimation);
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        this.isFabOpen = false;
-        this.closeFabMenu();
-    }
 
     public void initializeRecyclerview() {
 
@@ -365,6 +415,12 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
     }
 
     public void getResponseJoinThroughLink(PatchResponse patchResponseGSON) {
+
+        //SocketIO Function
+        String deletedGroupJson = this.gsonhelper.toJson(patchResponseGSON);
+        this.learnappSocket.emit("GroupMemberAdded", deletedGroupJson);
+
+
         dataBaseUtilTask.getDatabaseId();
         this.jointhroughlinkDialog.dismiss();
     }

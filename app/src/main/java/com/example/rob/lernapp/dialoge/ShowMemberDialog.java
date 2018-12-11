@@ -3,6 +3,7 @@ package com.example.rob.lernapp.dialoge;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,13 +11,18 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rob.lernapp.R;
+import com.example.rob.lernapp.SocketHandler;
 import com.example.rob.lernapp.restdataGet.Learngroup;
 import com.example.rob.lernapp.restdataGet.Member;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.Socket;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
@@ -32,23 +38,92 @@ public class ShowMemberDialog extends DialogFragment {
     @ViewById(R.id.group_memberlistview)
     public ListView groupmemberlistview;
 
+    private Socket learnappSocket;
+
 
     @AfterViews
     void afterViews() {
 
+        setMemberlist();
+
+
+
+        this.learnappSocket = SocketHandler.getInstance().getlearnappSocket();
+        this.learnappSocket.connect();
+        this.learnappSocket.on("groupMemberDeleted", onMemberLeaveGroup);
+        this.learnappSocket.on("groupMemberAdded", onMemberAddedGroup);
+
+
+
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        this.learnappSocket = null;
+        SocketHandler.getInstance().resetSocket();
+    }
+
+
+
+    private void setMemberlist() {
         final ArrayList<Member> memberlist = new ArrayList<Member>();
 
         for (int i = 0; i < this.groups.get(position).getMembers().length; i++) {
             memberlist.add(this.groups.get(position).getMembers()[i]);
         }
 
-
-        final MemberArrayAdapter stableArrayAdapter = new MemberArrayAdapter(this.learngroupactivity.getApplicationContext(), memberlist);
-        groupmemberlistview.setAdapter(stableArrayAdapter);
+        if(memberlist.size() == 0){
+            handleMemberlist(false, true);
+        }else{
+            final MemberArrayAdapter stableArrayAdapter = new MemberArrayAdapter(this.learngroupactivity.getApplicationContext(), memberlist);
+            if(groupmemberlistview != null){
+                groupmemberlistview.setAdapter(stableArrayAdapter);
+            }
+        }
 
 
     }
 
+
+    private Emitter.Listener onMemberAddedGroup = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            if (args[0] != null && args != null) {
+
+                handleMemberlist(false, false);
+            } else {
+                handleMemberlist(true, false);
+            }
+        }
+    };
+
+    private Emitter.Listener onMemberLeaveGroup = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            if (args[0] != null && args != null) {
+
+                handleMemberlist(false, false);
+            } else {
+                handleMemberlist(true, false);
+            }
+        }
+    };
+
+    @UiThread
+    void handleMemberlist(boolean error, boolean listempty){
+        if(error){
+            Toast.makeText(learngroupactivity, "SocketIO Error (Fehler beim Handling der Member)", Toast.LENGTH_LONG).show();
+        }else{
+            if(listempty){
+                this.dismiss();
+                Toast.makeText(learngroupactivity, "Der letzte Member hat soeben die Gruppe verlassen", Toast.LENGTH_LONG).show();
+            }else{
+                setMemberlist();
+            }
+        }
+
+    }
 
     public void setActivity(Activity activity) {
         this.learngroupactivity = activity;

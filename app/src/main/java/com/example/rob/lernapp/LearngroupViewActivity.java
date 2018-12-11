@@ -30,10 +30,16 @@ import com.example.rob.lernapp.dialoge.InviteLinkDialog;
 import com.example.rob.lernapp.dialoge.InviteLinkDialog_;
 import com.example.rob.lernapp.dialoge.ShowInviteContactsDialog;
 import com.example.rob.lernapp.dialoge.ShowInviteContactsDialog_;
+import com.example.rob.lernapp.restDataPatch.PatchResponse;
 import com.example.rob.lernapp.restdataGet.Category;
 import com.example.rob.lernapp.restdataGet.Learngroup;
 import com.example.rob.lernapp.restdataGet.User;
 import com.example.rob.lernapp.restdataPost.PostResponseCategories;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.Socket;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -54,7 +60,7 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
     private AddMemberDialog addMemberDialog;
     private GetContacts getContacts;
     private User[] databaseUsers;
-    private ArrayList<User> contactUsersinDatabase = new ArrayList<User>();
+    public ArrayList<User> contactUsersinDatabase = new ArrayList<User>();
     public ShowInviteContactsDialog showInviteContactsDialog;
     public InviteLinkDialog inviteLinkDialog;
     public AddCategoryDialog addCategoryDialog;
@@ -65,6 +71,9 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
     public ArrayList<Category> allCategories;
 
     private CategorylistRecyclerviewAdapter categorylistRecyclerviewAdapter;
+
+    Socket learnappSocket;
+    Gson gsonhelper = new Gson();
 
     @NonConfigurationInstance
     @Bean
@@ -81,6 +90,7 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
 
     @ViewById(R.id.categoryrecyclerview)
     RecyclerView categoryrecyclerview;
+
 
     @SuppressLint("RestrictedApi")
     @AfterViews
@@ -100,14 +110,93 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
         }
         learngroupview_actionbutton.startAnimation(floatingactionanimation);
 
+
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
         dataBaseUtilTask.getCategories(this.group.get_id());
 
+        this.learnappSocket = SocketHandler.getInstance().getlearnappSocket();
+        this.learnappSocket.connect();
+        this.learnappSocket.on("groupMemberAdded", onMemberAddedToGroup);
+        this.learnappSocket.on("groupMemberDeleted", onMemberLeaveGroup);
+
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        this.learnappSocket = null;
+        SocketHandler.getInstance().resetSocket();
+    }
+
+    private Emitter.Listener onMemberLeaveGroup = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            if (args[0] != null && args != null) {
+
+                socketIOMemberLeaveGroup(getJsonObjectforSocketIO(args[0]), false);
+            } else {
+                socketIOMemberLeaveGroup(null, true);
+            }
+
+        }
+    };
+
+
+    @UiThread
+    void socketIOMemberLeaveGroup(JsonObject data, boolean error) {
+
+        if (!error) {
+            PatchResponse deletedMemberPatchResponse = this.gsonhelper.fromJson(data, PatchResponse.class);
+            if(this.group.get_id().equals(deletedMemberPatchResponse.getGroup())){
+                this.group.deleteMember(deletedMemberPatchResponse.getMember());
+            }
+
+        } else {
+            Toast.makeText(this, "Fehler beim Datenempfang (Gelöschtes Member)", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    private Emitter.Listener onMemberAddedToGroup = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            if (args[0] != null && args != null) {
+                handleNewMember(getJsonObjectforSocketIO(args[0]), false);
+            } else {
+                handleNewMember(null, true);
+            }
+        }
+    };
+
+    @UiThread
+    void handleNewMember(JsonObject data, boolean error){
+
+        if(!error){
+            PatchResponse addMemberPatchResponse = this.gsonhelper.fromJson(data, PatchResponse.class);
+            if(this.group.get_id().equals(addMemberPatchResponse.getGroup())){
+                this.group.setNewMember(addMemberPatchResponse.getMember());
+            }
+
+
+        }else{
+            Toast.makeText(this, "SocketIO Error beim Hinzufügen eines neuen Members", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    private JsonObject getJsonObjectforSocketIO(Object arg) {
+        JsonParser parser = new JsonParser();
+        return parser.parse(String.valueOf(arg)).getAsJsonObject();
+    }
+
+
+
 
     void initilizeRecyclerview(){
         int animationID = R.anim.layout_animation_fall_down;
@@ -254,7 +343,7 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
     }
 
 
-    private void examineUsers() {
+    public void examineUsers() {
 
         boolean isAllreadyInGroup = false;
         this.contactUsersinDatabase = new ArrayList<User>();

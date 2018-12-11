@@ -2,6 +2,7 @@ package com.example.rob.lernapp.dialoge;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,15 +11,23 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rob.lernapp.R;
+import com.example.rob.lernapp.SocketHandler;
 import com.example.rob.lernapp.databaseUtilityClasses.DatabaseUtilityLearngroupView;
 import com.example.rob.lernapp.restDataPatch.PatchResponse;
 import com.example.rob.lernapp.restdataGet.Learngroup;
 import com.example.rob.lernapp.restdataGet.User;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.Socket;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
@@ -32,6 +41,9 @@ public class ShowInviteContactsDialog extends DialogFragment {
     private Learngroup group;
     private DatabaseUtilityLearngroupView databaseUtilityLearngroupView;
 
+    private Socket learnappSocket;
+    private Gson gsonhelper = new Gson();
+
 
     @ViewById(R.id.invite_contactlist)
     public ListView contactinvitelistview;
@@ -40,10 +52,85 @@ public class ShowInviteContactsDialog extends DialogFragment {
     @AfterViews
     void afterViews() {
 
-        final ContactInviteDialogAdapter stableArrayAdapter = new ContactInviteDialogAdapter(this.group, learngroupviewactivity.getApplicationContext(), users, this.databaseUtilityLearngroupView);
-        contactinvitelistview.setAdapter(stableArrayAdapter);
+
+        setList();
+
+        this.learnappSocket = SocketHandler.getInstance().getlearnappSocket();
+        this.learnappSocket.connect();
+        this.learnappSocket.on("groupMemberDeleted", onMemberLeaveGroup);
+        this.learnappSocket.on("groupMemberAdded", onMemberAddedGroup);
+
 
     }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        this.learnappSocket = null;
+        SocketHandler.getInstance().resetSocket();
+    }
+
+    private void setList() {
+
+        if (users.size() == 0) {
+            this.dismiss();
+            Toast.makeText(learngroupviewactivity, "Der letzte potentielle Member ist soeben der Gruppe hinzugekommen", Toast.LENGTH_LONG).show();
+        } else {
+            final ContactInviteDialogAdapter stableArrayAdapter = new ContactInviteDialogAdapter(this.group, learngroupviewactivity.getApplicationContext(), users, this.databaseUtilityLearngroupView);
+            if (contactinvitelistview != null) {
+                contactinvitelistview.setAdapter(stableArrayAdapter);
+            }
+
+        }
+
+    }
+
+    private Emitter.Listener onMemberAddedGroup = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            if (args[0] != null && args != null) {
+                JsonParser parser = new JsonParser();
+                handleMemberlist(parser.parse(String.valueOf(args[0])).getAsJsonObject(), false, false, false);
+            } else {
+                handleMemberlist(null, true, false, true);
+            }
+        }
+    };
+
+    private Emitter.Listener onMemberLeaveGroup = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            if (args[0] != null && args != null) {
+                JsonParser parser = new JsonParser();
+                handleMemberlist(parser.parse(String.valueOf(args[0])).getAsJsonObject(), false, false, true);
+            } else {
+                handleMemberlist(null, true, false, true);
+            }
+        }
+    };
+
+    @UiThread
+    void handleMemberlist(JsonObject data, boolean error, boolean listempty, boolean memberLeaved) {
+        if (error) {
+            Toast.makeText(learngroupviewactivity, "SocketIO Error (Fehler beim Handling der Member)", Toast.LENGTH_LONG).show();
+        } else {
+            PatchResponse patchResponse = this.gsonhelper.fromJson(data, PatchResponse.class);
+            if (memberLeaved) {
+                this.users.add(patchResponse.getMember().getMember());
+            } else {
+                for (User user :
+                        this.users) {
+                    if (user.get_id().equals(patchResponse.getMember().getMember().get_id())) {
+                        this.users.remove(user);
+                        break;
+                    }
+                }
+            }
+            setList();
+        }
+
+    }
+
 
     public void setVars(Activity activity, ArrayList<User> users, Learngroup group, DatabaseUtilityLearngroupView databaseUtilityLearngroupView) {
         learngroupviewactivity = activity;
@@ -57,6 +144,10 @@ public class ShowInviteContactsDialog extends DialogFragment {
         this.group.setNewMember(patchResponse.getMember());
         addMemberButton.setEnabled(false);
         addMemberButton.setText("Hinzugefügt");
+
+        //SocketIO Function
+        String deletedGroupJson = this.gsonhelper.toJson(patchResponse);
+        this.learnappSocket.emit("GroupMemberAdded", deletedGroupJson);
 
     }
 }

@@ -32,4 +32,9 @@ public class SocketHandler{
         return learnappSocket;
     }
 
+    public void resetSocket(){
+        SocketHandler.instance = null;
+        learnappSocket = null;
+    }
+
 }
