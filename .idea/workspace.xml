@@ -12,8 +12,7 @@
     <option name="TOOL_WINDOW_REGEXP_FILTER" value="false" />
   </component>
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/dialoge/ShowInviteContactsDialog.java" line="153" />
-    <bookmark url="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupsActivity.java" line="423" />
+    <bookmark url="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupViewActivity.java" line="336" />
   </component>
   <component name="CMakeSettings">
     <configurations>
@@ -22,13 +21,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f23fb79-1a9e-4eab-aa88-edc7e3c0f5a0" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupViewActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupViewActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupsActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/SocketHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/SocketHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/dialoge/ShowInviteContactsDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/dialoge/ShowInviteContactsDialog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/dialoge/ShowMemberDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/dialoge/ShowMemberDialog.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -92,7 +86,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/dialoge/ShowMemberDialog.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="425">
-              <caret line="49" column="16" lean-forward="true" selection-start-line="49" selection-start-column="16" selection-end-line="49" selection-end-column="16" />
+              <caret line="49" column="16" selection-start-line="49" selection-start-column="16" selection-end-line="49" selection-end-column="16" />
               <folding>
                 <element signature="e#1871#1879#0" expanded="true" />
                 <element signature="e#2482#2765#0" expanded="true" />
@@ -102,11 +96,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ShowInviteContactsDialog.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ShowInviteContactsDialog.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/dialoge/ShowInviteContactsDialog.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="612">
-              <caret line="126" column="26" lean-forward="true" selection-start-line="126" selection-start-column="26" selection-end-line="126" selection-end-column="26" />
+            <state relative-caret-position="221">
+              <caret line="100" column="35" selection-start-line="100" selection-start-column="35" selection-end-line="100" selection-end-column="35" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CategoryViewActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/CategoryViewActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="918">
+              <caret line="165" selection-start-line="165" selection-end-line="165" />
             </state>
           </provider>
         </entry>
@@ -126,8 +129,8 @@
       <file leaf-file-name="LearngroupsActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupsActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="112" column="81" selection-start-line="112" selection-start-column="81" selection-end-line="112" selection-end-column="81" />
+            <state relative-caret-position="240">
+              <caret line="357" column="41" selection-start-line="357" selection-start-column="41" selection-end-line="357" selection-end-column="41" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#6268#6595#0" expanded="true" />
@@ -137,33 +140,54 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LearngroupViewActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupViewActivity.java">
+      <file leaf-file-name="DatabaseUtilityLearngroupView.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/databaseUtilityClasses/DatabaseUtilityLearngroupView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="475">
-              <caret line="130" column="30" selection-start-line="130" selection-start-column="30" selection-end-line="130" selection-end-column="30" />
-              <folding>
-                <element signature="e#2811#2817#0" expanded="true" />
-                <element signature="e#3944#3998#0" expanded="true" />
-                <element signature="e#5082#5409#0" expanded="true" />
-                <element signature="e#5408#5409#0" expanded="true" />
-                <element signature="e#6000#6307#0" expanded="true" />
-                <element signature="e#6306#6307#0" expanded="true" />
-                <element signature="e#8150#8198#0" expanded="true" />
-                <element signature="e#8258#8306#0" expanded="true" />
-                <element signature="e#8485#8533#0" expanded="true" />
-                <element signature="e#10384#10594#0" expanded="true" />
-                <element signature="e#10593#10594#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="492">
+              <caret line="124" column="35" selection-start-line="124" selection-start-column="35" selection-end-line="124" selection-end-column="35" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DatabaseUtilityLearngroupView.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/databaseUtilityClasses/DatabaseUtilityLearngroupView.java">
+      <file leaf-file-name="CategorylistRecyclerviewAdapter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/CategorylistRecyclerviewAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="578">
-              <caret line="58" column="36" selection-start-line="58" selection-start-column="36" selection-end-line="58" selection-end-column="36" />
+            <state relative-caret-position="211">
+              <caret line="28" column="30" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="30" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PostResponseCategories.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/restdataPost/PostResponseCategories.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LearngroupViewActivity.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupViewActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="189">
+              <caret line="160" column="60" lean-forward="true" selection-start-line="160" selection-start-column="60" selection-end-line="160" selection-end-column="60" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#2811#2817#0" expanded="true" />
+                <element signature="e#3944#3998#0" expanded="true" />
+                <element signature="e#5443#5770#0" expanded="true" />
+                <element signature="e#5769#5770#0" expanded="true" />
+                <element signature="e#6241#6568#0" expanded="true" />
+                <element signature="e#6567#6568#0" expanded="true" />
+                <element signature="e#7181#7488#0" expanded="true" />
+                <element signature="e#7487#7488#0" expanded="true" />
+                <element signature="e#9331#9379#0" expanded="true" />
+                <element signature="e#9439#9487#0" expanded="true" />
+                <element signature="e#9666#9714#0" expanded="true" />
+                <element signature="e#11565#11775#0" expanded="true" />
+                <element signature="e#11774#11775#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -191,28 +215,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DatabaseUtilityLearngroups.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/databaseUtilityClasses/DatabaseUtilityLearngroups.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1445">
-              <caret line="109" column="33" selection-start-line="109" selection-start-column="33" selection-end-line="109" selection-end-column="33" />
-              <folding>
-                <element signature="e#6297#6298#0" expanded="true" />
-                <element signature="e#6337#6338#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RestClient.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/RestClient.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="54" column="42" selection-start-line="54" selection-start-column="42" selection-end-line="54" selection-end-column="42" />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -228,7 +230,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>create</find>
       <find>learngroup_</find>
       <find>post</find>
       <find>gson</find>
@@ -256,6 +257,7 @@
       <find>onMemberAddedToGroup</find>
       <find>GroupMemberAdded</find>
       <find>resetSocket</find>
+      <find>setCategoryNew</find>
       <find>emit</find>
       <find>link</find>
     </findStrings>
@@ -2419,10 +2421,10 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/restDataPatch/PatchResponse.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/restdataGet/Learngroup.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupsActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupViewActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/SocketHandler.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/dialoge/ShowMemberDialog.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/dialoge/ShowInviteContactsDialog.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupViewActivity.java" />
       </list>
     </option>
   </component>
@@ -2457,6 +2459,20 @@
               <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="java" type="edd41e36:AndroidSourceTypeNode" />
               <item name="lernapp" type="cbb59c9e:AndroidPsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Lernapp" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="lernapp" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="adapter" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Lernapp" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="lernapp" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="databaseUtilityClasses" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Lernapp" type="1abcf292:AndroidViewProjectNode" />
@@ -2802,14 +2818,14 @@
       <window_info id="Build Variants" order="2" side_tool="true" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50139534" side_tool="true" weight="0.27073404" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.24213536" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.24213536" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32983795" />
       <window_info anchor="bottom" id="Logcat" order="7" weight="0.22592945" />
       <window_info id="Captures" order="2" weight="0.25" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49952334" visible="true" weight="0.15302326" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49952334" visible="true" weight="0.15302326" />
       <window_info anchor="bottom" id="Build" order="7" sideWeight="0.49906978" weight="0.23164919" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32983795" />
       <window_info anchor="right" id="Gradle" order="3" weight="0.32976744" />
@@ -2984,23 +3000,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-28/android/app/Activity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="7483" selection-start-line="7483" selection-end-line="7483" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_categoryview.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/add_groupview_actionbutton.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -3071,13 +3070,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/restdataPost/PostResponseCategories.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="2" selection-start-line="11" selection-start-column="2" selection-end-line="12" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/restdataGet/Topic.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
@@ -3139,13 +3131,6 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/CategoryViewActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="128" selection-start-line="128" selection-end-line="128" />
         </state>
       </provider>
     </entry>
@@ -3246,20 +3231,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/databaseUtilityClasses/DatabaseUtilityCategory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="43" column="16" selection-start-line="43" selection-start-column="16" selection-end-line="43" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/databaseUtilityClasses/DatabaseUtilityLearngroupView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="58" column="36" selection-start-line="58" selection-start-column="36" selection-end-line="58" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/PersistanceDataHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -3327,42 +3298,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupViewActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
-          <caret line="130" column="30" selection-start-line="130" selection-start-column="30" selection-end-line="130" selection-end-column="30" />
-          <folding>
-            <element signature="e#2811#2817#0" expanded="true" />
-            <element signature="e#3944#3998#0" expanded="true" />
-            <element signature="e#5082#5409#0" expanded="true" />
-            <element signature="e#5408#5409#0" expanded="true" />
-            <element signature="e#6000#6307#0" expanded="true" />
-            <element signature="e#6306#6307#0" expanded="true" />
-            <element signature="e#8150#8198#0" expanded="true" />
-            <element signature="e#8258#8306#0" expanded="true" />
-            <element signature="e#8485#8533#0" expanded="true" />
-            <element signature="e#10384#10594#0" expanded="true" />
-            <element signature="e#10593#10594#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupsActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="112" column="81" selection-start-line="112" selection-start-column="81" selection-end-line="112" selection-end-column="81" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#6268#6595#0" expanded="true" />
-            <element signature="e#6594#6595#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/dialoge/ShowMemberDialog.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="425">
-          <caret line="49" column="16" lean-forward="true" selection-start-line="49" selection-start-column="16" selection-end-line="49" selection-end-column="16" />
+          <caret line="49" column="16" selection-start-line="49" selection-start-column="16" selection-end-line="49" selection-end-column="16" />
           <folding>
             <element signature="e#1871#1879#0" expanded="true" />
             <element signature="e#2482#2765#0" expanded="true" />
@@ -3373,8 +3312,85 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/dialoge/ShowInviteContactsDialog.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="126" column="26" lean-forward="true" selection-start-line="126" selection-start-column="26" selection-end-line="126" selection-end-column="26" />
+        <state relative-caret-position="221">
+          <caret line="100" column="35" selection-start-line="100" selection-start-column="35" selection-end-line="100" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/databaseUtilityClasses/DatabaseUtilityCategory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="646">
+          <caret line="66" column="41" lean-forward="true" selection-start-line="66" selection-start-column="41" selection-end-line="66" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/CategoryViewActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="918">
+          <caret line="165" selection-start-line="165" selection-end-line="165" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/restdataPost/PostResponseCategories.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/CategoryRecyclerlistLayoutManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="33">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/databaseUtilityClasses/DatabaseUtilityLearngroupView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="492">
+          <caret line="124" column="35" selection-start-line="124" selection-start-column="35" selection-end-line="124" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/CategorylistRecyclerviewAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="211">
+          <caret line="28" column="30" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="357" column="41" selection-start-line="357" selection-start-column="41" selection-end-line="357" selection-end-column="41" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#6268#6595#0" expanded="true" />
+            <element signature="e#6594#6595#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupViewActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="160" column="60" lean-forward="true" selection-start-line="160" selection-start-column="60" selection-end-line="160" selection-end-column="60" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2811#2817#0" expanded="true" />
+            <element signature="e#3944#3998#0" expanded="true" />
+            <element signature="e#5443#5770#0" expanded="true" />
+            <element signature="e#5769#5770#0" expanded="true" />
+            <element signature="e#6241#6568#0" expanded="true" />
+            <element signature="e#6567#6568#0" expanded="true" />
+            <element signature="e#7181#7488#0" expanded="true" />
+            <element signature="e#7487#7488#0" expanded="true" />
+            <element signature="e#9331#9379#0" expanded="true" />
+            <element signature="e#9439#9487#0" expanded="true" />
+            <element signature="e#9666#9714#0" expanded="true" />
+            <element signature="e#11565#11775#0" expanded="true" />
+            <element signature="e#11774#11775#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

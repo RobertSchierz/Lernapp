@@ -124,6 +124,7 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
         this.learnappSocket.connect();
         this.learnappSocket.on("groupMemberAdded", onMemberAddedToGroupLearngroupViewActivity);
         this.learnappSocket.on("groupMemberDeleted", onMemberLeaveGroupGroupLearngroupViewActivity);
+        this.learnappSocket.on("categoryAdded", onCategoryAddedLearngroupViewActivity);
 
     }
 
@@ -132,9 +133,36 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
         super.onPause();
         this.learnappSocket.off("groupMemberDeleted", onMemberAddedToGroupLearngroupViewActivity);
         this.learnappSocket.off("groupMemberAdded", onMemberLeaveGroupGroupLearngroupViewActivity);
+        this.learnappSocket.off("categoryAdded", onCategoryAddedLearngroupViewActivity);
 
 
 
+    }
+
+
+
+    private Emitter.Listener onCategoryAddedLearngroupViewActivity = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            if (args[0] != null && args != null) {
+
+                addNewCategory(getJsonObjectforSocketIO(args[0]), false);
+            } else {
+                addNewCategory(null, true);
+            }
+
+        }
+    };
+
+    @UiThread
+    void addNewCategory(JsonObject data, boolean error){
+        if(!error){
+            PostResponseCategories newCategoryPostResponse = this.gsonhelper.fromJson(data, PostResponseCategories.class);
+            initializeCategoryList(newCategoryPostResponse);
+
+        }else{
+            Toast.makeText(this, "Fehler beim Datenempfang (Neue Kategory)", Toast.LENGTH_LONG).show();
+        }
     }
 
     private Emitter.Listener onMemberLeaveGroupGroupLearngroupViewActivity = new Emitter.Listener() {
@@ -307,13 +335,21 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
 
     public void getNewCategoryBack(PostResponseCategories postResponseCategories){
         addCategoryDialog.dismiss();
+        initializeCategoryList(postResponseCategories);
+
+        //SocketIO Function
+        String newCategoryJson = this.gsonhelper.toJson(postResponseCategories);
+        this.learnappSocket.emit("CategoryAdded", newCategoryJson);
+
+
+    }
+
+    private void initializeCategoryList(PostResponseCategories postResponseCategories) {
         this.allCategories.add(postResponseCategories.getCreatedCategory());
         this.categorylistRecyclerviewAdapter.setCategoryNew(this.allCategories);
         this.categorylistRecyclerviewAdapter.notifyDataSetChanged();
         this.categoryrecyclerview.scheduleLayoutAnimation();
-
     }
-
 
 
     @UiThread
