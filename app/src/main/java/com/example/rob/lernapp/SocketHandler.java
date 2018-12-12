@@ -20,6 +20,10 @@ public class SocketHandler{
         if (SocketHandler.instance == null) {
             SocketHandler.instance = new SocketHandler ();
             try {
+                if(learnappSocket != null){
+                    learnappSocket.disconnect();
+                }
+
                 learnappSocket = IO.socket(URL);
             } catch (URISyntaxException e) {
                 throw new RuntimeException(e);
@@ -32,9 +36,5 @@ public class SocketHandler{
         return learnappSocket;
     }
 
-    public void resetSocket(){
-        SocketHandler.instance = null;
-        learnappSocket = null;
-    }
 
 }

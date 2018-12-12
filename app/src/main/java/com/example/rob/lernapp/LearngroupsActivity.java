@@ -108,8 +108,10 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
     protected void onPause() {
         super.onPause();
 
-        this.learnappSocket = null;
-        SocketHandler.getInstance().resetSocket();
+        this.learnappSocket.off("groupMemberDeleted", onMemberLeaveGroupLearngroupsActivity);
+        this.learnappSocket.off("groupMemberAdded", onMemberAddedGroupLearngroupsActivity);
+        this.learnappSocket.off("deletedGroup", onDeletedGroupLearngroupsActivity);
+
 
         this.isFabOpen = false;
         this.closeFabMenu();
@@ -128,13 +130,13 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
         this.learnappSocket = SocketHandler.getInstance().getlearnappSocket();
         this.learnappSocket.connect();
 
-        this.learnappSocket.on("deletedGroup", onDeletedGroup);
-        this.learnappSocket.on("groupMemberDeleted", onMemberLeaveGroup);
-        this.learnappSocket.on("groupMemberAdded", onMemberAddedGroup);
+        this.learnappSocket.on("deletedGroup", onDeletedGroupLearngroupsActivity);
+        this.learnappSocket.on("groupMemberDeleted", onMemberLeaveGroupLearngroupsActivity);
+        this.learnappSocket.on("groupMemberAdded", onMemberAddedGroupLearngroupsActivity);
 
     }
 
-    private Emitter.Listener onMemberAddedGroup = new Emitter.Listener() {
+    private Emitter.Listener onMemberAddedGroupLearngroupsActivity = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             if (args[0] != null && args != null) {
@@ -179,7 +181,7 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
 
 
 
-    private Emitter.Listener onMemberLeaveGroup = new Emitter.Listener() {
+    private Emitter.Listener onMemberLeaveGroupLearngroupsActivity = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             if (args[0] != null && args != null) {
@@ -218,7 +220,7 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
 
     }
 
-    private Emitter.Listener onDeletedGroup = new Emitter.Listener() {
+    private Emitter.Listener onDeletedGroupLearngroupsActivity = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             if (args[0] != null && args != null) {

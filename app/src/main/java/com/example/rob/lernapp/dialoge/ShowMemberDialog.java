@@ -46,12 +46,10 @@ public class ShowMemberDialog extends DialogFragment {
 
         setMemberlist();
 
-
-
         this.learnappSocket = SocketHandler.getInstance().getlearnappSocket();
         this.learnappSocket.connect();
-        this.learnappSocket.on("groupMemberDeleted", onMemberLeaveGroup);
-        this.learnappSocket.on("groupMemberAdded", onMemberAddedGroup);
+        this.learnappSocket.on("groupMemberDeleted", onMemberLeaveGroupShowMember);
+        this.learnappSocket.on("groupMemberAdded", onMemberAddedGroupShowMember);
 
 
 
@@ -59,9 +57,11 @@ public class ShowMemberDialog extends DialogFragment {
 
     @Override
     public void onDismiss(DialogInterface dialog) {
+        this.learnappSocket.off("groupMemberDeleted", onMemberLeaveGroupShowMember);
+        this.learnappSocket.off("groupMemberAdded", onMemberAddedGroupShowMember);
         super.onDismiss(dialog);
-        this.learnappSocket = null;
-        SocketHandler.getInstance().resetSocket();
+
+
     }
 
 
@@ -86,7 +86,7 @@ public class ShowMemberDialog extends DialogFragment {
     }
 
 
-    private Emitter.Listener onMemberAddedGroup = new Emitter.Listener() {
+    private Emitter.Listener onMemberAddedGroupShowMember = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             if (args[0] != null && args != null) {
@@ -98,7 +98,7 @@ public class ShowMemberDialog extends DialogFragment {
         }
     };
 
-    private Emitter.Listener onMemberLeaveGroup = new Emitter.Listener() {
+    private Emitter.Listener onMemberLeaveGroupShowMember = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             if (args[0] != null && args != null) {

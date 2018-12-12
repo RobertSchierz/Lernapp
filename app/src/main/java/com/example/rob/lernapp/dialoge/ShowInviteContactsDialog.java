@@ -57,17 +57,18 @@ public class ShowInviteContactsDialog extends DialogFragment {
 
         this.learnappSocket = SocketHandler.getInstance().getlearnappSocket();
         this.learnappSocket.connect();
-        this.learnappSocket.on("groupMemberDeleted", onMemberLeaveGroup);
-        this.learnappSocket.on("groupMemberAdded", onMemberAddedGroup);
+        this.learnappSocket.on("groupMemberDeleted", onMemberLeaveGroupInviteContactDilaog);
+        this.learnappSocket.on("groupMemberAdded", onMemberAddedGroupInviteContactDilaog);
 
 
     }
 
     @Override
     public void onDismiss(DialogInterface dialog) {
+        this.learnappSocket.off("groupMemberDeleted", onMemberLeaveGroupInviteContactDilaog);
+        this.learnappSocket.off("groupMemberAdded", onMemberAddedGroupInviteContactDilaog);
         super.onDismiss(dialog);
-        this.learnappSocket = null;
-        SocketHandler.getInstance().resetSocket();
+
     }
 
     private void setList() {
@@ -85,7 +86,7 @@ public class ShowInviteContactsDialog extends DialogFragment {
 
     }
 
-    private Emitter.Listener onMemberAddedGroup = new Emitter.Listener() {
+    private Emitter.Listener onMemberAddedGroupInviteContactDilaog = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             if (args[0] != null && args != null) {
@@ -97,7 +98,7 @@ public class ShowInviteContactsDialog extends DialogFragment {
         }
     };
 
-    private Emitter.Listener onMemberLeaveGroup = new Emitter.Listener() {
+    private Emitter.Listener onMemberLeaveGroupInviteContactDilaog = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             if (args[0] != null && args != null) {
@@ -116,7 +117,17 @@ public class ShowInviteContactsDialog extends DialogFragment {
         } else {
             PatchResponse patchResponse = this.gsonhelper.fromJson(data, PatchResponse.class);
             if (memberLeaved) {
-                this.users.add(patchResponse.getMember().getMember());
+                boolean isIn = false;
+                for (User user :
+                        this.users) {
+                    if (user.get_id().equals(patchResponse.getMember().getMember().get_id())) {
+                        isIn = true;
+                    }
+                }
+                if(!isIn){
+                    this.users.add(patchResponse.getMember().getMember());
+                }
+
             } else {
                 for (User user :
                         this.users) {

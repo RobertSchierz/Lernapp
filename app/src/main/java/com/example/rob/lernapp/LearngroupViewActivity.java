@@ -122,19 +122,22 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
 
         this.learnappSocket = SocketHandler.getInstance().getlearnappSocket();
         this.learnappSocket.connect();
-        this.learnappSocket.on("groupMemberAdded", onMemberAddedToGroup);
-        this.learnappSocket.on("groupMemberDeleted", onMemberLeaveGroup);
+        this.learnappSocket.on("groupMemberAdded", onMemberAddedToGroupLearngroupViewActivity);
+        this.learnappSocket.on("groupMemberDeleted", onMemberLeaveGroupGroupLearngroupViewActivity);
 
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        this.learnappSocket = null;
-        SocketHandler.getInstance().resetSocket();
+        this.learnappSocket.off("groupMemberDeleted", onMemberAddedToGroupLearngroupViewActivity);
+        this.learnappSocket.off("groupMemberAdded", onMemberLeaveGroupGroupLearngroupViewActivity);
+
+
+
     }
 
-    private Emitter.Listener onMemberLeaveGroup = new Emitter.Listener() {
+    private Emitter.Listener onMemberLeaveGroupGroupLearngroupViewActivity = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             if (args[0] != null && args != null) {
@@ -163,7 +166,7 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
 
     }
 
-    private Emitter.Listener onMemberAddedToGroup = new Emitter.Listener() {
+    private Emitter.Listener onMemberAddedToGroupLearngroupViewActivity = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             if (args[0] != null && args != null) {
