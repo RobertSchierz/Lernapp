@@ -163,6 +163,7 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
     public void backToGroups(JsonObject data) {
         Learngroup deletedLearngroup = this.gsonhelper.fromJson(data, Learngroup.class);
         if (this.category.getGroup().get_id().equals(deletedLearngroup.get_id())) {
+            Toast.makeText(this, "Gruppe " + deletedLearngroup.getName() + " wurde vom Admin " + deletedLearngroup.getCreator().getName() + " gelöscht", Toast.LENGTH_LONG).show();
             Intent openLearngroups = new Intent(this, LearngroupsActivity_.class);
             openLearngroups.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(openLearngroups);

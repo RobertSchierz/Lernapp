@@ -190,6 +190,7 @@ public class NewContentActivity extends AppCompatActivity {
         }
 
         if(isThisGroup){
+            Toast.makeText(this, "Gruppe " + deletedLearngroup.getName() + " wurde vom Admin " + deletedLearngroup.getCreator().getName() + " gelöscht", Toast.LENGTH_LONG).show();
             Intent openLearngroups = new Intent(this, LearngroupsActivity_.class);
             openLearngroups.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(openLearngroups);

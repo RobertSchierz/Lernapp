@@ -12,7 +12,7 @@
     <option name="TOOL_WINDOW_REGEXP_FILTER" value="false" />
   </component>
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupViewActivity.java" line="358" />
+    <bookmark url="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupViewActivity.java" line="359" />
   </component>
   <component name="CMakeSettings">
     <configurations>
@@ -87,12 +87,13 @@
       <file leaf-file-name="CategoryViewActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/CategoryViewActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="583">
-              <caret line="175" column="17" lean-forward="true" selection-start-line="175" selection-start-column="17" selection-end-line="175" selection-end-column="17" />
+            <state relative-caret-position="413">
+              <caret line="165" column="170" selection-start-line="165" selection-start-column="170" selection-end-line="165" selection-end-column="170" />
               <folding>
                 <element signature="e#4466#4518#0" expanded="true" />
                 <element signature="e#5395#5557#0" expanded="true" />
                 <element signature="e#5556#5557#0" expanded="true" />
+                <element signature="e#6139#6461#0" expanded="true" />
                 <element signature="e#6460#6461#0" expanded="true" />
                 <element signature="e#8113#8429#0" expanded="true" />
                 <element signature="e#8428#8429#0" expanded="true" />
@@ -106,10 +107,25 @@
       <file leaf-file-name="LearngroupViewActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupViewActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="673">
-              <caret line="149" column="6" selection-start-line="149" selection-start-column="6" selection-end-line="149" selection-end-column="6" />
+            <state relative-caret-position="388">
+              <caret line="155" column="170" selection-start-line="155" selection-start-column="170" selection-end-line="155" selection-end-column="170" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#2842#2848#0" expanded="true" />
+                <element signature="e#3975#4029#0" expanded="true" />
+                <element signature="e#5622#5784#0" expanded="true" />
+                <element signature="e#5783#5784#0" expanded="true" />
+                <element signature="e#6367#6674#0" expanded="true" />
+                <element signature="e#6673#6674#0" expanded="true" />
+                <element signature="e#7166#7493#0" expanded="true" />
+                <element signature="e#7492#7493#0" expanded="true" />
+                <element signature="e#8106#8413#0" expanded="true" />
+                <element signature="e#8412#8413#0" expanded="true" />
+                <element signature="e#10256#10304#0" expanded="true" />
+                <element signature="e#10364#10412#0" expanded="true" />
+                <element signature="e#10591#10639#0" expanded="true" />
+                <element signature="e#12490#12700#0" expanded="true" />
+                <element signature="e#12699#12700#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -118,12 +134,13 @@
       <file leaf-file-name="NewContentActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/NewContentActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="491">
-              <caret line="160" column="5" selection-start-line="160" selection-start-column="5" selection-end-line="160" selection-end-column="5" />
+            <state relative-caret-position="524">
+              <caret line="192" column="170" selection-start-line="192" selection-start-column="159" selection-end-line="192" selection-end-column="170" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#4961#5123#0" expanded="true" />
-                <element signature="e#5122#5123#0" expanded="true" />
+                <element signature="e#3944#3997#0" expanded="true" />
+                <element signature="e#5254#5416#0" expanded="true" />
+                <element signature="e#5415#5416#0" expanded="true" />
                 <element signature="e#7295#7296#0" expanded="true" />
                 <element signature="e#7326#7327#0" expanded="true" />
                 <element signature="e#7389#7390#0" expanded="true" />
@@ -132,6 +149,14 @@
                 <element signature="e#7541#7542#0" expanded="true" />
                 <element signature="e#7637#7638#0" expanded="true" />
                 <element signature="e#7668#7669#0" expanded="true" />
+                <element signature="e#9734#9906#0" expanded="true" />
+                <element signature="e#9905#9906#0" expanded="true" />
+                <element signature="e#11658#11830#0" expanded="true" />
+                <element signature="e#11829#11830#0" expanded="true" />
+                <element signature="e#16579#16769#0" expanded="true" />
+                <element signature="e#16768#16769#0" expanded="true" />
+                <element signature="e#22377#22562#0" expanded="true" />
+                <element signature="e#22561#22562#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -3378,26 +3403,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/NewContentActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="491">
-          <caret line="160" column="5" selection-start-line="160" selection-start-column="5" selection-end-line="160" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#4961#5123#0" expanded="true" />
-            <element signature="e#5122#5123#0" expanded="true" />
-            <element signature="e#7295#7296#0" expanded="true" />
-            <element signature="e#7326#7327#0" expanded="true" />
-            <element signature="e#7389#7390#0" expanded="true" />
-            <element signature="e#7420#7421#0" expanded="true" />
-            <element signature="e#7510#7511#0" expanded="true" />
-            <element signature="e#7541#7542#0" expanded="true" />
-            <element signature="e#7637#7638#0" expanded="true" />
-            <element signature="e#7668#7669#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupsActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="426">
@@ -3410,24 +3415,69 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupViewActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/NewContentActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="673">
-          <caret line="149" column="6" selection-start-line="149" selection-start-column="6" selection-end-line="149" selection-end-column="6" />
+        <state relative-caret-position="524">
+          <caret line="192" column="170" selection-start-line="192" selection-start-column="159" selection-end-line="192" selection-end-column="170" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#3944#3997#0" expanded="true" />
+            <element signature="e#5254#5416#0" expanded="true" />
+            <element signature="e#5415#5416#0" expanded="true" />
+            <element signature="e#7295#7296#0" expanded="true" />
+            <element signature="e#7326#7327#0" expanded="true" />
+            <element signature="e#7389#7390#0" expanded="true" />
+            <element signature="e#7420#7421#0" expanded="true" />
+            <element signature="e#7510#7511#0" expanded="true" />
+            <element signature="e#7541#7542#0" expanded="true" />
+            <element signature="e#7637#7638#0" expanded="true" />
+            <element signature="e#7668#7669#0" expanded="true" />
+            <element signature="e#9734#9906#0" expanded="true" />
+            <element signature="e#9905#9906#0" expanded="true" />
+            <element signature="e#11658#11830#0" expanded="true" />
+            <element signature="e#11829#11830#0" expanded="true" />
+            <element signature="e#16579#16769#0" expanded="true" />
+            <element signature="e#16768#16769#0" expanded="true" />
+            <element signature="e#22377#22562#0" expanded="true" />
+            <element signature="e#22561#22562#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupViewActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="388">
+          <caret line="155" column="170" selection-start-line="155" selection-start-column="170" selection-end-line="155" selection-end-column="170" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2842#2848#0" expanded="true" />
+            <element signature="e#3975#4029#0" expanded="true" />
+            <element signature="e#5622#5784#0" expanded="true" />
+            <element signature="e#5783#5784#0" expanded="true" />
+            <element signature="e#6367#6674#0" expanded="true" />
+            <element signature="e#6673#6674#0" expanded="true" />
+            <element signature="e#7166#7493#0" expanded="true" />
+            <element signature="e#7492#7493#0" expanded="true" />
+            <element signature="e#8106#8413#0" expanded="true" />
+            <element signature="e#8412#8413#0" expanded="true" />
+            <element signature="e#10256#10304#0" expanded="true" />
+            <element signature="e#10364#10412#0" expanded="true" />
+            <element signature="e#10591#10639#0" expanded="true" />
+            <element signature="e#12490#12700#0" expanded="true" />
+            <element signature="e#12699#12700#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/CategoryViewActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="583">
-          <caret line="175" column="17" lean-forward="true" selection-start-line="175" selection-start-column="17" selection-end-line="175" selection-end-column="17" />
+        <state relative-caret-position="413">
+          <caret line="165" column="170" selection-start-line="165" selection-start-column="170" selection-end-line="165" selection-end-column="170" />
           <folding>
             <element signature="e#4466#4518#0" expanded="true" />
             <element signature="e#5395#5557#0" expanded="true" />
             <element signature="e#5556#5557#0" expanded="true" />
+            <element signature="e#6139#6461#0" expanded="true" />
             <element signature="e#6460#6461#0" expanded="true" />
             <element signature="e#8113#8429#0" expanded="true" />
             <element signature="e#8428#8429#0" expanded="true" />
