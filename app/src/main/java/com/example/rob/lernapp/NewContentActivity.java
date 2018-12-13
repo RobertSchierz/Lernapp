@@ -36,10 +36,13 @@ import android.widget.VideoView;
 
 import com.example.rob.lernapp.databaseUtilityClasses.DatabaseUtilityNewContent;
 import com.example.rob.lernapp.restdataGet.Category;
+import com.example.rob.lernapp.restdataGet.Learngroup;
 import com.example.rob.lernapp.restdataGet.Topic;
+import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -49,6 +52,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.Touch;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
@@ -140,7 +144,57 @@ public class NewContentActivity extends AppCompatActivity {
 
         this.learnappSocket = SocketHandler.getInstance().getlearnappSocket();
         this.learnappSocket.connect();
+        this.learnappSocket.on("deletedGroup", onDeletedGroupNewContent);
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        this.learnappSocket.off("deletedGroup", onDeletedGroupNewContent);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        this.learnappSocket.off("deletedGroup", onDeletedGroupNewContent);
+    }
+
+    private JsonObject getJsonObjectforSocketIO(Object arg) {
+        JsonParser parser = new JsonParser();
+        return parser.parse(String.valueOf(arg)).getAsJsonObject();
+    }
+
+    private Emitter.Listener onDeletedGroupNewContent = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            backToGroups(getJsonObjectforSocketIO(args[0]));
+        }
+    };
+
+    @UiThread
+    public void backToGroups(JsonObject data) {
+        Gson gson = new Gson();
+        Learngroup deletedLearngroup = gson.fromJson(data, Learngroup.class);
+
+        boolean isThisGroup = false;
+
+        if(this.source == 1){
+            if (this.category.getGroup().get_id().equals(deletedLearngroup.get_id())) {
+                isThisGroup = true;
+            }
+        }else if(this.source == 2){
+            if (this.topic.getCategory().getGroup().get_id().equals(deletedLearngroup.get_id())) {
+                isThisGroup = true;
+            }
+        }
+
+        if(isThisGroup){
+            Intent openLearngroups = new Intent(this, LearngroupsActivity_.class);
+            openLearngroups.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(openLearngroups);
+            this.finish();
+        }
     }
 
     private void checkStoragePermission(boolean isStart) {

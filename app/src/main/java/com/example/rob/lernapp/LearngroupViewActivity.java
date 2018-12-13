@@ -3,6 +3,7 @@ package com.example.rob.lernapp;
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
@@ -125,6 +126,7 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
         this.learnappSocket.on("groupMemberAdded", onMemberAddedToGroupLearngroupViewActivity);
         this.learnappSocket.on("groupMemberDeleted", onMemberLeaveGroupGroupLearngroupViewActivity);
         this.learnappSocket.on("categoryAdded", onCategoryAddedLearngroupViewActivity);
+        this.learnappSocket.on("deletedGroup", onDeletedGroupLearngroupViewActivity);
 
     }
 
@@ -134,8 +136,28 @@ public class LearngroupViewActivity extends AppCompatActivity implements AddMemb
         this.learnappSocket.off("groupMemberDeleted", onMemberAddedToGroupLearngroupViewActivity);
         this.learnappSocket.off("groupMemberAdded", onMemberLeaveGroupGroupLearngroupViewActivity);
         this.learnappSocket.off("categoryAdded", onCategoryAddedLearngroupViewActivity);
+        this.learnappSocket.off("deletedGroup", onDeletedGroupLearngroupViewActivity);
 
 
+
+    }
+
+    private Emitter.Listener onDeletedGroupLearngroupViewActivity = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            backToGroups(getJsonObjectforSocketIO(args[0]));
+        }
+    };
+
+    @UiThread
+    public void backToGroups(JsonObject data) {
+        Learngroup deletedLearngroup = this.gsonhelper.fromJson(data, Learngroup.class);
+        if (this.group.get_id().equals(deletedLearngroup.get_id())) {
+            Intent openLearngroups = new Intent(this, LearngroupsActivity_.class);
+            openLearngroups.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(openLearngroups);
+            this.finish();
+        }
 
     }
 

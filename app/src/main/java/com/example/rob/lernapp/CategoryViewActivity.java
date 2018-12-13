@@ -32,6 +32,7 @@ import com.example.rob.lernapp.databaseUtilityClasses.DatabaseUtilityCategory;
 import com.example.rob.lernapp.dialoge.StoragePermissionDialog;
 import com.example.rob.lernapp.dialoge.StoragePermissionDialog_;
 import com.example.rob.lernapp.restdataGet.Category;
+import com.example.rob.lernapp.restdataGet.Learngroup;
 import com.example.rob.lernapp.restdataGet.Response;
 import com.example.rob.lernapp.restdataGet.Topic;
 import com.example.rob.lernapp.restdataPost.PostResponseResponse;
@@ -142,12 +143,34 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
             this.learnappSocket.connect();
             this.learnappSocket.on("topicAdded", onTopicAddedCategoryViewActivity);
             this.learnappSocket.on("responseAdded", onResponseAddedCategoryViewActivity);
+            this.learnappSocket.on("deletedGroup", onDeletedGroupCategoryViewActivity);
         } else {
             this.learnappSocket.off("topicAdded", onTopicAddedCategoryViewActivity);
             this.learnappSocket.off("responseAdded", onResponseAddedCategoryViewActivity);
+            this.learnappSocket.off("deletedGroup", onDeletedGroupCategoryViewActivity);
         }
 
     }
+
+    private Emitter.Listener onDeletedGroupCategoryViewActivity = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            backToGroups(getJsonObjectforSocketIO(args[0]));
+        }
+    };
+
+    @UiThread
+    public void backToGroups(JsonObject data) {
+        Learngroup deletedLearngroup = this.gsonhelper.fromJson(data, Learngroup.class);
+        if (this.category.getGroup().get_id().equals(deletedLearngroup.get_id())) {
+            Intent openLearngroups = new Intent(this, LearngroupsActivity_.class);
+            openLearngroups.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(openLearngroups);
+            this.finish();
+        }
+
+    }
+
 
     private Emitter.Listener onResponseAddedCategoryViewActivity = new Emitter.Listener() {
         @Override
@@ -185,18 +208,7 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
                         }
 
                     }
-
-
                 }
-
-                /*
-                if(addedTopic.getCreatedTopic().getCategory().get_id().equals(this.category.get_id())){
-                    this.topics.add(addedTopic.getCreatedTopic());
-                    this.topiclistRecyclerviewAdapter.setTopicNew(this.topics);
-                    this.topiclistRecyclerviewAdapter.notifyDataSetChanged();
-                }*/
-
-
             } else {
                 Toast.makeText(this, "Fehler beim Datenempfang (Hinzugefügte Response)", Toast.LENGTH_LONG).show();
             }
