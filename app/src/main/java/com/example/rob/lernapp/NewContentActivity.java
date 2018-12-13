@@ -37,6 +37,8 @@ import android.widget.VideoView;
 import com.example.rob.lernapp.databaseUtilityClasses.DatabaseUtilityNewContent;
 import com.example.rob.lernapp.restdataGet.Category;
 import com.example.rob.lernapp.restdataGet.Topic;
+import com.github.nkzawa.socketio.client.Socket;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import org.androidannotations.annotations.AfterViews;
@@ -84,6 +86,8 @@ public class NewContentActivity extends AppCompatActivity {
     MediaRecorder audio_rec;
     Boolean hasStoragePermissions = false;
 
+    private Socket learnappSocket;
+
     @NonConfigurationInstance
     @Bean
     DatabaseUtilityNewContent dataBaseUtilTask;
@@ -117,8 +121,11 @@ public class NewContentActivity extends AppCompatActivity {
                 newcontent_radiogroup.setVisibility(View.VISIBLE);
                 setTitle("Neuer Post für Kategory: " + this.category.getName());
             }
+
+
+
         }else{
-            Toast.makeText(this, "Fehler beim Initialisieren der Ansicht", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Fehler beim Initialisieren der Ansicht", Toast.LENGTH_LONG).show();
             this.finish();
         }
 
@@ -130,6 +137,9 @@ public class NewContentActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         checkStoragePermission(true);
+
+        this.learnappSocket = SocketHandler.getInstance().getlearnappSocket();
+        this.learnappSocket.connect();
 
     }
 
@@ -713,6 +723,13 @@ public class NewContentActivity extends AppCompatActivity {
         if (postResponseTopic != null) {
            this.newcontent_loadingcircle.setVisibility(View.GONE);
 
+            //SocketIO Function
+            Gson gson = new Gson();
+
+            String addedTopicJson = gson.toJson(postResponseTopic);
+
+            this.learnappSocket.emit("TopicAdded", addedTopicJson);
+
             Intent openCategoryActivity= new Intent(this, CategoryViewActivity_.class);
 
          /*   String contentID = null;
@@ -722,19 +739,31 @@ public class NewContentActivity extends AppCompatActivity {
             openCategoryActivity.putExtra("contentID", contentID);*/
             openCategoryActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivityIfNeeded(openCategoryActivity, 0);
+            this.finish();
+
 
 
         }
     }
 
+
+
     public void handleCreateResponse(JsonObject postResponseResponse) {
         if (postResponseResponse != null) {
+
+
            this.newcontent_loadingcircle.setVisibility(View.GONE);
+
+            //SocketIO Function
+            Gson gson = new Gson();
+            String addedResponseJson = gson.toJson(postResponseResponse);
+            this.learnappSocket.emit("ResponseAdded", addedResponseJson);
 
 
             Intent openCategoryActivity= new Intent(this, CategoryViewActivity_.class);
             openCategoryActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivityIfNeeded(openCategoryActivity, 0);
+            this.finish();
         }
     }
 

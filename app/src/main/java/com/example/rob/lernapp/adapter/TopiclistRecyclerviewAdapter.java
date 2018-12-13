@@ -37,6 +37,8 @@ import com.example.rob.lernapp.downloadclasses.DownloadImagehandler;
 import com.example.rob.lernapp.downloadclasses.Downloadhandler;
 import com.example.rob.lernapp.restdataGet.Response;
 import com.example.rob.lernapp.restdataGet.Topic;
+import com.github.nkzawa.socketio.client.Socket;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -45,7 +47,11 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
     public ArrayList<Topic> topics;
     public static CategoryViewActivity originactivity;
     public ArrayList<Response> responses;
-    private ResponseRecyclerlistAdapter responseRecyclerlistAdapter;
+    public ResponseRecyclerlistAdapter responseRecyclerlistAdapter;
+
+
+
+
 
 
     public TopiclistRecyclerviewAdapter(ArrayList<Topic> topics, ArrayList<Response> responses, CategoryViewActivity activity) {

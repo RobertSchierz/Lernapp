@@ -34,11 +34,19 @@ import com.example.rob.lernapp.dialoge.StoragePermissionDialog_;
 import com.example.rob.lernapp.restdataGet.Category;
 import com.example.rob.lernapp.restdataGet.Response;
 import com.example.rob.lernapp.restdataGet.Topic;
+import com.example.rob.lernapp.restdataPost.PostResponseResponse;
+import com.example.rob.lernapp.restdataPost.PostResponseTopic;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.Socket;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.NonConfigurationInstance;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
@@ -58,6 +66,10 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
     public SharedPreferences prefs;
     public SnapHelper snapHelper = new PagerSnapHelper();
 
+    private Socket learnappSocket;
+
+    private Gson gsonhelper = new Gson();
+
 
     private StoragePermissionDialog storagePermissionDialog;
 
@@ -74,6 +86,7 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
     protected void onPause() {
         super.onPause();
         this.topicsrecyclerview.setVisibility(View.INVISIBLE);
+        initializeSockethandler(false);
     }
 
     @Override
@@ -121,11 +134,118 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
 
     }
 
+    void initializeSockethandler(boolean resumed) {
+
+        if (resumed) {
+
+            this.learnappSocket = SocketHandler.getInstance().getlearnappSocket();
+            this.learnappSocket.connect();
+            this.learnappSocket.on("topicAdded", onTopicAddedCategoryViewActivity);
+            this.learnappSocket.on("responseAdded", onResponseAddedCategoryViewActivity);
+        } else {
+            this.learnappSocket.off("topicAdded", onTopicAddedCategoryViewActivity);
+            this.learnappSocket.off("responseAdded", onResponseAddedCategoryViewActivity);
+        }
+
+    }
+
+    private Emitter.Listener onResponseAddedCategoryViewActivity = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+
+            if (args[0] != null && args != null) {
+
+                socketIOResponseAdded(getJsonObjectforSocketIO(args[0]), false);
+            } else {
+                socketIOResponseAdded(null, true);
+            }
+
+        }
+    };
+
+    @UiThread
+    void socketIOResponseAdded(JsonObject data, boolean error) {
+
+        if (this.streamContent || this.Read_External_Storage_Permission || this.Write_External_Storgae_Permission) {
+
+            if (!error) {
+                PostResponseResponse addedResponse = this.gsonhelper.fromJson(data, PostResponseResponse.class);
+
+                if (addedResponse.getCreatedResponse().getTopic().getCategory().get_id().equals(this.category.get_id())) {
+
+                    if (this.topiclistRecyclerviewAdapter != null) {
+
+                        this.responses.add(addedResponse.getCreatedResponse());
+                        for (Topic topic :
+                                this.topics) {
+                            if (topic.get_id().equals(addedResponse.getCreatedResponse().getTopic().get_id())) {
+                                this.topiclistRecyclerviewAdapter.notifyDataSetChanged();
+                                break;
+                            }
+                        }
+
+                    }
+
+
+                }
+
+                /*
+                if(addedTopic.getCreatedTopic().getCategory().get_id().equals(this.category.get_id())){
+                    this.topics.add(addedTopic.getCreatedTopic());
+                    this.topiclistRecyclerviewAdapter.setTopicNew(this.topics);
+                    this.topiclistRecyclerviewAdapter.notifyDataSetChanged();
+                }*/
+
+
+            } else {
+                Toast.makeText(this, "Fehler beim Datenempfang (Hinzugefügte Response)", Toast.LENGTH_LONG).show();
+            }
+        }
+
+
+    }
+
+
+    private Emitter.Listener onTopicAddedCategoryViewActivity = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+
+            if (args[0] != null && args != null) {
+
+                socketIOTopicAdded(getJsonObjectforSocketIO(args[0]), false);
+            } else {
+                socketIOTopicAdded(null, true);
+            }
+
+        }
+    };
+
+    @UiThread
+    void socketIOTopicAdded(JsonObject data, boolean error) {
+
+        if (this.streamContent || this.Read_External_Storage_Permission || this.Write_External_Storgae_Permission) {
+
+            if (!error) {
+                PostResponseTopic addedTopic = this.gsonhelper.fromJson(data, PostResponseTopic.class);
+                if (addedTopic.getCreatedTopic().getCategory().get_id().equals(this.category.get_id())) {
+                    this.topics.add(addedTopic.getCreatedTopic());
+                    this.topiclistRecyclerviewAdapter.setTopicNew(this.topics);
+                    this.topiclistRecyclerviewAdapter.notifyDataSetChanged();
+                }
+            } else {
+                Toast.makeText(this, "Fehler beim Datenempfang (Hinzugefügte Topic)", Toast.LENGTH_LONG).show();
+            }
+        }
+
+
+    }
+
+
     @Override
     protected void onResume() {
         super.onResume();
 
-
+        initializeSockethandler(true);
 
         if (Build.VERSION.SDK_INT >= 23) {
 
@@ -134,21 +254,32 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
                     && checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                 this.streamContent = true;
                 dataBaseUtilTask.getResponses();
+
             } else if (this.prefs.getBoolean("dontAskAgain", false)
                     && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                     && checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 this.streamContent = false;
+                this.Write_External_Storgae_Permission = true;
+                this.Read_External_Storage_Permission = true;
                 prefs.edit().putBoolean("dontAskAgain", false).commit();
                 Toast.makeText(this, "Medien werden wieder gespeichert!", Toast.LENGTH_SHORT).show();
                 dataBaseUtilTask.getResponses();
+
             } else {
                 showStoragePermissionDialog();
             }
         } else {
             dataBaseUtilTask.getResponses();
+            this.Read_External_Storage_Permission = true;
+            this.Write_External_Storgae_Permission = true;
+
         }
 
+    }
 
+    private JsonObject getJsonObjectforSocketIO(Object arg) {
+        JsonParser parser = new JsonParser();
+        return parser.parse(String.valueOf(arg)).getAsJsonObject();
     }
 
     private void showStoragePermissionDialog() {
@@ -156,8 +287,11 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                     && checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                this.Read_External_Storage_Permission = true;
+                this.Write_External_Storgae_Permission = true;
                 dataBaseUtilTask.getResponses();
                 prefs.edit().putBoolean("dontAskAgain", false).commit();
+
             } else {
                 storagePermissionDialog = new StoragePermissionDialog_();
                 storagePermissionDialog.setVars(this);
@@ -167,6 +301,9 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
         } else {
             dataBaseUtilTask.getResponses();
             prefs.edit().putBoolean("dontAskAgain", false).commit();
+            this.Write_External_Storgae_Permission = true;
+            this.Read_External_Storage_Permission = true;
+
         }
     }
 
@@ -177,12 +314,13 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
         if (grantResults.length != 0) {
             switch (requestCode) {
                 case 2:
-                    Log.d("PermissionResult", "External storage2");
+
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         Log.v("PermissionResult", "Permission: " + permissions[0] + "was " + grantResults[0]);
                         this.Write_External_Storgae_Permission = true;
                         if (this.Write_External_Storgae_Permission || this.Read_External_Storage_Permission) {
                             dataBaseUtilTask.getResponses();
+
                         }
                     } else {
 
@@ -190,12 +328,13 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
                     break;
 
                 case 3:
-                    Log.d("PermissionResult", "External storage1");
+
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         Log.v("", "Permission: " + permissions[0] + "was " + grantResults[0]);
                         this.Read_External_Storage_Permission = true;
                         if (this.Write_External_Storgae_Permission || this.Read_External_Storage_Permission) {
                             dataBaseUtilTask.getResponses();
+
                         }
                     } else {
 
