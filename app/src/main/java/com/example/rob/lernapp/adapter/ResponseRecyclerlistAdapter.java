@@ -2,9 +2,11 @@ package com.example.rob.lernapp.adapter;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
 import android.support.v7.widget.CardView;
@@ -26,11 +28,13 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.rob.lernapp.CategoryViewActivity;
+import com.example.rob.lernapp.ImageviewPreviewActivity_;
 import com.example.rob.lernapp.PersistanceDataHandler;
 import com.example.rob.lernapp.R;
 import com.example.rob.lernapp.ResponseExpand;
 import com.example.rob.lernapp.downloadclasses.DownloadImagehandler;
 import com.example.rob.lernapp.downloadclasses.Downloadhandler;
+import com.example.rob.lernapp.restdataGet.Category;
 import com.example.rob.lernapp.restdataGet.Response;
 import com.example.rob.lernapp.restdataGet.Topic;
 
@@ -364,6 +368,8 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
                 int newheight = (int) ( image.getHeight() * (512.0 / image.getWidth()) );
                 Bitmap scaled = Bitmap.createScaledBitmap(image, 512, newheight, true);
                 imageView.setImageBitmap(scaled);
+
+                setImagePreview(imageView, this.topic.getCategory(), false, path);
             } catch (Exception e) {
                 Bitmap image = BitmapFactory.decodeFile(contentURL);
                 int newheight = (int) ( image.getHeight() * (512.0 / image.getWidth()) );
@@ -417,15 +423,56 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
                 if (!originactivity.streamContent) {
                     Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, circlebar, this, null, imageView, streamingButton);
                     downloadhandler.execute(contentURL);
+
                 } else {
                     DownloadImagehandler downloadImagehandler = new DownloadImagehandler(this, imageView);
                     downloadImagehandler.execute(contentURL);
                     circlebar.setVisibility(View.GONE);
                     imageView.setVisibility(View.VISIBLE);
+                    setImagePreview(imageView, topic.getCategory(), true, contentURL);
                 }
                 break;
         }
     }
+
+    private void setImagePreview(ImageView imageView, Category category, final Boolean isStreamed, String contenturl) {
+        final Category imagepreviewCategory = category;
+
+        String tempPath = "";
+        if(isStreamed){
+            tempPath = PersistanceDataHandler.getApiRootURL() + contenturl;
+        }else{
+            tempPath = contenturl;
+        }
+
+        final String imagepreviewPath = tempPath;
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent previewImageIntent = new Intent(v.getContext(), ImageviewPreviewActivity_.class);
+
+                Bundle extras = new Bundle();
+
+
+                extras.putParcelable("group", imagepreviewCategory.getGroup());
+                extras.putString("imagepath", imagepreviewPath);
+                if(isStreamed){
+                    extras.putBoolean("isStreamed", true);
+                }else{
+                    extras.putBoolean("isStreamed", false);
+                }
+                extras.putBoolean("fromNewContent", false);
+
+                previewImageIntent.putExtras(extras);
+                v.getContext().startActivity(previewImageIntent);
+
+            }
+        });
+    }
+
+
 
     private void finishVideoView(final VideoView videoView, ProgressBar circlebar) {
 

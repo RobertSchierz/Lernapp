@@ -5,7 +5,6 @@
     <string name="streamingbuttonAdapter">streamingbuttonAdapter</string>
 
 
-
     <string name="app_name">Lernapp</string>
     <string name="learngroupactivitylabel">Lerngruppen</string>
     <string name="categoryactivitylabel">Kategorien</string>
@@ -57,6 +56,10 @@
         Die Speicherzugriffsberechtigung wird benötigt um serverseitige Daten zwischenzuspeichern, um dein Traffic zu <u>sparen</u>. \n\n
         Wenn du diese Berechtigung verweigerst, werden alle Medien die in den nachfolgenden Posts zusehen sind, <u>gestreamt</u>. \n
     </string>
+
+    <string name="title_activity_imageview_preview">imageviewPreviewActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 
 </resources>

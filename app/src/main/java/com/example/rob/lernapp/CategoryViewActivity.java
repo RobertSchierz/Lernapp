@@ -16,7 +16,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -325,34 +324,13 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length != 0) {
-            switch (requestCode) {
-                case 2:
 
-                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        Log.v("PermissionResult", "Permission: " + permissions[0] + "was " + grantResults[0]);
-                        this.Write_External_Storgae_Permission = true;
-                        if (this.Write_External_Storgae_Permission || this.Read_External_Storage_Permission) {
-                            dataBaseUtilTask.getResponses();
-
-                        }
-                    } else {
-
-                    }
-                    break;
-
-                case 3:
-
-                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        Log.v("", "Permission: " + permissions[0] + "was " + grantResults[0]);
-                        this.Read_External_Storage_Permission = true;
-                        if (this.Write_External_Storgae_Permission || this.Read_External_Storage_Permission) {
-                            dataBaseUtilTask.getResponses();
-
-                        }
-                    } else {
-
-                    }
-                    break;
+            if(requestCode == 2){
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    this.Write_External_Storgae_Permission = true;
+                    this.Read_External_Storage_Permission = true;
+                    dataBaseUtilTask.getResponses();
+                }
             }
         }
 
@@ -394,8 +372,9 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
     @Override
     public void StoragePermissionDialogPositiveClick(DialogFragment dialog) {
         this.streamContent = false;
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+       // ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
+        //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 2);
         dialog.dismiss();
     }
 

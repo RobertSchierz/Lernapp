@@ -30,15 +30,15 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.rob.lernapp.CategoryViewActivity;
+import com.example.rob.lernapp.ImageviewPreviewActivity_;
 import com.example.rob.lernapp.NewContentActivity_;
 import com.example.rob.lernapp.PersistanceDataHandler;
 import com.example.rob.lernapp.R;
 import com.example.rob.lernapp.downloadclasses.DownloadImagehandler;
 import com.example.rob.lernapp.downloadclasses.Downloadhandler;
+import com.example.rob.lernapp.restdataGet.Category;
 import com.example.rob.lernapp.restdataGet.Response;
 import com.example.rob.lernapp.restdataGet.Topic;
-import com.github.nkzawa.socketio.client.Socket;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -48,10 +48,6 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
     public static CategoryViewActivity originactivity;
     public ArrayList<Response> responses;
     public ResponseRecyclerlistAdapter responseRecyclerlistAdapter;
-
-
-
-
 
 
     public TopiclistRecyclerviewAdapter(ArrayList<Topic> topics, ArrayList<Response> responses, CategoryViewActivity activity) {
@@ -90,6 +86,7 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
                 int newheight = (int) (image.getHeight() * (512.0 / image.getWidth()));
                 Bitmap scaled = Bitmap.createScaledBitmap(image, 512, newheight, true);
                 imageView.setImageBitmap(scaled);
+                setImagePreview(imageView, this.responseRecyclerlistAdapter.topic.getCategory(), false, path);
             } catch (Exception e) {
                 Bitmap image = BitmapFactory.decodeFile(contentURL);
                 int newheight = (int) (image.getHeight() * (512.0 / image.getWidth()));
@@ -142,7 +139,7 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
 
     }
 
-    public void setMediaToTopic(VideoView videoView, ImageView imageView, Button streamingButton, ProgressBar circlebar, String contentURL, int option) {
+    public void setMediaToTopic(VideoView videoView, ImageView imageView, Button streamingButton, ProgressBar circlebar, String contentURL, int option, Topic topic) {
 
 
         switch (option) {
@@ -178,11 +175,49 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
                     downloadImagehandler.execute(contentURL);
                     circlebar.setVisibility(View.GONE);
                     imageView.setVisibility(View.VISIBLE);
+                    setImagePreview(imageView, topic.getCategory(), true, topic.getContenturl());
                 }
                 break;
         }
 
 
+    }
+
+    private void setImagePreview(ImageView imageView, Category category, final Boolean isStreamed, String contenturl) {
+        final Category imagepreviewCategory = category;
+
+        String tempPath = "";
+        if(isStreamed){
+            tempPath = PersistanceDataHandler.getApiRootURL() + contenturl;
+        }else{
+            tempPath = contenturl;
+        }
+
+        final String imagepreviewPath = tempPath;
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent previewImageIntent = new Intent(v.getContext(), ImageviewPreviewActivity_.class);
+
+                Bundle extras = new Bundle();
+
+
+                extras.putParcelable("group", imagepreviewCategory.getGroup());
+                extras.putString("imagepath", imagepreviewPath);
+                if(isStreamed){
+                    extras.putBoolean("isStreamed", true);
+                }else{
+                    extras.putBoolean("isStreamed", false);
+                }
+                extras.putBoolean("fromNewContent", false);
+
+                previewImageIntent.putExtras(extras);
+                v.getContext().startActivity(previewImageIntent);
+
+            }
+        });
     }
 
     @Override
@@ -215,7 +250,7 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
                     }
                 });
 
-                setMediaToTopic(topicViewHolder.topicvideo, null, topicViewHolder.topicstreambutton, topicViewHolder.circlebar, this.topics.get(i).getContenturl(), 1);
+                setMediaToTopic(topicViewHolder.topicvideo, null, topicViewHolder.topicstreambutton, topicViewHolder.circlebar, this.topics.get(i).getContenturl(), 1, topics.get(i));
 
                 break;
 
@@ -241,7 +276,7 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
                     }
                 });
 
-                setMediaToTopic(topicViewHolder.topicvideo, null, topicViewHolder.topicstreambutton, topicViewHolder.circlebar, this.topics.get(i).getContenturl(), 2);
+                setMediaToTopic(topicViewHolder.topicvideo, null, topicViewHolder.topicstreambutton, topicViewHolder.circlebar, this.topics.get(i).getContenturl(), 2, topics.get(i));
                 break;
 
             case "image":
@@ -249,21 +284,26 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
                 topicViewHolder.circlebar.setVisibility(View.VISIBLE);
                 progressbarAnimation(topicViewHolder);
                 topicViewHolder.topicstreambutton.setTag(R.string.streamingbuttonAdapter, this);
+
                 topicViewHolder.topicstreambutton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                DownloadImagehandler downloadImagehandler = new DownloadImagehandler((TopiclistRecyclerviewAdapter) view.getTag(R.string.streamingbuttonAdapter), topicViewHolder.topicimage);
-                downloadImagehandler.execute(topics.get(i).getContenturl());
-                topicViewHolder.topicimage.setVisibility(View.VISIBLE);
-                topicViewHolder.topicstreambutton.setVisibility(View.GONE);
-                topicViewHolder.circlebar.setVisibility(View.GONE);
+                        DownloadImagehandler downloadImagehandler = new DownloadImagehandler((TopiclistRecyclerviewAdapter) view.getTag(R.string.streamingbuttonAdapter), topicViewHolder.topicimage);
+                        downloadImagehandler.execute(topics.get(i).getContenturl());
+
+
+                        topicViewHolder.topicimage.setVisibility(View.VISIBLE);
+                        topicViewHolder.topicstreambutton.setVisibility(View.GONE);
+                        topicViewHolder.circlebar.setVisibility(View.GONE);
+
                     }
                 });
 
-                setMediaToTopic(null, topicViewHolder.topicimage, topicViewHolder.topicstreambutton, topicViewHolder.circlebar, this.topics.get(i).getContenturl(), 3);
+                setMediaToTopic(null, topicViewHolder.topicimage, topicViewHolder.topicstreambutton, topicViewHolder.circlebar, this.topics.get(i).getContenturl(), 3, topics.get(i));
                 break;
 
         }
+
 
         if (this.topics.get(i).getType().equals("question")) {
             topicViewHolder.topictype.setText("#Frage");

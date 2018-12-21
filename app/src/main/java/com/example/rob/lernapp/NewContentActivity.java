@@ -3,17 +3,16 @@ package com.example.rob.lernapp;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
@@ -59,9 +58,14 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
 
 @EActivity(R.layout.activity_new_content)
-public class NewContentActivity extends AppCompatActivity {
+public class NewContentActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks{
 
     Topic topic;
     Category category;
@@ -73,7 +77,8 @@ public class NewContentActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_IMAGE = 10;
     private static final int PERMISSION_REQUEST_VIDEO = 20;
     private static final int PERMISSION_REQUEST_MIC = 30;
-    private static final int PERMISSION_REQUEST_STORAGE = 40;
+
+
 
     Uri mCurrentPhotoPath;
     Uri mCurrentVideoPath;
@@ -88,7 +93,7 @@ public class NewContentActivity extends AppCompatActivity {
     File audioContentFile;
 
     MediaRecorder audio_rec;
-    Boolean hasStoragePermissions = false;
+
 
     private Socket learnappSocket;
 
@@ -127,12 +132,10 @@ public class NewContentActivity extends AppCompatActivity {
             }
 
 
-
-        }else{
+        } else {
             Toast.makeText(this, "Fehler beim Initialisieren der Ansicht", Toast.LENGTH_LONG).show();
             this.finish();
         }
-
 
 
     }
@@ -140,7 +143,6 @@ public class NewContentActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        checkStoragePermission(true);
 
         this.learnappSocket = SocketHandler.getInstance().getlearnappSocket();
         this.learnappSocket.connect();
@@ -179,17 +181,17 @@ public class NewContentActivity extends AppCompatActivity {
 
         boolean isThisGroup = false;
 
-        if(this.source == 1){
+        if (this.source == 1) {
             if (this.category.getGroup().get_id().equals(deletedLearngroup.get_id())) {
                 isThisGroup = true;
             }
-        }else if(this.source == 2){
+        } else if (this.source == 2) {
             if (this.topic.getCategory().getGroup().get_id().equals(deletedLearngroup.get_id())) {
                 isThisGroup = true;
             }
         }
 
-        if(isThisGroup){
+        if (isThisGroup) {
             Toast.makeText(this, "Gruppe " + deletedLearngroup.getName() + " wurde vom Admin " + deletedLearngroup.getCreator().getName() + " gelöscht", Toast.LENGTH_LONG).show();
             Intent openLearngroups = new Intent(this, LearngroupsActivity_.class);
             openLearngroups.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -198,22 +200,6 @@ public class NewContentActivity extends AppCompatActivity {
         }
     }
 
-    private void checkStoragePermission(boolean isStart) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (this.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                    && this.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-              this.hasStoragePermissions = true;
-            } else {
-                if(isStart){
-                    this.requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            PERMISSION_REQUEST_STORAGE);
-                }
-                this.hasStoragePermissions = false;
-            }
-        } else {
-            this.hasStoragePermissions = true;
-        }
-    }
 
     @Override
     protected void onDestroy() {
@@ -258,7 +244,7 @@ public class NewContentActivity extends AppCompatActivity {
 
 
     private void checkElements() {
-        if(this.source == 1){
+        if (this.source == 1) {
             if (!newcontentName.getText().toString().isEmpty() &&
                     !newcontentText.getText().toString().isEmpty() &&
                     (newcontentRadiobuttonquestion.isChecked() || newcontentRadiobuttonexplanation.isChecked())) {
@@ -271,7 +257,7 @@ public class NewContentActivity extends AppCompatActivity {
             } else {
                 this.newcontentSend.setEnabled(false);
             }
-        }else if(this.source == 2){
+        } else if (this.source == 2) {
             if (!newcontentName.getText().toString().isEmpty() &&
                     !newcontentText.getText().toString().isEmpty()) {
                 this.newcontentSend.setEnabled(true);
@@ -291,7 +277,7 @@ public class NewContentActivity extends AppCompatActivity {
     @Click(R.id.newcontent_imageselector)
     void clickImage() {
 
-        if(this.hasStoragePermissions){
+
             this.newcontentImageselector.setEnabled(false);
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -301,20 +287,8 @@ public class NewContentActivity extends AppCompatActivity {
                 }
             }, 1000);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (this.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                    makePicture();
-                } else {
-                    this.requestPermissions(new String[]{Manifest.permission.CAMERA},
-                            PERMISSION_REQUEST_IMAGE);
+        checkCameraPermissions();
 
-                }
-            } else {
-                makePicture();
-            }
-        }else{
-            checkStoragePermission(false);
-        }
     }
 
     private void makePicture() {
@@ -348,7 +322,7 @@ public class NewContentActivity extends AppCompatActivity {
     @Click(R.id.newcontent_videoselector)
     void clickVideo() {
 
-        if(this.hasStoragePermissions){
+
             this.newcontentVideoselector.setEnabled(false);
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -358,22 +332,9 @@ public class NewContentActivity extends AppCompatActivity {
                 }
             }, 1000);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (this.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
 
-                    takeVideo();
-                } else {
-                    this.requestPermissions(new String[]{Manifest.permission.CAMERA},
-                            PERMISSION_REQUEST_VIDEO);
 
-                }
-            } else {
-                takeVideo();
-            }
-        }else{
-            checkStoragePermission(false);
-        }
-
+        checkVideoCameraPermissions();
 
 
     }
@@ -410,24 +371,12 @@ public class NewContentActivity extends AppCompatActivity {
     @Touch(R.id.newcontent_micselector)
     void touchMic(MotionEvent event) {
 
-
-        if(this.hasStoragePermissions){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (this.checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
-                    recordAudio(event);
-                } else {
-                    this.requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO},
-                            PERMISSION_REQUEST_MIC);
-
-                }
-            } else {
-                recordAudio(event);
-            }
+        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO};
+        if(EasyPermissions.hasPermissions(this, perms)){
+            recordAudio(event);
         }else{
-            checkStoragePermission(false);
+            checkMicPermissions();
         }
-
-
 
     }
 
@@ -457,7 +406,6 @@ public class NewContentActivity extends AppCompatActivity {
                 this.audio_rec.setOutputFile(this.audioContentFile.getAbsolutePath());
 
 
-
                 this.audio_rec.prepare();
                 this.audio_rec.start();
                 this.newcontentReclength.setBase(SystemClock.elapsedRealtime());
@@ -468,7 +416,7 @@ public class NewContentActivity extends AppCompatActivity {
 
 
         } else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
-            if(this.audio_rec != null){
+            if (this.audio_rec != null) {
                 this.newcontent_recaudiocontrolls.setVisibility(View.GONE);
                 this.audio_rec.stop();
                 this.audio_rec.release();
@@ -507,36 +455,46 @@ public class NewContentActivity extends AppCompatActivity {
         }
     }
 
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSION_REQUEST_IMAGE:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    clickImage();
-                }
-                break;
-
-            case PERMISSION_REQUEST_VIDEO:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    clickVideo();
-                }
-                break;
-
-
-            case PERMISSION_REQUEST_STORAGE:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    this.hasStoragePermissions = true;
-                }
-                break;
-
-
+    @AfterPermissionGranted(PERMISSION_REQUEST_IMAGE)
+    private void checkCameraPermissions(){
+        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+        if(EasyPermissions.hasPermissions(this, perms)){
+            makePicture();
+        }else{
+            EasyPermissions.requestPermissions(this, "Diese Berechtigungen sind wichtig um auf die Kamera zuzugreifen", PERMISSION_REQUEST_IMAGE, perms);
         }
     }
+
+    @AfterPermissionGranted(PERMISSION_REQUEST_VIDEO)
+    private void checkVideoCameraPermissions(){
+        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+        if(EasyPermissions.hasPermissions(this, perms)){
+            takeVideo();
+        }else{
+            EasyPermissions.requestPermissions(this, "Diese Berechtigungen sind wichtig um auf die Kamera zuzugreifen", PERMISSION_REQUEST_VIDEO, perms);
+        }
+    }
+
+    @AfterPermissionGranted(PERMISSION_REQUEST_MIC)
+    private void checkMicPermissions(){
+        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO};
+        if(EasyPermissions.hasPermissions(this, perms)){
+            Toast.makeText(this, "Die Mikrofonfunktion kann benutzt werden.", Toast.LENGTH_SHORT).show();
+        }else{
+            EasyPermissions.requestPermissions(this, "Diese Berechtigungen sind wichtig um auf das Mikrofon zuzugreifen", PERMISSION_REQUEST_MIC, perms);
+        }
+    }
+
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
 
     private File createMediaFile(int option) throws IOException {
 
@@ -595,6 +553,42 @@ public class NewContentActivity extends AppCompatActivity {
                 this.newcontentImagePreview.setVisibility(View.VISIBLE);
                 this.newcontentImagePreview.setImageBitmap(bitmap);
                 deleteVideo();
+
+
+                final Uri pathuri = this.mCurrentPhotoPath;
+                final Topic imagepreviewTopic;
+                final Category imagepreviewCategory;
+                final int imagepreviewSource = this.source;
+
+
+                imagepreviewCategory = this.category;
+
+                imagepreviewTopic = this.topic;
+
+
+                this.newcontentImagePreview.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Intent previewImageIntent = new Intent(v.getContext(), ImageviewPreviewActivity_.class);
+
+                        Bundle extras = new Bundle();
+                        if (imagepreviewSource == 1) {
+                            extras.putParcelable("group", imagepreviewCategory.getGroup());
+                            extras.putBoolean("fromCategory", true);
+                        } else if (imagepreviewSource == 2) {
+                            extras.putParcelable("group", imagepreviewTopic.getCategory().getGroup());
+                        }
+
+                        extras.putString("imagepath", pathuri.toString());
+                        extras.putBoolean("isStreamed", false);
+                        extras.putBoolean("fromNewContent", true);
+                        previewImageIntent.putExtras(extras);
+                        v.getContext().startActivity(previewImageIntent);
+                    }
+                });
+
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -741,9 +735,9 @@ public class NewContentActivity extends AppCompatActivity {
             } else if (this.videoContentFile != null) {
                 this.dataBaseUtilTask.postTopic(this.newcontentName.getText().toString(), "open", type, this.newcontentText.getText().toString(), mediatypeString, this.category.get_id(), this.videoContentFile.getAbsolutePath(), PersistanceDataHandler.getUniqueDatabaseId());
             } else if (this.audioContentFile != null) {
-                this.dataBaseUtilTask.postTopic(this.newcontentName.getText().toString(), "open", type, this.newcontentText.getText().toString(), mediatypeString,  this.category.get_id(), this.audioContentFile.getAbsolutePath(), PersistanceDataHandler.getUniqueDatabaseId());
+                this.dataBaseUtilTask.postTopic(this.newcontentName.getText().toString(), "open", type, this.newcontentText.getText().toString(), mediatypeString, this.category.get_id(), this.audioContentFile.getAbsolutePath(), PersistanceDataHandler.getUniqueDatabaseId());
             } else {
-                this.dataBaseUtilTask.postTopic(this.newcontentName.getText().toString(), "open", type, this.newcontentText.getText().toString(), mediatypeString,  this.category.get_id(), "", PersistanceDataHandler.getUniqueDatabaseId());
+                this.dataBaseUtilTask.postTopic(this.newcontentName.getText().toString(), "open", type, this.newcontentText.getText().toString(), mediatypeString, this.category.get_id(), "", PersistanceDataHandler.getUniqueDatabaseId());
             }
 
 
@@ -776,7 +770,7 @@ public class NewContentActivity extends AppCompatActivity {
 
     public void handleCreateTopic(JsonObject postResponseTopic) {
         if (postResponseTopic != null) {
-           this.newcontent_loadingcircle.setVisibility(View.GONE);
+            this.newcontent_loadingcircle.setVisibility(View.GONE);
 
             //SocketIO Function
             Gson gson = new Gson();
@@ -785,7 +779,7 @@ public class NewContentActivity extends AppCompatActivity {
 
             this.learnappSocket.emit("TopicAdded", addedTopicJson);
 
-            Intent openCategoryActivity= new Intent(this, CategoryViewActivity_.class);
+            Intent openCategoryActivity = new Intent(this, CategoryViewActivity_.class);
 
          /*   String contentID = null;
             if(!postResponseTopic.get("createdTopic").getAsJsonObject().get("_id").toString().isEmpty()){
@@ -797,17 +791,15 @@ public class NewContentActivity extends AppCompatActivity {
             this.finish();
 
 
-
         }
     }
-
 
 
     public void handleCreateResponse(JsonObject postResponseResponse) {
         if (postResponseResponse != null) {
 
 
-           this.newcontent_loadingcircle.setVisibility(View.GONE);
+            this.newcontent_loadingcircle.setVisibility(View.GONE);
 
             //SocketIO Function
             Gson gson = new Gson();
@@ -815,7 +807,7 @@ public class NewContentActivity extends AppCompatActivity {
             this.learnappSocket.emit("ResponseAdded", addedResponseJson);
 
 
-            Intent openCategoryActivity= new Intent(this, CategoryViewActivity_.class);
+            Intent openCategoryActivity = new Intent(this, CategoryViewActivity_.class);
             openCategoryActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivityIfNeeded(openCategoryActivity, 0);
             this.finish();
@@ -876,5 +868,14 @@ public class NewContentActivity extends AppCompatActivity {
     ProgressBar newcontent_loadingcircle;
 
 
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+    }
 
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        if(EasyPermissions.somePermissionPermanentlyDenied(this, perms)){
+            new AppSettingsDialog.Builder(this).build().show();
+        }
+    }
 }

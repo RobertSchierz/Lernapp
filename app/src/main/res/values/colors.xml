@@ -12,4 +12,6 @@
     <color name="colorTopic">#c97b63</color>
     <color name="colorResponse">#aec4c7</color>
     <color name="colorrecyclerview">#FFE5DD</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

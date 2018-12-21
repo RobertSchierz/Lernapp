@@ -13,15 +13,14 @@
         android:name="android.hardware.camera"
         android:required="true" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".LearngroupsActivity_"
             android:label="@string/learngroupactivitylabel">
@@ -48,7 +47,8 @@
                 android:resource="@xml/provider_imagepath" />
         </provider>
 
-        <activity android:name=".NewContentActivity_"></activity>
+        <activity android:name=".NewContentActivity_" />
+        <activity android:name=".ImageviewPreviewActivity_"></activity>
     </application>
 
 </manifest>

@@ -442,8 +442,8 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
     }
 
     private void showFabMenu() {
-        this.fab_addgroup.animate().translationY(-getResources().getDimension(R.dimen.fabmargin_1));
-        this.fab_addgrouplink.animate().translationY(-getResources().getDimension(R.dimen.fabmargin_2));
+        this.fab_addgroup.animate().translationY(-getResources().getDimension(R.dimen.fabmargin_2));
+        this.fab_addgrouplink.animate().translationY(-getResources().getDimension(R.dimen.fabmargin_1));
         this.fab_addgroup.animate().alpha(1);
         this.fab_addgrouplink.animate().alpha(1);
     }
