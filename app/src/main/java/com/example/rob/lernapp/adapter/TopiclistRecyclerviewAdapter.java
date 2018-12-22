@@ -212,7 +212,7 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
                     extras.putBoolean("isStreamed", false);
                 }
                 extras.putBoolean("fromNewContent", false);
-
+                originactivity.resumedFromImagepreview = true;
                 previewImageIntent.putExtras(extras);
                 v.getContext().startActivity(previewImageIntent);
 

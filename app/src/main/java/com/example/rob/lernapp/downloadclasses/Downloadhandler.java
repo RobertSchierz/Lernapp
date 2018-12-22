@@ -88,8 +88,7 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
             if (bytesAvailable < filesize) {
                 downloadState = "nospace";
             } else {
-                InputStream inputStream = connection.getInputStream();
-                BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, 512);
+
 
 
 
@@ -102,6 +101,10 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
                 currentFile = new File(mediadownloadsDir.getPath() + "/" + filename);
 
                 if (!currentFile.exists()) {
+
+                    InputStream inputStream = connection.getInputStream();
+                    BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, 512);
+
                     currentFile.createNewFile();
                     FileOutputStream outStream = new FileOutputStream(currentFile);
                     byte[] buff = new byte[512];

@@ -465,6 +465,7 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
                 }
                 extras.putBoolean("fromNewContent", false);
 
+                originactivity.resumedFromImagepreview = true;
                 previewImageIntent.putExtras(extras);
                 v.getContext().startActivity(previewImageIntent);
 

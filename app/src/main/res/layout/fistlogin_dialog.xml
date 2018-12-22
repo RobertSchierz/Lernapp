@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/login_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/confirm_group_dialog_margin_leftright"
+        android:layout_marginTop="@dimen/confirm_group_dialog_margin_topbottom"
+        android:layout_marginRight="@dimen/confirm_group_dialog_margin_leftright"
+        android:layout_marginBottom="@dimen/confirm_group_dialog_margin_title_bottom"
+        android:gravity="center_vertical|center_horizontal|center"
+        android:text="Herzlich Wilkommen!"
+        android:textSize="@dimen/confirm_group_dialog_margin_title_fontsize" />
+
+    <EditText
+        android:id="@+id/login_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:fontFamily="sans-serif"
+        android:hint="Dein Name"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/login_phonenumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="sans-serif"
+        android:hint="Handynummer (Optional) "
+        android:inputType="phone"
+        android:digits="0123456789+" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/login_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/confirm_group_dialog_margin_topbottom"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/login_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/confirm_group_dialog_margin_leftright"
+            android:layout_marginRight="@dimen/confirm_group_dialog_margin_leftright"
+            android:background="@android:color/transparent"
+            android:backgroundTint="@android:color/transparent"
+            android:gravity="center"
+            android:text="Los Gehts" />
+    </LinearLayout>
+</LinearLayout>

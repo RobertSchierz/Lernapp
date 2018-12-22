@@ -73,6 +73,8 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
 
     private StoragePermissionDialog storagePermissionDialog;
 
+    public boolean resumedFromImagepreview = false;
+
 
     @NonConfigurationInstance
     @Bean
@@ -261,7 +263,7 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
 
         if (Build.VERSION.SDK_INT >= 23) {
 
-            if (this.prefs.getBoolean("dontAskAgain", false)
+            if (this.prefs.getBoolean("dontAskAgain", false )
                     && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
                     && checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                 this.streamContent = true;
@@ -278,7 +280,13 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
                 dataBaseUtilTask.getResponses();
 
             } else {
-                showStoragePermissionDialog();
+                if(this.resumedFromImagepreview == false){
+                    showStoragePermissionDialog();
+                }else{
+                    this.resumedFromImagepreview = false;
+                    dataBaseUtilTask.getResponses();
+                }
+
             }
         } else {
             dataBaseUtilTask.getResponses();

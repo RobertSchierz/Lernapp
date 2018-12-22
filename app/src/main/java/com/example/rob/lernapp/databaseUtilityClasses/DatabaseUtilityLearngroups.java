@@ -14,6 +14,8 @@ import com.example.rob.lernapp.restdataGet.Learngroup;
 import com.example.rob.lernapp.restdataGet.User;
 import com.example.rob.lernapp.restdataPost.LearngroupPost;
 import com.example.rob.lernapp.restdataPost.PostResponseLearngroup;
+import com.example.rob.lernapp.restdataPost.PostUserResponse;
+import com.example.rob.lernapp.restdataPost.UserPost;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -48,6 +50,25 @@ public class DatabaseUtilityLearngroups {
     void afterInject() {
         restClient = new RestClient_(activity);
         restClient.setRestErrorHandler(restExceptionAndErrorHandler);
+    }
+
+    @Background
+    public void postUser(String uniqueClientID, String name, int phonenumber){
+
+
+        UserPost newuser = new UserPost(null, name, phonenumber, uniqueClientID);
+        ResponseEntity<JsonObject> responseEntityUserCreate = restClient.postUser(newuser);
+
+        if(responseEntityUserCreate != null){
+            Gson gson = new Gson();
+
+            PostUserResponse postUserResponse = gson.fromJson(responseEntityUserCreate.getBody(), PostUserResponse.class);
+
+            sendNewUserToActivity(postUserResponse);
+
+        }
+
+
     }
 
     @Background
@@ -113,11 +134,16 @@ public class DatabaseUtilityLearngroups {
         if(responseEntity != null){
             DatasetUser dataSet = responseEntity.getBody();
             this.userinfos = dataSet.gettingUsers();
+
             for (int i = 0; i < this.userinfos.length; i++) {
                 if (this.userinfos[i].getUniqueclientid().equals(activity.getUniqueClientId())) {
-                    sendIdToActivity(this.userinfos[i].get_id());
+
+                    sendIdToActivity(this.userinfos[i].get_id(), true);
+                    return;
                 }
             }
+            sendIdToActivity(null, false);
+
         }else{
             this.userinfos = new User[0];
         }
@@ -161,8 +187,8 @@ public class DatabaseUtilityLearngroups {
 
 
     @UiThread
-    void sendIdToActivity(String id) {
-        activity.setUniqueId(id);
+    void sendIdToActivity(String id, boolean isIn) {
+        activity.setUniqueId(id, isIn);
     }
 
     @UiThread
@@ -183,6 +209,11 @@ public class DatabaseUtilityLearngroups {
     @UiThread
     void senddeleteResponseToActivity(DeleteResponse deleteResponse, Learngroup deletedGroup) {
         activity.handleDeleteResponse(deleteResponse, deletedGroup);
+    }
+
+    @UiThread
+    void sendNewUserToActivity(PostUserResponse postUserResponse){
+        activity.handleNewUser(postUserResponse);
     }
 
 }

@@ -20,12 +20,15 @@ import com.example.rob.lernapp.databaseUtilityClasses.DatabaseUtilityLearngroups
 import com.example.rob.lernapp.dialoge.ConfirmGroupDialog;
 import com.example.rob.lernapp.dialoge.ConfirmGroupDialog_;
 import com.example.rob.lernapp.dialoge.DeleteGroupDialog;
+import com.example.rob.lernapp.dialoge.FirstLoginDialog;
+import com.example.rob.lernapp.dialoge.FirstLoginDialog_;
 import com.example.rob.lernapp.dialoge.JointhroughlinkDialog;
 import com.example.rob.lernapp.dialoge.JointhroughlinkDialog_;
 import com.example.rob.lernapp.restDataPatch.PatchResponse;
 import com.example.rob.lernapp.restdataDelete.DeleteResponse;
 import com.example.rob.lernapp.restdataGet.Learngroup;
 import com.example.rob.lernapp.restdataPost.PostResponseLearngroup;
+import com.example.rob.lernapp.restdataPost.PostUserResponse;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
 import com.google.gson.Gson;
@@ -47,7 +50,7 @@ import java.util.Arrays;
 
 
 @EActivity(R.layout.activity_learngroups)
-public class LearngroupsActivity extends AppCompatActivity implements ConfirmGroupDialog.ConfirmGroupDialogListener, DeleteGroupDialog.DeleteGroupDialogListener, JointhroughlinkDialog.JointhroughlinkDialogListener {
+public class LearngroupsActivity extends AppCompatActivity implements ConfirmGroupDialog.ConfirmGroupDialogListener, DeleteGroupDialog.DeleteGroupDialogListener, JointhroughlinkDialog.JointhroughlinkDialogListener, FirstLoginDialog.FirstLoginDialogListener {
 
     private String uniqueClientId;
 
@@ -71,6 +74,8 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
 
     private Gson gsonhelper = new Gson();
 
+
+    public static FirstLoginDialog_ firstLoginDialog;
 
     @ViewById(R.id.groupllist_recyclerview)
     RecyclerView grouplistRecyclerview;
@@ -124,6 +129,15 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
 
 
         dataBaseUtilTask.getDatabaseId();
+
+
+    }
+
+    private void resumePrep(String id) {
+
+        this.uniqueDatabaseId = id;
+        PersistanceDataHandler.setUniqueDatabaseId(id);
+
         Animation floatingactionanimation = AnimationUtils.loadAnimation(this, R.anim.floatingaction_onviewanim);
         fab_learngroupmain.setAnimation(floatingactionanimation);
 
@@ -133,7 +147,6 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
         this.learnappSocket.on("deletedGroup", onDeletedGroupLearngroupsActivity);
         this.learnappSocket.on("groupMemberDeleted", onMemberLeaveGroupLearngroupsActivity);
         this.learnappSocket.on("groupMemberAdded", onMemberAddedGroupLearngroupsActivity);
-
     }
 
     private Emitter.Listener onMemberAddedGroupLearngroupsActivity = new Emitter.Listener() {
@@ -283,16 +296,22 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
 
         if (creatorgroups) {
             groupfilter.setTextColor(Color.BLACK);
-            this.grouplistRecyclerviewAdapter.setGroupsNew(this.creatorLearngroups);
-            this.grouplistRecyclerviewAdapter.notifyDataSetChanged();
-            this.grouplistRecyclerview.scheduleLayoutAnimation();
+            if(this.creatorLearngroups != null){
+                this.grouplistRecyclerviewAdapter.setGroupsNew(this.creatorLearngroups);
+                this.grouplistRecyclerviewAdapter.notifyDataSetChanged();
+                this.grouplistRecyclerview.scheduleLayoutAnimation();
+            }
+
 
 
         } else {
             groupfilter.setTextColor(Color.GRAY);
-            this.grouplistRecyclerviewAdapter.setGroupsNew(this.learngroupsAll);
-            this.grouplistRecyclerviewAdapter.notifyDataSetChanged();
-            this.grouplistRecyclerview.scheduleLayoutAnimation();
+            if(this.learngroupsAll != null){
+                this.grouplistRecyclerviewAdapter.setGroupsNew(this.learngroupsAll);
+                this.grouplistRecyclerviewAdapter.notifyDataSetChanged();
+                this.grouplistRecyclerview.scheduleLayoutAnimation();
+            }
+
 
         }
     }
@@ -307,10 +326,22 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
     }
 
 
-    public void setUniqueId(String id) {
-        this.uniqueDatabaseId = id;
-        PersistanceDataHandler.setUniqueDatabaseId(id);
-        dataBaseUtilTask.initialzeGroups();
+    public void setUniqueId(String id, boolean isIn) {
+
+        if(isIn){
+            resumePrep(id);
+
+            dataBaseUtilTask.initialzeGroups();
+        }else{
+
+            this.firstLoginDialog = new FirstLoginDialog_();
+            this.firstLoginDialog.setVars(this);
+            this.firstLoginDialog.show(getSupportFragmentManager(), "firstloginDialog");
+
+
+        }
+
+
     }
 
     public void setAllGroups(Learngroup[] learngroupsAll) {
@@ -499,4 +530,16 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
     public void onJoinLInkDialogNegativeClick(DialogFragment dialog) {
         dialog.dismiss();
     }
+
+    @Override
+    public void FirstLoginDialogPositiveClick(DialogFragment dialog, String name, int phonenumber) {
+        dataBaseUtilTask.postUser(PersistanceDataHandler.getUniqueClientId(), name, phonenumber);
+    }
+
+    public void handleNewUser(PostUserResponse postUserResponse){
+        this.firstLoginDialog.dismiss();
+        resumePrep(postUserResponse.getCreatedUser().get_id());
+        dataBaseUtilTask.initialzeGroups();
+    }
+
 }

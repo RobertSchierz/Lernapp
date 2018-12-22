@@ -9,6 +9,7 @@ import com.example.rob.lernapp.restdataGet.DatasetTopics;
 import com.example.rob.lernapp.restdataGet.DatasetUser;
 import com.example.rob.lernapp.restdataPost.LearngroupPost;
 import com.example.rob.lernapp.restdataPost.NewCategoryToGroupPost;
+import com.example.rob.lernapp.restdataPost.UserPost;
 import com.google.gson.JsonObject;
 
 import org.androidannotations.rest.spring.annotations.Body;
@@ -38,6 +39,9 @@ public interface RestClient extends RestClientErrorHandling {
 
     /*@Get("/groups")
     ResponseEntity<DatasetGroup> getGroups();*/
+
+    @Post("/users")
+    ResponseEntity<JsonObject> postUser(@Body UserPost body);
 
     @Get("/groups/usergroups/{_id}")
     ResponseEntity<DatasetGroup> getUserCreatorGroups(@Path String _id);
