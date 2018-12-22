@@ -2,7 +2,7 @@ package com.example.rob.lernapp.restdataPost;
 
 public class UserPost {
 
-    public UserPost(String _id, String name, int phonenumber, String uniqueclientid) {
+    public UserPost(String _id, String name, Integer phonenumber, String uniqueclientid) {
         this._id = _id;
         this.name = name;
         this.phonenumber = phonenumber;
@@ -11,9 +11,8 @@ public class UserPost {
 
     String _id;
     String name;
-    int phonenumber;
+    Integer phonenumber;
     String uniqueclientid;
-
 
     public String get_id() {
         return _id;
@@ -31,11 +30,11 @@ public class UserPost {
         this.name = name;
     }
 
-    public int getPhonenumber() {
+    public Integer getPhonenumber() {
         return phonenumber;
     }
 
-    public void setPhonenumber(int phonenumber) {
+    public void setPhonenumber(Integer phonenumber) {
         this.phonenumber = phonenumber;
     }
 

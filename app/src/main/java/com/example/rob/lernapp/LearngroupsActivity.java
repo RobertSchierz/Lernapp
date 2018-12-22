@@ -532,7 +532,7 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
     }
 
     @Override
-    public void FirstLoginDialogPositiveClick(DialogFragment dialog, String name, int phonenumber) {
+    public void FirstLoginDialogPositiveClick(DialogFragment dialog, String name, Integer phonenumber) {
         dataBaseUtilTask.postUser(PersistanceDataHandler.getUniqueClientId(), name, phonenumber);
     }
 

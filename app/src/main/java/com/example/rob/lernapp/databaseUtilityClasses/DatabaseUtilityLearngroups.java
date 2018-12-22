@@ -53,10 +53,11 @@ public class DatabaseUtilityLearngroups {
     }
 
     @Background
-    public void postUser(String uniqueClientID, String name, int phonenumber){
+    public void postUser(String uniqueClientID, String name, Integer phonenumber){
 
 
         UserPost newuser = new UserPost(null, name, phonenumber, uniqueClientID);
+
         ResponseEntity<JsonObject> responseEntityUserCreate = restClient.postUser(newuser);
 
         if(responseEntityUserCreate != null){

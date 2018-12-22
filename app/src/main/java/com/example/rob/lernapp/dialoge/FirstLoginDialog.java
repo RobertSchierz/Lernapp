@@ -68,7 +68,7 @@ public class FirstLoginDialog extends DialogFragment {
     }
 
     public interface FirstLoginDialogListener {
-        public void FirstLoginDialogPositiveClick(DialogFragment dialog, String name, int phonenumber);
+        public void FirstLoginDialogPositiveClick(DialogFragment dialog, String name, Integer phonenumber);
     }
 
     public void setVars(Activity activity) {
@@ -79,6 +79,15 @@ public class FirstLoginDialog extends DialogFragment {
 
     @Click(R.id.login_start)
     void positivButtonClicked() {
-        fldlistener.FirstLoginDialogPositiveClick(FirstLoginDialog.this, this.loginName.getText().toString(), Integer.parseInt(this.loginPhonenumber.getText().toString()));
+
+        Integer phonenumber;
+        if(!this.loginPhonenumber.getText().toString().isEmpty()){
+            phonenumber = Integer.valueOf(this.loginPhonenumber.getText().toString());
+
+        }else{
+            phonenumber = null;
+        }
+
+        fldlistener.FirstLoginDialogPositiveClick(FirstLoginDialog.this, this.loginName.getText().toString(), phonenumber);
     }
 }
