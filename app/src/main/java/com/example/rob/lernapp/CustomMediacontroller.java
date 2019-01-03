@@ -18,8 +18,8 @@ public class CustomMediacontroller extends MediaController {
     private ImageButton fullScreen;
     public static boolean isFullscreen = false;
     public static Activity originalactivity;
-    public static VideoView videoView;
-    public static String path;
+    public VideoView videoView;
+    public String path;
 
     public CustomMediacontroller(Context context) {
         super(context);
@@ -27,8 +27,8 @@ public class CustomMediacontroller extends MediaController {
 
     public void setVars(Activity activity, String videopath, VideoView view){
         originalactivity = activity;
-        path =  videopath;
-        videoView = view;
+        this.path =  videopath;
+        this.videoView = view;
     }
 
     @Override
@@ -71,14 +71,17 @@ public class CustomMediacontroller extends MediaController {
 
         addView(fullScreen, params);
 
+        final VideoView finalvideoView = this.videoView;
+        final String finalpath = this.path;
+
         fullScreen.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if(originalactivity != null){
                     Intent intent = new Intent(originalactivity, VideoviewFullscreen_.class);
-                    intent.putExtra("videopath", path);
-                    intent.putExtra("currenttime", videoView.getCurrentPosition());
+                    intent.putExtra("videopath", finalpath);
+                    intent.putExtra("currenttime", finalvideoView.getCurrentPosition());
                     originalactivity.startActivity(intent);
                 }
 
