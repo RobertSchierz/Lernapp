@@ -75,33 +75,29 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
             connection.setReadTimeout(180000);
 
 
+            String filename = downloadURL[0].substring(downloadURL[0].indexOf("/") + 1);
 
-            int filesize = connection.getContentLength();
-            StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
-            long bytesAvailable;
 
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                bytesAvailable = stat.getBlockSizeLong() * stat.getAvailableBlocksLong();
-            } else {
-                bytesAvailable = stat.getBlockSize() * stat.getAvailableBlocks();
+            if (!mediadownloadsDir.exists()) {
+                mediadownloadsDir.mkdir();
             }
+            currentFile = new File(mediadownloadsDir.getPath() + "/" + filename);
 
-            if (bytesAvailable < filesize) {
-                downloadState = "nospace";
-            } else {
+            if (!currentFile.exists()) {
 
+                int filesize = connection.getContentLength();
+                StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
+                long bytesAvailable;
 
-
-
-                String filename = downloadURL[0].substring(downloadURL[0].indexOf("/") + 1);
-
-
-                if (!mediadownloadsDir.exists()) {
-                    mediadownloadsDir.mkdir();
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                    bytesAvailable = stat.getBlockSizeLong() * stat.getAvailableBlocksLong();
+                } else {
+                    bytesAvailable = stat.getBlockSize() * stat.getAvailableBlocks();
                 }
-                currentFile = new File(mediadownloadsDir.getPath() + "/" + filename);
 
-                if (!currentFile.exists()) {
+                if (bytesAvailable < filesize) {
+                    downloadState = "nospace";
+                } else {
 
                     InputStream inputStream = connection.getInputStream();
                     BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, 512);
@@ -119,7 +115,14 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
                     outStream.flush();
                     outStream.close();
                     bufferedInputStream.close();
+
+
+                    this.filePath = currentFile.getAbsolutePath();
+                    downloadState = currentFile.getAbsolutePath();
+
                 }
+
+            } else {
 
                 this.filePath = currentFile.getAbsolutePath();
                 downloadState = currentFile.getAbsolutePath();
@@ -127,10 +130,10 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
 
 
         } catch (Exception e) {
-            if(e.getMessage().equals("unexpected end of stream")){
+            if (e.getMessage().equals("unexpected end of stream")) {
                 this.filePath = currentFile.getAbsolutePath();
                 downloadState = currentFile.getAbsolutePath();
-            }else{
+            } else {
                 Log.e("Error: ", e.getMessage());
             }
 
@@ -145,19 +148,19 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
         super.onPostExecute(s);
 
         String path;
-        if(s.isEmpty()){
+        if (s.isEmpty()) {
             path = this.filePath;
-        }else{
+        } else {
             path = s;
         }
 
-        if(s.equals("downloaderror")){
+        if (s.equals("downloaderror")) {
             Toast.makeText(activity, "Fehler beim Download der Mediadatei", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             if (s.equals("nospace")) {
-                if(isTopic){
+                if (isTopic) {
                     topiclistRecyclerviewAdapter.notEnoughSpace(this.streamingbutton);
-                }else{
+                } else {
                     responseRecyclerlistAdapter.notEnoughSpace(this.streamingbutton);
                 }
 
@@ -169,9 +172,6 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
                 }
             }
         }
-
-
-
 
 
     }
