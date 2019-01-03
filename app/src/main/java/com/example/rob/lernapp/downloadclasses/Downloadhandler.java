@@ -69,6 +69,7 @@ public class Downloadhandler extends AsyncTask<String, String, String> {
 
             URL contentURL = new URL(completeContentURL);
 
+
             URLConnection connection = contentURL.openConnection();
             connection.setConnectTimeout(180000);
             connection.setReadTimeout(180000);

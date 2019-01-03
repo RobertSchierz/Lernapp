@@ -113,9 +113,12 @@ public class LearngroupsActivity extends AppCompatActivity implements ConfirmGro
     protected void onPause() {
         super.onPause();
 
-        this.learnappSocket.off("groupMemberDeleted", onMemberLeaveGroupLearngroupsActivity);
-        this.learnappSocket.off("groupMemberAdded", onMemberAddedGroupLearngroupsActivity);
-        this.learnappSocket.off("deletedGroup", onDeletedGroupLearngroupsActivity);
+        if(this.learnappSocket != null){
+            this.learnappSocket.off("groupMemberDeleted", onMemberLeaveGroupLearngroupsActivity);
+            this.learnappSocket.off("groupMemberAdded", onMemberAddedGroupLearngroupsActivity);
+            this.learnappSocket.off("deletedGroup", onDeletedGroupLearngroupsActivity);
+
+        }
 
 
         this.isFabOpen = false;

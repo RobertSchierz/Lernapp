@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
@@ -30,6 +32,8 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.rob.lernapp.CategoryViewActivity;
+import com.example.rob.lernapp.CustomMediacontroller;
+import com.example.rob.lernapp.FullscreenMediaController;
 import com.example.rob.lernapp.ImageviewPreviewActivity_;
 import com.example.rob.lernapp.NewContentActivity_;
 import com.example.rob.lernapp.PersistanceDataHandler;
@@ -100,16 +104,16 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
         } else {
             try {
                 videoView.setVideoPath(path);
-                finishVideoView(videoView, circlebar);
+                finishVideoView(videoView, circlebar, path);
             } catch (Exception e) {
                 Log.v("SetVideoPathError", e.getMessage());
                 videoView.setVideoPath(contentURL);
-                finishVideoView(videoView, circlebar);
+                finishVideoView(videoView, circlebar, contentURL);
             }
         }
     }
 
-    private void finishVideoView(final VideoView videoView, ProgressBar circlebar) {
+    private void finishVideoView(final VideoView videoView, ProgressBar circlebar, String path) {
 
         videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
             @Override
@@ -118,13 +122,21 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
             }
         });
 
+        CustomMediacontroller customMediacontroller = new CustomMediacontroller(originactivity);
+        customMediacontroller.setVars(originactivity, path, videoView);
 
-        final MediaController mediaController = new MediaController(originactivity);
-        videoView.setTag(R.string.mediacontroller, mediaController);
+
+        videoView.setTag(R.string.mediacontroller, customMediacontroller);
+        customMediacontroller.setAnchorView(videoView);
+        videoView.setMediaController(customMediacontroller);
+
+        //final MediaController mediaController = new MediaController(originactivity);
+        //videoView.setTag(R.string.mediacontroller, mediaController);
 
 
-        mediaController.setAnchorView(videoView);
-        videoView.setMediaController(mediaController);
+
+       // mediaController.setAnchorView(videoView);
+        //videoView.setMediaController(mediaController);
 
 
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -132,6 +144,9 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
             public void onPrepared(MediaPlayer mp) {
             }
         });
+
+
+
 
 
         circlebar.setVisibility(View.GONE);
@@ -149,7 +164,7 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
                     downloadhandler.execute(contentURL);
                 } else {
                     videoView.setVideoPath(PersistanceDataHandler.getApiRootURL() + contentURL);
-                    finishVideoView(videoView, circlebar);
+                    finishVideoView(videoView, circlebar, PersistanceDataHandler.getApiRootURL() + contentURL);
                 }
                 break;
 
@@ -161,7 +176,7 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
                     downloadhandler.execute(contentURL);
                 } else {
                     videoView.setVideoPath(PersistanceDataHandler.getApiRootURL() + contentURL);
-                    finishVideoView(videoView, circlebar);
+                    finishVideoView(videoView, circlebar, PersistanceDataHandler.getApiRootURL() + contentURL);
                 }
 
                 break;
@@ -245,7 +260,7 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
                     @Override
                     public void onClick(View view) {
                         topicViewHolder.topicvideo.setVideoPath(PersistanceDataHandler.getApiRootURL() + topics.get(i).getContenturl());
-                        finishVideoView(topicViewHolder.topicvideo, topicViewHolder.circlebar);
+                        finishVideoView(topicViewHolder.topicvideo, topicViewHolder.circlebar, PersistanceDataHandler.getApiRootURL() + topics.get(i).getContenturl());
                         topicViewHolder.topicstreambutton.setVisibility(View.GONE);
                     }
                 });
@@ -271,7 +286,7 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
                     @Override
                     public void onClick(View view) {
                         topicViewHolder.topicvideo.setVideoPath(PersistanceDataHandler.getApiRootURL() + topics.get(i).getContenturl());
-                        finishVideoView(topicViewHolder.topicvideo, topicViewHolder.circlebar);
+                        finishVideoView(topicViewHolder.topicvideo, topicViewHolder.circlebar, PersistanceDataHandler.getApiRootURL() + topics.get(i).getContenturl());
                         topicViewHolder.topicstreambutton.setVisibility(View.GONE);
                     }
                 });

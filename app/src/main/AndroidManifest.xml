@@ -49,6 +49,9 @@
 
         <activity android:name=".NewContentActivity_" />
         <activity android:name=".ImageviewPreviewActivity_"></activity>
+        <activity android:name=".VideoviewFullscreen_"
+
+            android:configChanges="orientation|screenSize"></activity>
     </application>
 
 </manifest>
