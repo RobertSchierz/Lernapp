@@ -15,24 +15,28 @@ import org.androidannotations.annotations.EBean;
 @EBean
 public class CustomMediacontroller extends MediaController {
 
-    private ImageButton fullScreen;
+    public ImageButton fullScreen;
     public static boolean isFullscreen = false;
-    public static Activity originalactivity;
+    public Activity originalactivity;
     public VideoView videoView;
     public String path;
+    public CustomMediacontroller customMediacontroller;
+
 
     public CustomMediacontroller(Context context) {
         super(context);
+        this.customMediacontroller = this;
+
     }
 
     public void setVars(Activity activity, String videopath, VideoView view){
-        originalactivity = activity;
+        this.originalactivity = activity;
         this.path =  videopath;
         this.videoView = view;
     }
 
     @Override
-    public void setAnchorView(View view) {
+    public void setAnchorView(final View view) {
         super.setAnchorView(view);
 
         fullScreen = new ImageButton (super.getContext());
@@ -42,6 +46,8 @@ public class CustomMediacontroller extends MediaController {
         params.gravity = Gravity.RIGHT;
         params.rightMargin = 80;
 
+        final Activity finaloriginactivity = this.originalactivity;
+
         if((originalactivity instanceof VideoviewFullscreen_)){
 
             fullScreen.setImageResource(R.drawable.mediaplayer_fullscreen_off);
@@ -49,12 +55,15 @@ public class CustomMediacontroller extends MediaController {
 
             addView(fullScreen, params);
 
+            final CustomMediacontroller finalcustomMediacontroller = this.customMediacontroller;
+
             fullScreen.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    if(originalactivity != null){
-                       originalactivity.finish();
+                    if(finaloriginactivity != null){
+                        finalcustomMediacontroller.hide();
+                        finaloriginactivity.finish();
                     }
 
                 }
@@ -62,6 +71,8 @@ public class CustomMediacontroller extends MediaController {
         }else{
             fromMainPlayer(params);
         }
+
+
 
     }
 
@@ -73,16 +84,17 @@ public class CustomMediacontroller extends MediaController {
 
         final VideoView finalvideoView = this.videoView;
         final String finalpath = this.path;
+        final Activity finaloriginactivity = this.originalactivity;
 
         fullScreen.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(originalactivity != null){
-                    Intent intent = new Intent(originalactivity, VideoviewFullscreen_.class);
+                if(finaloriginactivity != null){
+                    Intent intent = new Intent(finaloriginactivity, VideoviewFullscreen_.class);
                     intent.putExtra("videopath", finalpath);
                     intent.putExtra("currenttime", finalvideoView.getCurrentPosition());
-                    originalactivity.startActivity(intent);
+                    finaloriginactivity.startActivity(intent);
                 }
 
 

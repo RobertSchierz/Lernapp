@@ -122,21 +122,29 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
             }
         });
 
-        CustomMediacontroller customMediacontroller = new CustomMediacontroller(originactivity);
-        customMediacontroller.setVars(originactivity, path, videoView);
+        Boolean isAudio = (Boolean) videoView.getTag(R.string.videoViewisAudio);
 
-
-        videoView.setTag(R.string.mediacontroller, customMediacontroller);
-        customMediacontroller.setAnchorView(videoView);
-        videoView.setMediaController(customMediacontroller);
-
-        //final MediaController mediaController = new MediaController(originactivity);
-        //videoView.setTag(R.string.mediacontroller, mediaController);
+        if(isAudio){
+            final MediaController mediaController = new MediaController(originactivity);
+            videoView.setTag(R.string.mediacontroller, mediaController);
 
 
 
-       // mediaController.setAnchorView(videoView);
-        //videoView.setMediaController(mediaController);
+             mediaController.setAnchorView(videoView);
+            videoView.setMediaController(mediaController);
+        }else{
+            CustomMediacontroller customMediacontroller = new CustomMediacontroller(originactivity);
+            customMediacontroller.setVars(originactivity, path, videoView);
+
+
+            videoView.setTag(R.string.mediacontroller, customMediacontroller);
+            customMediacontroller.setAnchorView(videoView);
+            videoView.setMediaController(customMediacontroller);
+        }
+
+
+
+
 
 
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -159,6 +167,9 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
 
         switch (option) {
             case 1:
+
+                videoView.setTag(R.string.videoViewisAudio, false);
+
                 if (!originactivity.streamContent) {
                     Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, circlebar, this, videoView, null, streamingButton);
                     downloadhandler.execute(contentURL);
@@ -170,6 +181,7 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
 
             case 2:
 
+                videoView.setTag(R.string.videoViewisAudio, true);
 
                 if (!originactivity.streamContent) {
                     Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, circlebar, this, videoView, null, streamingButton);
@@ -182,6 +194,8 @@ public class TopiclistRecyclerviewAdapter extends RecyclerView.Adapter<Topiclist
                 break;
 
             case 3:
+
+
                 if (!originactivity.streamContent) {
                     Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, circlebar, this, null, imageView, streamingButton);
                     downloadhandler.execute(contentURL);

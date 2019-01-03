@@ -25,6 +25,8 @@
     <list default="true" id="0f23fb79-1a9e-4eab-aa88-edc7e3c0f5a0" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/CustomMediacontroller.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/CustomMediacontroller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/TopiclistRecyclerviewAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/TopiclistRecyclerviewAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -84,25 +86,15 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="884">
-              <caret line="52" selection-start-line="52" selection-end-line="52" />
-            </state>
-          </provider>
-          <provider editor-type-id="android-manifest">
-            <state />
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="CustomMediacontroller.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/CustomMediacontroller.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="441">
-              <caret line="70" lean-forward="true" selection-start-line="70" selection-end-line="70" />
+            <state relative-caret-position="629">
+              <caret line="64" column="58" lean-forward="true" selection-start-line="64" selection-start-column="58" selection-end-line="64" selection-end-column="58" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#1524#1775#0" expanded="true" />
+                <element signature="e#1774#1775#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -111,24 +103,47 @@
       <file leaf-file-name="TopiclistRecyclerviewAdapter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/TopiclistRecyclerviewAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="124" column="51" selection-start-line="124" selection-start-column="30" selection-end-line="124" selection-end-column="51" />
+            <state relative-caret-position="240">
+              <caret line="132" column="39" selection-start-line="132" selection-start-column="39" selection-end-line="132" selection-end-column="39" />
               <folding>
                 <element signature="e#4686#4874#0" expanded="true" />
                 <element signature="e#4873#4874#0" expanded="true" />
+                <element signature="e#4931#4956#0" expanded="true" />
+                <element signature="e#5099#5123#0" expanded="true" />
+                <element signature="e#5483#5507#0" expanded="true" />
+                <element signature="e#6207#6232#0" expanded="true" />
+                <element signature="e#6859#6884#0" expanded="true" />
+                <element signature="e#8673#9525#0" expanded="true" />
+                <element signature="e#9524#9525#0" expanded="true" />
+                <element signature="e#10489#11029#0" expanded="true" />
+                <element signature="e#11028#11029#0" expanded="true" />
+                <element signature="e#11958#12498#0" expanded="true" />
+                <element signature="e#12497#12498#0" expanded="true" />
+                <element signature="e#12983#13014#0" expanded="true" />
+                <element signature="e#13093#13771#0" expanded="true" />
+                <element signature="e#13341#13372#0" expanded="true" />
+                <element signature="e#13770#13771#0" expanded="true" />
+                <element signature="e#15983#16405#0" expanded="true" />
+                <element signature="e#16404#16405#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LearngroupsActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupsActivity.java">
+      <file leaf-file-name="strings.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="142" selection-start-line="142" selection-end-line="142" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="85">
+              <caret line="5" column="61" selection-start-line="5" selection-start-column="61" selection-end-line="5" selection-end-column="61" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ImageviewPreviewActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/ImageviewPreviewActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="29" column="48" selection-start-line="29" selection-start-column="48" selection-end-line="29" selection-end-column="48" />
             </state>
           </provider>
         </entry>
@@ -136,8 +151,8 @@
       <file leaf-file-name="VideoviewFullscreen.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/VideoviewFullscreen.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="219">
-              <caret line="14" column="15" selection-start-line="14" selection-start-column="11" selection-end-line="14" selection-end-column="15" />
+            <state relative-caret-position="594">
+              <caret line="45" column="88" selection-start-line="45" selection-start-column="88" selection-end-line="45" selection-end-column="88" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#904#1112#0" expanded="true" />
@@ -147,48 +162,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LearngroupViewActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupViewActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="799">
-              <caret line="98" column="23" selection-start-line="98" selection-start-column="23" selection-end-line="98" selection-end-column="23" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="activity_videoview_fullscreen.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_videoview_fullscreen.xml">
-          <provider editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="16" column="44" selection-start-line="16" selection-start-column="29" selection-end-line="16" selection-end-column="44" />
-            </state>
-          </provider>
-          <provider selected="true" editor-type-id="android-designer2">
-            <state />
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Downloadhandler.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/downloadclasses/Downloadhandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="51" column="35" selection-start-line="51" selection-start-column="35" selection-end-line="51" selection-end-column="35" />
+            <state relative-caret-position="516">
+              <caret line="168" column="49" selection-start-line="168" selection-start-column="49" selection-end-line="168" selection-end-column="49" />
             </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="activity_imageview_preview.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_imageview_preview.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="19" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer2">
-            <state />
           </provider>
         </entry>
       </file>
@@ -207,11 +186,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>checkStoragePermission</find>
-      <find>selector</find>
-      <find>checkst</find>
-      <find>REQUEST_VIDEO_CAPTURE</find>
-      <find>new Intent</find>
       <find>showStoragePermissionDialog</find>
       <find>onresume</find>
       <find>getUsers</find>
@@ -237,6 +211,11 @@
       <find>getIntent</find>
       <find>finishVideoView</find>
       <find>connection</find>
+      <find>gettag</find>
+      <find>setTag</find>
+      <find>setMediaPath</find>
+      <find>setvars</find>
+      <find>setanch</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -2351,7 +2330,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/xml/provider_path.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/restdataPost/NewTopicPost.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/xml/provider_imagepath.xml" />
@@ -2395,12 +2373,13 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/ResponseRecyclerlistAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/topiclist_recyclerviewitem.xml" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/TopiclistRecyclerviewAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_videoview_fullscreen.xml" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/VideoviewFullscreen.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupsActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/downloadclasses/Downloadhandler.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/TopiclistRecyclerviewAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/CustomMediacontroller.java" />
       </list>
     </option>
@@ -2460,6 +2439,17 @@
               <item name="java" type="edd41e36:AndroidSourceTypeNode" />
               <item name="lernapp" type="cbb59c9e:AndroidPsiDirectoryNode" />
               <item name="adapter" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Lernapp" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="res" type="d4f16f75:AndroidResFolderNode" />
+            </path>
+            <path>
+              <item name="Lernapp" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="res" type="d4f16f75:AndroidResFolderNode" />
+              <item name="values" type="ddeffd01:AndroidResFolderTypeNode" />
             </path>
             <path>
               <item name="Lernapp" type="1abcf292:AndroidViewProjectNode" />
@@ -2800,11 +2790,12 @@
       <window_info id="Image Layers" order="2" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
       <window_info anchor="right" id="Preview" order="4" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49953488" visible="true" weight="0.24213536" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49953488" visible="true" weight="0.24213536" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32983795" />
       <window_info id="Captures" order="2" weight="0.25" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49952334" visible="true" weight="0.16372094" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49952334" visible="true" weight="0.16372094" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32983795" />
       <window_info anchor="right" id="Gradle" order="3" weight="0.32976744" />
       <window_info anchor="right" id="Theme Preview" order="3" />
       <window_info id="Favorites" order="2" side_tool="true" />
@@ -2816,7 +2807,6 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" sideWeight="0.49872124" weight="0.24976744" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32983795" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -2832,7 +2822,7 @@
           <option name="timeStamp" value="600" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="623" />
+      <option name="time" value="625" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="app">
@@ -2841,6 +2831,7 @@
         <watch expression="view" />
         <watch expression="videoView.getCurrentPosition()" />
         <watch expression="currenttime" />
+        <watch expression="originalactivity" />
       </configuration>
     </watches-manager>
   </component>
@@ -2968,30 +2959,6 @@ int i = 5;</expression-string>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/restdataGet/Category.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="19" column="17" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/restdataGet/Topic.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-578">
-          <caret line="27" column="9" lean-forward="true" selection-start-line="27" selection-start-column="9" selection-end-line="27" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/anim/floatingaction_onviewanim.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/dimens.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/layoutvariables_hdpi.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="765">
@@ -3028,13 +2995,6 @@ int i = 5;</expression-string>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="247">
           <caret line="695" column="16" selection-start-line="695" selection-start-column="16" selection-end-line="695" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-28/android/view/View.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="26090" column="13" selection-start-line="26090" selection-start-column="13" selection-end-line="26090" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -3298,13 +3258,6 @@ int i = 5;</expression-string>
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/ImageviewPreviewActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="29" column="48" selection-start-line="29" selection-start-column="48" selection-end-line="29" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="884">
@@ -3325,13 +3278,6 @@ int i = 5;</expression-string>
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/downloadclasses/Downloadhandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="51" column="35" selection-start-line="51" selection-start-column="35" selection-end-line="51" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/LearngroupsActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
@@ -3342,10 +3288,70 @@ int i = 5;</expression-string>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/downloadclasses/Downloadhandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="516">
+          <caret line="168" column="49" selection-start-line="168" selection-start-column="49" selection-end-line="168" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="61" selection-start-line="5" selection-start-column="61" selection-end-line="5" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/ImageviewPreviewActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="29" column="48" selection-start-line="29" selection-start-column="48" selection-end-line="29" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-28/android/view/ViewGroup.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="4835" column="16" selection-start-line="4835" selection-start-column="16" selection-end-line="4835" selection-end-column="16" />
+          <folding>
+            <element signature="e#192612#192613#0" expanded="true" />
+            <element signature="e#192654#192655#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-28/android/view/View.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="239">
+          <caret line="25885" selection-start-line="25885" selection-end-line="25885" />
+          <folding>
+            <element signature="e#1040269#1040270#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-28/android/os/Handler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="392">
+          <caret line="107" selection-start-line="107" selection-end-line="107" />
+          <folding>
+            <element signature="e#34939#34940#0" expanded="true" />
+            <element signature="e#34977#34978#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-28/android/os/Looper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="193" selection-start-line="193" selection-end-line="193" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/VideoviewFullscreen.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="14" column="15" selection-start-line="14" selection-start-column="11" selection-end-line="14" selection-end-column="15" />
+        <state relative-caret-position="594">
+          <caret line="45" column="88" selection-start-line="45" selection-start-column="88" selection-end-line="45" selection-end-column="88" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#904#1112#0" expanded="true" />
@@ -3356,21 +3362,40 @@ int i = 5;</expression-string>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/adapter/TopiclistRecyclerviewAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="124" column="51" selection-start-line="124" selection-start-column="30" selection-end-line="124" selection-end-column="51" />
+        <state relative-caret-position="240">
+          <caret line="132" column="39" selection-start-line="132" selection-start-column="39" selection-end-line="132" selection-end-column="39" />
           <folding>
             <element signature="e#4686#4874#0" expanded="true" />
             <element signature="e#4873#4874#0" expanded="true" />
+            <element signature="e#4931#4956#0" expanded="true" />
+            <element signature="e#5099#5123#0" expanded="true" />
+            <element signature="e#5483#5507#0" expanded="true" />
+            <element signature="e#6207#6232#0" expanded="true" />
+            <element signature="e#6859#6884#0" expanded="true" />
+            <element signature="e#8673#9525#0" expanded="true" />
+            <element signature="e#9524#9525#0" expanded="true" />
+            <element signature="e#10489#11029#0" expanded="true" />
+            <element signature="e#11028#11029#0" expanded="true" />
+            <element signature="e#11958#12498#0" expanded="true" />
+            <element signature="e#12497#12498#0" expanded="true" />
+            <element signature="e#12983#13014#0" expanded="true" />
+            <element signature="e#13093#13771#0" expanded="true" />
+            <element signature="e#13341#13372#0" expanded="true" />
+            <element signature="e#13770#13771#0" expanded="true" />
+            <element signature="e#15983#16405#0" expanded="true" />
+            <element signature="e#16404#16405#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/rob/lernapp/CustomMediacontroller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="70" lean-forward="true" selection-start-line="70" selection-end-line="70" />
+        <state relative-caret-position="629">
+          <caret line="64" column="58" lean-forward="true" selection-start-line="64" selection-start-column="58" selection-end-line="64" selection-end-column="58" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1524#1775#0" expanded="true" />
+            <element signature="e#1774#1775#0" expanded="true" />
           </folding>
         </state>
       </provider>
