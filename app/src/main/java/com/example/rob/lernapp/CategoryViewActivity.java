@@ -71,9 +71,11 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
     private Gson gsonhelper = new Gson();
 
 
+
     private StoragePermissionDialog storagePermissionDialog;
 
     public boolean resumedFromImagepreview = false;
+    public boolean resumedFromVideofullscreen = false;
 
 
     @NonConfigurationInstance
@@ -87,7 +89,12 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
     @Override
     protected void onPause() {
         super.onPause();
-        this.topicsrecyclerview.setVisibility(View.INVISIBLE);
+
+
+        if(!this.resumedFromImagepreview && !this.resumedFromVideofullscreen){
+            this.topicsrecyclerview.setVisibility(View.INVISIBLE);
+        }
+
         initializeSockethandler(false);
     }
 
@@ -259,19 +266,27 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
     protected void onResume() {
         super.onResume();
 
+
+
+
         initializeSockethandler(true);
 
+        initializeLists();
+
+    }
+
+    private void initializeLists() {
         if (Build.VERSION.SDK_INT >= 23) {
 
             if (this.prefs.getBoolean("dontAskAgain", false )
                     && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
-                    && checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                    && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                 this.streamContent = true;
                 dataBaseUtilTask.getResponses();
 
             } else if (this.prefs.getBoolean("dontAskAgain", false)
                     && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                    && checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 this.streamContent = false;
                 this.Write_External_Storgae_Permission = true;
                 this.Read_External_Storage_Permission = true;
@@ -280,11 +295,13 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
                 dataBaseUtilTask.getResponses();
 
             } else {
-                if(this.resumedFromImagepreview == false){
+                if(this.resumedFromImagepreview == false && this.resumedFromVideofullscreen == false){
                     showStoragePermissionDialog();
                 }else{
                     this.resumedFromImagepreview = false;
-                    dataBaseUtilTask.getResponses();
+                    this.resumedFromVideofullscreen = false;
+
+                  //  dataBaseUtilTask.getResponses();
                 }
 
             }
@@ -294,7 +311,6 @@ public class CategoryViewActivity extends AppCompatActivity implements StoragePe
             this.Write_External_Storgae_Permission = true;
 
         }
-
     }
 
     private JsonObject getJsonObjectforSocketIO(Object arg) {

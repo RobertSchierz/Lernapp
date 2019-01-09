@@ -28,6 +28,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.rob.lernapp.CategoryViewActivity;
+import com.example.rob.lernapp.CustomMediacontroller;
 import com.example.rob.lernapp.ImageviewPreviewActivity_;
 import com.example.rob.lernapp.PersistanceDataHandler;
 import com.example.rob.lernapp.R;
@@ -305,7 +306,7 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
                     @Override
                     public void onClick(View view) {
                         responseViewHolder.responsevideoView.setVideoPath(PersistanceDataHandler.getApiRootURL() + responses.get(i).getContenturl());
-                        finishVideoView(responseViewHolder.responsevideoView, responseViewHolder.circlebar);
+                        finishVideoView(responseViewHolder.responsevideoView, responseViewHolder.circlebar, PersistanceDataHandler.getApiRootURL() + responses.get(i).getContenturl());
                         responseViewHolder.responsestreamButton.setVisibility(View.GONE);
                     }
                 });
@@ -326,7 +327,7 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
                     @Override
                     public void onClick(View view) {
                         responseViewHolder.responsevideoView.setVideoPath(PersistanceDataHandler.getApiRootURL() + responses.get(i).getContenturl());
-                        finishVideoView(responseViewHolder.responsevideoView, responseViewHolder.circlebar);
+                        finishVideoView(responseViewHolder.responsevideoView, responseViewHolder.circlebar, PersistanceDataHandler.getApiRootURL() + responses.get(i).getContenturl());
                         responseViewHolder.responsestreamButton.setVisibility(View.GONE);
                     }
                 });
@@ -383,11 +384,11 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
         } else {
             try {
                 videoView.setVideoPath(path);
-                finishVideoView(videoView, circlebar);
+                finishVideoView(videoView, circlebar, path);
             } catch (Exception e) {
                 Log.v("SetVideoPathError", e.getMessage());
                 videoView.setVideoPath(contentURL);
-                finishVideoView(videoView, circlebar);
+                finishVideoView(videoView, circlebar, contentURL);
             }
         }
     }
@@ -397,24 +398,28 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
 
         switch (option) {
             case 1:
+
+                videoView.setTag(R.string.videoViewisAudio, false);
+
                 if (!originactivity.streamContent) {
                     Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, circlebar, this, videoView, null, streamingButton);
                     downloadhandler.execute(contentURL);
                 } else {
                     videoView.setVideoPath(PersistanceDataHandler.getApiRootURL() + contentURL);
-                    finishVideoView(videoView, circlebar);
+                    finishVideoView(videoView, circlebar, PersistanceDataHandler.getApiRootURL() + contentURL);
                 }
                 break;
 
             case 2:
 
+                videoView.setTag(R.string.videoViewisAudio, true);
 
                 if (!originactivity.streamContent) {
                     Downloadhandler downloadhandler = (Downloadhandler) new Downloadhandler(originactivity, circlebar, this, videoView, null, streamingButton);
                     downloadhandler.execute(contentURL);
                 } else {
                     videoView.setVideoPath(PersistanceDataHandler.getApiRootURL() + contentURL);
-                    finishVideoView(videoView, circlebar);
+                    finishVideoView(videoView, circlebar, PersistanceDataHandler.getApiRootURL() + contentURL);
                 }
 
                 break;
@@ -475,7 +480,7 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
 
 
 
-    private void finishVideoView(final VideoView videoView, ProgressBar circlebar) {
+    private void finishVideoView(final VideoView videoView, ProgressBar circlebar, String path) {
 
         videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
             @Override
@@ -485,19 +490,25 @@ public class ResponseRecyclerlistAdapter extends RecyclerView.Adapter<ResponseRe
         });
 
 
-        final MediaController mediaController = new MediaController(originactivity);
-        videoView.setTag(R.string.mediacontroller, mediaController);
+        Boolean isAudio = (Boolean) videoView.getTag(R.string.videoViewisAudio);
+
+        if(isAudio){
+            final MediaController mediaController = new MediaController(originactivity);
+            videoView.setTag(R.string.mediacontroller, mediaController);
 
 
-        mediaController.setAnchorView(videoView);
-        videoView.setMediaController(mediaController);
+
+            mediaController.setAnchorView(videoView);
+            videoView.setMediaController(mediaController);
+        }else{
+            CustomMediacontroller customMediacontroller = new CustomMediacontroller(originactivity);
+            customMediacontroller.setVars(originactivity, path, videoView);
 
 
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-            }
-        });
+            videoView.setTag(R.string.mediacontroller, customMediacontroller);
+            customMediacontroller.setAnchorView(videoView);
+            videoView.setMediaController(customMediacontroller);
+        }
 
 
         circlebar.setVisibility(View.GONE);

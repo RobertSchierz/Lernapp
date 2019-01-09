@@ -84,13 +84,14 @@ public class CustomMediacontroller extends MediaController {
 
         final VideoView finalvideoView = this.videoView;
         final String finalpath = this.path;
-        final Activity finaloriginactivity = this.originalactivity;
+        final CategoryViewActivity finaloriginactivity = (CategoryViewActivity) this.originalactivity;
 
         fullScreen.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if(finaloriginactivity != null){
+                    finaloriginactivity.resumedFromVideofullscreen = true;
                     Intent intent = new Intent(finaloriginactivity, VideoviewFullscreen_.class);
                     intent.putExtra("videopath", finalpath);
                     intent.putExtra("currenttime", finalvideoView.getCurrentPosition());
